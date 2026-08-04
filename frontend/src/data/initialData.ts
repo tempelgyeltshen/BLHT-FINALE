@@ -1,0 +1,1250 @@
+import { TourPackage, Hotel, Festival, Brochure, GalleryItem, VideoItem, ContactInquiry, HomepageConfig } from '../types';
+
+export const initialPackages: TourPackage[] = [
+  {
+    id: 'pkg-1',
+    slug: 'kingdom-in-the-clouds-luxury',
+    title: 'Kingdom in the Clouds: Ultra-Luxury Journey',
+    subtitle: '7 Days / 6 Nights across Paro, Thimphu, and Punakha in 5-Star Luxury Lodges',
+    category: 'luxury',
+    durationDays: 7,
+    priceUSD: 8950,
+    rating: 4.98,
+    reviewsCount: 42,
+    featured: true,
+    heroImage: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80', // Bhutan Paro Taktsang
+    galleryImages: [
+      'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80'
+    ],
+    description: 'Immerse yourself in the world’s most serene Kingdom with private helicopter transfers, personal butler service, private blessings by senior incarnate lamas, and exclusive stays at Six Senses and BLHT sanctuaries.',
+    highlights: [
+      'Private VIP arrival clearance at Paro International Airport with traditional scarf (Khadhar) ceremony',
+      'Helicopter flight over Himalayan peaks to Punakha Valley',
+      'Private meditation & butter lamp lighting with Abbot at Chimi Lhakhang',
+      'Champagne sunrise breakfast overlooking Paro Taktsang (Tiger’s Nest)',
+      'Traditional hot stone bath (Menchu) infused with wild Artemisia'
+    ],
+    included: [
+      '5-Star Ultra-Luxury Accommodations (Six Senses / BLHT Sanctuaries)',
+      'Private SUV with dedicated senior guide & butler',
+      'SDF Sustainable Development Fees ($100/night included)',
+      'All gourmet farm-to-table meals and fine cellar pairings',
+      'All official visa processing and monastery entry permits'
+    ],
+    excluded: [
+      'International flights into Paro (can be arranged via Drukair / Bhutan Airlines)',
+      'Personal travel insurance',
+      'Discretionary tips for guide and driver'
+    ],
+    destinations: ['Paro', 'Thimphu', 'Punakha'],
+    hotelCategory: '5-Star Luxury',
+    brochureId: 'brochure-1',
+    itinerary: [
+      {
+        day: 1,
+        title: 'Arrival in Paro & Drive to Thimphu Valley',
+        location: 'Thimphu',
+        description: 'Land in Paro where your personal host greets you with silk Khadhar scarves. Enjoy a scenic 1-hour private transfer to Six Senses Thimphu (Palace in the Sky). Unwind with a welcome herbal tea overlooking Thimphu Valley.',
+        highlights: ['Private arrival reception', 'Six Senses Thimphu check-in', 'Welcome 7-course gourmet Bhutanese dinner'],
+        accommodation: 'Six Senses Thimphu / BLHT Thimphu Sanctuary',
+        meals: 'Dinner included'
+      },
+      {
+        day: 2,
+        title: 'Thimphu Capital Insights & Private Lama Blessing',
+        location: 'Thimphu',
+        description: 'Ascend to Buddha Dordenma, a giant 169ft bronze Buddha statue. Private audience with a senior Buddhist scholar at Pangri Zampa astrological monastery.',
+        highlights: ['Buddha Point private tour', 'Astrological reading at Pangri Zampa', 'Centenary Farmers Market private tasting'],
+        accommodation: 'Six Senses Thimphu / BLHT Thimphu Sanctuary',
+        meals: 'Breakfast, Lunch & Dinner'
+      },
+      {
+        day: 3,
+        title: 'Dochula Pass & Scenic Descent to Punakha',
+        location: 'Punakha',
+        description: 'Cross the Dochula Pass (3,100m) framed by 108 memorial chortens. Descend into subtropical Punakha Valley. Stay at BLHT Punakha Sanctuary, accessed via a suspension bridge over the Mo Chhu river.',
+        highlights: ['108 Chortens photo session', 'Riverside afternoon tea at the lodge', 'Private chef barbecue under the pine canopy'],
+        accommodation: 'BLHT Punakha Sanctuary / Six Senses Punakha',
+        meals: 'Breakfast, Lunch & Dinner'
+      },
+      {
+        day: 4,
+        title: 'Punakha Dzong & Chimi Lhakhang',
+        location: 'Punakha',
+        description: 'Visit Punakha Dzong, the "Palace of Great Happiness", sitting at the confluence of Pho Chhu and Mo Chhu rivers. Afternoon walk through rice paddies to Chimi Lhakhang.',
+        highlights: ['Private tour of Punakha Dzong', 'Traditional archers demonstration', 'Riverside wine tasting'],
+        accommodation: 'BLHT Punakha Sanctuary / Six Senses Punakha',
+        meals: 'Breakfast, Lunch & Dinner'
+      },
+      {
+        day: 5,
+        title: 'Return to Paro & Cultural Heritage Experience',
+        location: 'Paro',
+        description: 'Drive back to Paro Valley. Check into COMO Uma Paro or Pemako Paro. Visit Kyichu Lhakhang, one of Bhutan’s oldest 7th-century shrines.',
+        highlights: ['Kyichu Lhakhang butter lamp ceremony', 'COMO Shambhala spa treatment', 'Traditional hot stone bath'],
+        accommodation: 'COMO Uma Paro / Paro Pine Lodge',
+        meals: 'Breakfast, Lunch & Dinner'
+      },
+      {
+        day: 6,
+        title: 'Pilgrimage to Paro Taktsang (Tiger’s Nest)',
+        location: 'Paro',
+        description: 'Early morning private hike or pony ride to Tiger’s Nest monastery clinging to a cliff face 900 meters above Paro Valley. Champagne celebration at the summit tea house.',
+        highlights: ['Private early access to Tiger’s Nest', 'Private prayer ceremony inside cave', 'Farewell Gala Dinner'],
+        accommodation: 'COMO Uma Paro / Paro Pine Lodge',
+        meals: 'Breakfast, Lunch & Dinner'
+      },
+      {
+        day: 7,
+        title: 'Homeward Departure',
+        location: 'Paro',
+        description: 'Private transfer to Paro International Airport with VIP lounge access and departure souvenir presentation by BLHT executive directors.',
+        highlights: ['VIP Airport lounge escort', 'Custom souvenir gift'],
+        accommodation: 'Departure',
+        meals: 'Breakfast'
+      }
+    ]
+  },
+  {
+    id: 'pkg-2',
+    slug: 'sacred-festivals-cultural-odyssey',
+    title: 'Sacred Tshechu Festivals & Spiritual Odyssey',
+    subtitle: '10 Days / 9 Nights during Paro or Thimphu Sacred Mask Dance Celebrations',
+    category: 'festival',
+    durationDays: 10,
+    priceUSD: 7400,
+    rating: 4.95,
+    reviewsCount: 28,
+    featured: true,
+    heroImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80'
+    ],
+    description: 'Experience Bhutan’s grandest spiritual festivals (Tshechus) with reserved VIP pavilion seating, custom Bhutanese Gho & Kira attire fitting, and intimate interactions with monk dancers.',
+    highlights: [
+      'VIP Reserved Seating at Paro or Thimphu Tshechu inner courtyard',
+      'Custom tailored Gho (for men) or Kira (for women) gift to keep',
+      'Unfurling of sacred Throngdrel silk tapestry at dawn',
+      'Evening dinner with cultural historian & preservationist',
+      'Exclusive monastery night chanting session'
+    ],
+    included: [
+      'Luxury Heritage Accommodations (Zhiwa Ling / Pemako / COMO)',
+      'All Festival VIP entry clearances & private guides',
+      'Custom Bhutanese national dress tailored for you',
+      'SDF Fees ($100/night) & full board dining',
+      'Private chauffeur driven vehicle'
+    ],
+    excluded: [
+      'International flights',
+      'Personal expenses'
+    ],
+    destinations: ['Paro', 'Thimphu', 'Punakha', 'Phobjikha'],
+    hotelCategory: 'Heritage Suite',
+    brochureId: 'brochure-2',
+    itinerary: [
+      {
+        day: 1,
+        title: 'Arrival in Paro & Gho/Kira Tailoring Session',
+        location: 'Paro',
+        description: 'Settle into Zhiwa Ling Heritage, built entirely with handcrafted Bhutanese timber and stone. Afternoon fitting for traditional Gho & Kira garments.',
+        highlights: ['Zhiwa Ling check-in', 'Custom garment fitting', 'Spiritual welcome dinner'],
+        accommodation: 'Zhiwa Ling Heritage Hotel',
+        meals: 'Dinner'
+      },
+      {
+        day: 2,
+        title: 'Tshechu Day 1: Cham Mask Dances',
+        location: 'Paro',
+        description: 'Wear your tailored attire and enter the Paro Dzong courtyards. Observe sacred Cham dances performed by monks representing deities and demons.',
+        highlights: ['VIP pavilion seating', 'Photography allowance', 'Lunch with senior monk scholar'],
+        accommodation: 'Zhiwa Ling Heritage Hotel',
+        meals: 'Breakfast, Lunch & Dinner'
+      },
+      {
+        day: 3,
+        title: 'Dawn Unfurling of Throngdrel Tapestry',
+        location: 'Paro',
+        description: 'Wake at 3:30 AM to witness the ceremonial unfurling of the giant 300-year-old silk Throngdrel scroll before sunrise. Receive blessings for health and longevity.',
+        highlights: ['Pre-dawn Throngdrel blessing', 'Sacred butter lamp offering', 'Afternoon relaxation spa'],
+        accommodation: 'Zhiwa Ling Heritage Hotel',
+        meals: 'Breakfast, Lunch & Dinner'
+      }
+    ]
+  },
+  {
+    id: 'pkg-3',
+    slug: 'dragon-kingdom-trans-bhutan-adventure',
+    title: 'Trans-Bhutan Trail & Himalayan Wilderness Expedition',
+    subtitle: '12 Days / 11 Nights Heli-Trekking, High Mountain Passes & Remote Valleys',
+    category: 'adventure',
+    durationDays: 12,
+    priceUSD: 11200,
+    rating: 4.99,
+    reviewsCount: 19,
+    featured: true,
+    heroImage: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1200&q=80',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80'
+    ],
+    description: 'Hike restored sections of the ancient Trans-Bhutan Trail that connected historic fortresses for centuries. Enjoy luxury glamping, mountain biking down high passes, and helicopter scenic drops.',
+    highlights: [
+      'Private helicopter flight across Mount Jomolhari ice fields',
+      'Luxury wilderness dome glamping with private heated beds and gourmet chef',
+      'Mountain biking down Chele La Pass (3,988m)',
+      'Rafting the crystal waters of Pho Chhu river past Punakha Dzong',
+      'Meeting local yak herders in Gangtey Valley'
+    ],
+    included: [
+      'Mix of 5-Star Lodges and Luxury Glamping Camps',
+      'Helicopter charter flight',
+      'Support crew, chef, pack horses & medical kit',
+      'SDF Fees ($100/night) & all permits',
+      'Bikes and rafting gear'
+    ],
+    excluded: ['International airfare'],
+    destinations: ['Paro', 'Thimphu', 'Gangtey', 'Bumthang'],
+    hotelCategory: 'Luxury Camp',
+    brochureId: 'brochure-3',
+    itinerary: [
+      {
+        day: 1,
+        title: 'Arrival in Paro & Gear Orientation',
+        location: 'Paro',
+        description: 'Meet your wilderness expedition leader. Check into COMO Uma Paro. Equipment check and acclimatization hike to Zuri Dzong.',
+        highlights: ['Gear briefing', 'Acclimatization walk', 'COMO Shambhala wellness spa'],
+        accommodation: 'COMO Uma Paro',
+        meals: 'Dinner'
+      }
+    ]
+  },
+  {
+    id: 'pkg-4',
+    slug: 'bumthang-spiritual-heartland',
+    title: 'Bumthang Valley Sacred Heartland & Wellness Sanctuary',
+    subtitle: '9 Days / 8 Nights in Eastern Bhutan’s Valley of Monasteries & Herbal Baths',
+    category: 'wellness',
+    durationDays: 9,
+    priceUSD: 8200,
+    rating: 4.93,
+    reviewsCount: 15,
+    featured: false,
+    heroImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80'
+    ],
+    description: 'Travel into Bumthang, the spiritual engine of Bhutan where Guru Rinpoche left sacred body imprints. Experience holistic Buddhist meditation, herbal healing, and pristine pine forests.',
+    highlights: [
+      'Private meditation sessions in Kurjey Lhakhang cave',
+      'Organic buckwheat honey & artisanal cheese tasting in Jakar',
+      'Hot stone baths infused with Himalayan pine and wormwood',
+      'Scenic flight between Paro and Yonphula/Bumthang Airport'
+    ],
+    included: [
+      'BLHT Bumthang & Gangtey Luxury Lodge accommodations',
+      'Domestic flight Paro - Bumthang',
+      'Private wellness guide and meditation master'
+    ],
+    excluded: ['International airfare'],
+    destinations: ['Bumthang', 'Gangtey', 'Paro'],
+    hotelCategory: '5-Star Luxury',
+    brochureId: 'brochure-4',
+    itinerary: [
+      {
+        day: 1,
+        title: 'Domestic Flight to Bumthang Valley',
+        location: 'Bumthang',
+        description: 'Fly over Himalayan ridges from Paro into Jakar airport in Bumthang. Check into Bumthang Heritage Lodge located adjacent to the Wangdichhoeling Palace.',
+        highlights: ['Scenic internal flight', 'Palace grounds tour', 'Meditation session'],
+        accommodation: 'Bumthang Heritage Lodge',
+        meals: 'Lunch & Dinner'
+      }
+    ]
+  }
+];
+
+export const initialHotels: Hotel[] = [
+  {
+    id: 'hotel-1',
+    slug: 'paro-pine-sanctuary',
+    name: 'BLHT Paro Pine Sanctuary',
+    brand: 'BLHT Sanctuary',
+    location: 'Balakha Village, Paro',
+    region: 'Paro',
+    starRating: 5,
+    pricePerNightUSD: 2200,
+    heroImage: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80'
+    ],
+    tagline: 'A sanctuary tucked inside a blue pine forest beneath ruined Drukyel Dzong.',
+    description: 'BLHT Paro Pine Sanctuary features 24 wood-panelled suites with king beds, traditional wood-burning stoves (bukhari), and terrazzo baths. Surrounded by whispering pines, it offers unmatched tranquility and direct access to Tiger’s Nest.',
+    amenities: ['Spa & Steam Room', 'Bukhari Wood Fireplace', 'Fine Bhutanese & Western Dining', 'Private Yoga Pavilion', 'Archery Range', 'Helipad Access'],
+    featured: true
+  },
+  {
+    id: 'hotel-2',
+    slug: 'six-senses-thimphu',
+    name: 'Six Senses Thimphu (Palace in the Sky)',
+    brand: 'Six Senses',
+    location: 'Chungdue, Thimphu',
+    region: 'Thimphu',
+    starRating: 5,
+    pricePerNightUSD: 1950,
+    heroImage: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80'
+    ],
+    tagline: 'Perched high on the valley wall with panoramic views of the Buddha Dordenma.',
+    description: 'Designed as a majestic sky palace with grand reflection ponds overlooking the capital valley. Features world-class Six Senses Integrative Wellness spa, heated indoor pool, and organic gardens.',
+    amenities: ['Heated Indoor Infinity Pool', 'Six Senses Wellness Spa', 'Reflection Ponds', 'Organic Garden Dining', 'Butler Service'],
+    featured: true
+  },
+  {
+    id: 'hotel-3',
+    slug: 'como-uma-paro',
+    name: 'COMO Uma Paro',
+    brand: 'COMO',
+    location: 'Paro Valley',
+    region: 'Paro',
+    starRating: 5,
+    pricePerNightUSD: 1600,
+    heroImage: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80'
+    ],
+    tagline: 'Understated luxury combining local artisan craftsmanship with COMO Shambhala wellness.',
+    description: 'An exclusive 29-room luxury resort perched on a pine-clad hill. Home to Bukhari Restaurant, serving organic cuisine crafted from local Himalayan produce.',
+    amenities: ['COMO Shambhala Retreat', 'Bukhari Fine Dining', 'Indoor Pool', 'Hot Stone Baths', 'Private Guided Hikes'],
+    featured: true
+  },
+  {
+    id: 'hotel-4',
+    slug: 'pemako-thimphu',
+    name: 'Pemako Thimphu (formerly Taj Tashi)',
+    brand: 'Pemako',
+    location: 'Downtown Thimphu',
+    region: 'Thimphu',
+    starRating: 5,
+    pricePerNightUSD: 1250,
+    heroImage: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80'
+    ],
+    tagline: 'Traditional Dzong architecture meets modern elegance in the heart of the capital.',
+    description: 'Pemako Thimphu blends classical Bhutanese hand-painted murals with luxurious contemporary suites. Walkable to national museums, artisan shops, and historic monuments.',
+    amenities: ['Traditional Dzong Spire', 'Jiva Spa', 'Ara Bar & Tea Lounge', 'Chig-Ja-Gye Fine Dining'],
+    featured: false
+  },
+  {
+    id: 'hotel-5',
+    slug: 'zhiwa-ling-heritage',
+    name: 'Zhiwa Ling Heritage Hotel',
+    brand: 'Zhiwa Ling',
+    location: 'Satsam Choten, Paro',
+    region: 'Paro',
+    starRating: 5,
+    pricePerNightUSD: 950,
+    heroImage: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80'
+    ],
+    tagline: '100% Bhutanese owned lodge featuring hand-carved woodwork and a shrine room in the main tower.',
+    description: 'Set on 10 acres of landscaped gardens, Zhiwa Ling combines ancient master art with solar heating, swedish fireplaces, and authentic warm hospitalities.',
+    amenities: ['In-house Buddhist Temple', 'Swedish Fireplaces', 'Menchu Spa', 'Tea House Gardens'],
+    featured: true
+  }
+];
+
+export const initialFestivals: Festival[] = [
+  {
+    id: 'fest-1',
+    slNo: 1,
+    slug: 'lhamoi-dromchhen-2027',
+    name: 'Lhamoi Dromchhen',
+    location: 'Trongsa',
+    dzong: 'Trongsa Dzong',
+    dates2027: '11th – 13th February 2027',
+    month: 'February',
+    description: 'Sacred protective deity ceremony dedicated to Palden Lhamo inside the majestic courtyards of Trongsa Dzong.',
+    significance: 'Dispels spiritual obstacles for the new year and brings peace and protection across central Bhutan.',
+    heroImage: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-2',
+    slNo: 2,
+    slug: 'punakha-dromchoe-2027',
+    name: 'Punakha Dromchoe',
+    location: 'Punakha',
+    dzong: 'Punakha Dzong',
+    dates2027: '13th – 15th February 2027',
+    month: 'February',
+    description: 'Dramatic theatrical reenactment of the 17th-century battle against Tibetan invaders led by Zhabdrung Ngawang Namgyal.',
+    significance: 'Features the Pazaps (traditional militia warriors) throwing blessed oranges into the Mo Chhu river.',
+    heroImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: true
+  },
+  {
+    id: 'fest-3',
+    slNo: 3,
+    slug: 'punakha-tshechu-2027',
+    name: 'Punakha Tshechu',
+    location: 'Punakha',
+    dzong: 'Punakha Dzong',
+    dates2027: '16th – 18th February 2027',
+    month: 'February',
+    description: 'Grand annual religious mask dance festival held inside the Palace of Great Happiness at the confluence of two sacred rivers.',
+    significance: 'Honors Guru Rinpoche through ancient sacred Cham dances performed by the monk body.',
+    heroImage: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: true
+  },
+  {
+    id: 'fest-4',
+    slNo: 4,
+    slug: 'tharpaling-thongdrol-2027',
+    name: 'Tharpaling Thongdrol',
+    location: 'Chumi, Bumthang',
+    dzong: 'Tharpaling Lhakhang',
+    dates2027: '20th February 2027',
+    month: 'February',
+    description: 'One-day sacred unrolling of a giant silk Thongdrol tapestry at the hillside sanctuary of Longchen Rabjam.',
+    significance: 'Looking upon the Throngdrel is said to liberate the viewer from negative karma.',
+    heroImage: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 1,
+    featured: false
+  },
+  {
+    id: 'fest-5',
+    slNo: 5,
+    slug: 'tangsibi-mani-2027',
+    name: 'Tangsibi Mani',
+    location: 'Ura, Bumthang',
+    dzong: 'Tangsibi Lhakhang',
+    dates2027: '22nd – 24th February 2027',
+    month: 'February',
+    description: 'Ancient community festival with traditional chanting, fire blessings, and folk dances in rural Bumthang.',
+    significance: 'Protects crops and livestock while invoking prosperity for rural mountain villages.',
+    heroImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-6',
+    slNo: 6,
+    slug: 'chhorten-kora-2027',
+    name: 'Chhorten Kora Festival',
+    location: 'Trashiyangtshe',
+    dzong: 'Chorten Kora',
+    dates2027: '20th February & 8th March 2027',
+    month: 'Feb / Mar',
+    description: 'Sacred circumambulation around the magnificent white stupa modeled after Nepal Bodhnath Stupa.',
+    significance: 'Attracts pilgrims from eastern Bhutan and Arunachal Pradesh (Dakpa community).',
+    heroImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 2,
+    featured: false
+  },
+  {
+    id: 'fest-7',
+    slNo: 7,
+    slug: 'gomphukora-2027',
+    name: 'Gomphukora Festival',
+    location: 'Trashiyangtshe',
+    dzong: 'Gom Kora Lhakhang',
+    dates2027: '16th – 18th March 2027',
+    month: 'March',
+    description: 'Night circumambulation ritual around the sacred cave where Guru Rinpoche subdued a demon in the 8th century.',
+    significance: 'Pilgrims circumambulate the cave all night singing courtship songs and receiving blessings.',
+    heroImage: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-8',
+    slNo: 8,
+    slug: 'talo-tshechu-2027',
+    name: 'Talo Tshechu',
+    location: 'Punakha',
+    dzong: 'Talo Gonpa',
+    dates2027: '16th – 18th March 2027',
+    month: 'March',
+    description: 'Intimate hilltop festival famed for the graceful Mani Sum dance and classical monastic music.',
+    significance: 'Celebrated in the ancestral home of Bhutanese queens overlooking Punakha Valley.',
+    heroImage: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-9',
+    slNo: 9,
+    slug: 'gasa-tshechu-2027',
+    name: 'Gasa Tshechu',
+    location: 'Gasa',
+    dzong: 'Gasa Dzong',
+    dates2027: '16th – 18th March 2027',
+    month: 'March',
+    description: 'Remote Himalayan fortress festival attended by high-altitude Layap nomads wearing conical bamboo hats.',
+    significance: 'Blend of sacred Cham dances and unique highlander cultural performances.',
+    heroImage: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-10',
+    slNo: 10,
+    slug: 'zhemgang-tshechu-2027',
+    name: 'Zhemgang Tshechu',
+    location: 'Zhemgang',
+    dzong: 'Zhemgang Dzong',
+    dates2027: '16th – 18th March 2027',
+    month: 'March',
+    description: 'Southern rainforest fortress celebration with traditional mask dances and Khengpa ethnic folk art.',
+    significance: 'Invokes protection over subtropical forests and biodiversity reserves.',
+    heroImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-11',
+    slNo: 11,
+    slug: 'paro-tshechu-2027',
+    name: 'Paro Tshechu',
+    location: 'Paro',
+    dzong: 'Rinpung Dzong',
+    dates2027: '18th – 22nd March 2027',
+    month: 'March',
+    description: 'Bhutan’s most iconic spring festival culminating with the pre-dawn unfurling of the 350-year-old silk Throngdrel thangka.',
+    significance: 'VIP access to sacred monk dances, silk dress tailoring, and spiritual cleansing blessings.',
+    heroImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 5,
+    featured: true
+  },
+  {
+    id: 'fest-12',
+    slNo: 12,
+    slug: 'rhododendron-week-2027',
+    name: 'Rhododendron Week',
+    location: 'Merak, Trashigang',
+    dzong: 'Shetemey, Merak',
+    dates2027: '3rd – 9th April 2027',
+    month: 'April',
+    description: 'High alpine flower celebration amidst blooming wild rhododendron forests in Brokpa yak herder territory.',
+    significance: 'Showcases nomad life, traditional felt garments, and pristine Himalayan flora.',
+    heroImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 7,
+    featured: false
+  },
+  {
+    id: 'fest-13',
+    slNo: 13,
+    slug: 'domkhar-tshechu-2027',
+    name: 'Domkhar Tshechu',
+    location: 'Chumi, Bumthang',
+    dzong: 'Domkhar Palace',
+    dates2027: '16th – 18th April 2027',
+    month: 'April',
+    description: 'Charming valley festival held at the historic royal residence of Domkhar Tashichholing.',
+    significance: 'Features rare sacred mask dances performed exclusively by Bumthang villagers.',
+    heroImage: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-14',
+    slNo: 14,
+    slug: 'ura-yakchoe-2027',
+    name: 'Ura Yakchoe',
+    location: 'Ura, Bumthang',
+    dzong: 'Ura Lhakhang',
+    dates2027: '18th – 22nd April 2027',
+    month: 'April',
+    description: 'Renowned spring festival in high Ura valley centered around the display of a holy relic brought by an old woman.',
+    significance: 'Relic blessing and vibrant mask dances surrounded by cobblestone village houses.',
+    heroImage: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 5,
+    featured: true
+  },
+  {
+    id: 'fest-15',
+    slNo: 15,
+    slug: 'rhododendron-festival-2027',
+    name: 'Rhododendron Festival',
+    location: 'Thimphu',
+    dzong: 'Lamperi Botanical Park',
+    dates2027: '22nd – 23rd April 2027',
+    month: 'April',
+    description: 'Ecology and botanical celebration honoring 29 native species of wild rhododendron in full bloom.',
+    significance: 'Nature walks, traditional music, forest food stalls, and conservation displays.',
+    heroImage: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 2,
+    featured: false
+  },
+  {
+    id: 'fest-16',
+    slNo: 16,
+    slug: 'nimalung-tshechu-2027',
+    name: 'Nimalung Tshechu',
+    location: 'Chumi, Bumthang',
+    dzong: 'Nimalung Dratshang',
+    dates2027: '12th – 14th June 2027',
+    month: 'June',
+    description: 'Summer monastic gathering at Nimalung monastery featuring silk tapestry display and sacred chants.',
+    significance: 'Promotes world peace and spiritual harmony through ancient tantric rituals.',
+    heroImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-17',
+    slNo: 17,
+    slug: 'kurjey-tshechu-2027',
+    name: 'Kurjey Tshechu',
+    location: 'Choekhor, Bumthang',
+    dzong: 'Kurjey Lhakhang',
+    dates2027: '14th June 2027',
+    month: 'June',
+    description: 'Held at Guru Rinpoche’s body-imprint cave temple in Bumthang valley.',
+    significance: 'Reenacts Guru Rinpoche subduing the demon Shelging Karpo to restore the health of King Sindhu Raja.',
+    heroImage: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 1,
+    featured: true
+  },
+  {
+    id: 'fest-18',
+    slNo: 18,
+    slug: 'tour-of-the-dragon-2027',
+    name: 'Tour of the Dragon (Mountain Bike Race)',
+    location: 'Bumthang to Thimphu',
+    dzong: 'Himalayan Pass Circuit',
+    dates2027: '5th September 2027',
+    month: 'September',
+    description: 'One of the world’s toughest single-day ultra mountain bike races covering 268km across 4 high mountain passes.',
+    significance: 'Celebrates endurance, Gross National Happiness, and pristine wilderness trails.',
+    heroImage: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 1,
+    featured: false
+  },
+  {
+    id: 'fest-19',
+    slNo: 19,
+    slug: 'thimphu-drubchen-2027',
+    name: 'Thimphu Drubchen',
+    location: 'Thimphu',
+    dzong: 'Tashi Chhodzong',
+    dates2027: '5th October 2027',
+    month: 'October',
+    description: 'Pre-festival sacred dance of the deity Pelden Lhamo performed prior to the main Thimphu Tshechu.',
+    significance: 'Instituted in the 17th century by Kuenga Gyeltshen for national protection.',
+    heroImage: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 1,
+    featured: false
+  },
+  {
+    id: 'fest-20',
+    slNo: 20,
+    slug: 'haa-tshechu-2027',
+    name: 'Haa Tshechu',
+    location: 'Haa',
+    dzong: 'Lhakhang Karpo',
+    dates2027: '6th – 8th November 2027',
+    month: 'November',
+    description: 'Celebrated in the white temple of Haa valley featuring local highlander customs and sacred Cham.',
+    significance: 'Invokes guardian deities Ap Chundu to safeguard the alpine frontier.',
+    heroImage: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-21',
+    slNo: 21,
+    slug: 'wangdue-tshechu-2027',
+    name: 'Wangdue Tshechu',
+    location: 'Wangduephodrang',
+    dzong: 'Wangduephodrang Dzong',
+    dates2027: '8th – 10th October 2027',
+    month: 'October',
+    description: 'Historic autumn festival featuring the famous Raksha Mangcham (Dance of the Ox and Deities).',
+    significance: 'Brings together communities across Punakha and Wangdue valleys.',
+    heroImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-22',
+    slNo: 22,
+    slug: 'tamshing-phala-chhoepa-2027',
+    name: 'Tamshing Phala Chhoepa',
+    location: 'Bumthang',
+    dzong: 'Tamshing Lhakhang',
+    dates2027: '10th – 12th October 2027',
+    month: 'October',
+    description: 'Festival founded by treasure revealer Pema Lingpa in 1501 featuring sacred dances he received in visions.',
+    significance: 'Performs authentic Peling dances passed down unchanged for over 500 years.',
+    heroImage: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-23',
+    slNo: 23,
+    slug: 'thimphu-tshechu-2027',
+    name: 'Thimphu Tshechu',
+    location: 'Thimphu',
+    dzong: 'Tashi Chhodzong',
+    dates2027: '10th – 12th October 2027',
+    month: 'October',
+    description: 'Bhutan’s capital mega-festival where thousands gather in silk attires inside Tashichho Dzong courtyards.',
+    significance: 'Features the Dance of the Black Hats and Eight Manifestations of Guru Rinpoche.',
+    heroImage: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: true
+  },
+  {
+    id: 'fest-24',
+    slNo: 24,
+    slug: 'gangtey-tshechu-2027',
+    name: 'Gangtey Tshechu',
+    location: 'Wangduephodrang',
+    dzong: 'Gangtey Gonpa',
+    dates2027: '13th – 15th October 2027',
+    month: 'October',
+    description: 'Hilltop monastery festival in Phobjikha valley concluding with the unfurling of a grand Throngdrel thangka.',
+    significance: 'Highlights the Nyingmapa Buddhist lineage in the winter home of black-necked cranes.',
+    heroImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: true
+  },
+  {
+    id: 'fest-25',
+    slNo: 25,
+    slug: 'jhomolhari-mountain-festival-2027',
+    name: 'Jhomolhari Mountain Festival',
+    location: 'Thimphu',
+    dzong: 'Dangochong, Jhomolhari',
+    dates2027: '14th – 15th October 2027',
+    month: 'October',
+    description: 'High-altitude snow leopard and mountain conservation celebration at the base of sacred Mt. Jhomolhari.',
+    significance: 'Nomad horse races, snow leopard conservation talks, and high-peak cultural dances.',
+    heroImage: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 2,
+    featured: false
+  },
+  {
+    id: 'fest-26',
+    slNo: 26,
+    slug: 'thangbi-mewang-2027',
+    name: 'Thangbi Mewang',
+    location: 'Choekor, Bumthang',
+    dzong: 'Thangbi Lhakhang',
+    dates2027: '15th – 16th October 2027',
+    month: 'October',
+    description: 'Famed Fire-Blessing festival where participants leap over twin burning archways of dry grass.',
+    significance: 'The fire ritual purifies evil deeds and guarantees good health and bumper harvests.',
+    heroImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 2,
+    featured: true
+  },
+  {
+    id: 'fest-27',
+    slNo: 27,
+    slug: 'pemagatshel-tshechu-2027',
+    name: 'Pemagatshel Tshechu',
+    location: 'Pemagatshel',
+    dzong: 'Pemagatshel Dzong',
+    dates2027: '6th – 9th November 2027',
+    month: 'November',
+    description: 'Eastern Bhutanese festival celebrated with unique folk instruments and silk Throngdrel thangka unfurling on the final day.',
+    significance: 'Celebrates rich eastern artisan traditions and monastic rituals.',
+    heroImage: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 4,
+    featured: false
+  },
+  {
+    id: 'fest-28',
+    slNo: 28,
+    slug: 'chhukha-tshechu-2027',
+    name: 'Chhukha Tshechu',
+    location: 'Chhukha',
+    dzong: 'Chhukha Dzong',
+    dates2027: '6th – 8th November 2027',
+    month: 'November',
+    description: 'Vibrant southwestern district gathering featuring sacred mask dances and cultural song competitions.',
+    significance: 'Brings together hydroelectric valley workers and traditional farming communities.',
+    heroImage: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-29',
+    slNo: 29,
+    slug: 'dechenphu-tshechu-2027',
+    name: 'Dechenphu Tshechu',
+    location: 'Thimphu',
+    dzong: 'Dechenphu Lhakhang',
+    dates2027: '8th November 2027',
+    month: 'November',
+    description: 'One-day annual festival dedicated to Gaynyen Jagpa Melen, the powerful protective deity of Thimphu valley.',
+    significance: 'Deep local reverence with warrior dances and sacred armor offerings.',
+    heroImage: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 1,
+    featured: false
+  },
+  {
+    id: 'fest-30',
+    slNo: 30,
+    slug: 'jakar-tshechu-2027',
+    name: 'Jakar Tshechu',
+    location: 'Choekhor, Bumthang',
+    dzong: 'Jakar Dzong',
+    dates2027: '6th – 9th November 2027',
+    month: 'November',
+    description: 'Held inside the "Fortress of the White Bird" overlooking central Bumthang valley.',
+    significance: 'Features the dramatic Guru Tshengye (Eight Manifestations) and deity mask dances.',
+    heroImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 4,
+    featured: false
+  },
+  {
+    id: 'fest-31',
+    slNo: 31,
+    slug: 'black-necked-crane-festival-2027',
+    name: 'Black Necked Crane Festival',
+    location: 'Phobjikha, Wangduephodrang',
+    dzong: 'Gangtey Gonpa',
+    dates2027: '11th November 2027',
+    month: 'November',
+    description: 'Celebrates the arrival of endangered black-necked cranes migrating from Tibet to winter in Phobjikha valley.',
+    significance: 'Children perform crane dance in handmade costumes alongside conservation awareness displays.',
+    heroImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 1,
+    featured: true
+  },
+  {
+    id: 'fest-32',
+    slNo: 32,
+    slug: 'jambay-lhakhang-drup-2027',
+    name: 'Jambay Lhakhang Drup',
+    location: 'Choekhor, Bumthang',
+    dzong: 'Jambay Lhakhang',
+    dates2027: '14th – 17th November 2027',
+    month: 'November',
+    description: 'World-famous festival featuring the sacred midnight Tercham (Naked Dance) and Mewang (Fire Ceremony).',
+    significance: 'Instituted in 7th century by King Songtsen Gampo to bless infertile women and purify negative energy.',
+    heroImage: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 4,
+    featured: true
+  },
+  {
+    id: 'fest-33',
+    slNo: 33,
+    slug: 'prakhar-duchhoed-2027',
+    name: 'Prakhar Duchhoed',
+    location: 'Chumni, Bumthang',
+    dzong: 'Prakar Lhakhang',
+    dates2027: '15th – 17th November 2027',
+    month: 'November',
+    description: 'Rural village festival honoring Pema Lingpa’s lineage in Chumi valley.',
+    significance: 'Intimate setting with traditional songs, archers, and authentic home-brewed Ara toastings.',
+    heroImage: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-34',
+    slNo: 34,
+    slug: 'goenpai-drupchen-2027',
+    name: 'Goenpai Drupchen',
+    location: 'Trongsa',
+    dzong: 'Trongsa Dzong',
+    dates2027: '3rd – 5th December 2027',
+    month: 'December',
+    description: 'Sacred winter tantric meditation and mask dance ritual held inside Trongsa Dzong.',
+    significance: 'Protects central Bhutan’s high mountain passes during the onset of winter.',
+    heroImage: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-35',
+    slNo: 35,
+    slug: 'mongar-tshechu-2027',
+    name: 'Mongar Tshechu',
+    location: 'Mongar',
+    dzong: 'Mongar Dzong',
+    dates2027: '6th – 8th December 2027',
+    month: 'December',
+    description: 'Eastern district festival attracting weavers and farmers from surrounding mountain villages.',
+    significance: 'Features the sacred Dance of the Stags and Hounds alongside regional folk songs.',
+    heroImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-36',
+    slNo: 36,
+    slug: 'trashigang-tshechu-2027',
+    name: 'Trashigang Tshechu',
+    location: 'Trashigang',
+    dzong: 'Trashigang Dzong',
+    dates2027: '7th – 9th December 2027',
+    month: 'December',
+    description: 'Largest festival in far eastern Bhutan perched on a cliffside fortress above Drangme Chhu river.',
+    significance: 'Attracts Khengpas, Brokpa nomads from Merak & Sakteng, and pilgrims from eastern districts.',
+    heroImage: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: true
+  },
+  {
+    id: 'fest-37',
+    slNo: 37,
+    slug: 'phuntsholing-tshechu-2027',
+    name: 'Phuntsholing Tshechu',
+    location: 'Phuntsholing, Chhukha',
+    dzong: 'Phuntsholing Sacred Ground',
+    dates2027: '6th – 8th December 2027',
+    month: 'December',
+    description: 'Southern border gateway festival blending Bhutanese spiritual traditions with diverse cultural audience.',
+    significance: 'Fosters unity and harmony across southern trade corridors.',
+    heroImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-38',
+    slNo: 38,
+    slug: 'jambay-lhakhang-singye-cham-2027',
+    name: 'Jambay Lhakhang Singye Cham',
+    location: 'Choekhor, Bumthang',
+    dzong: 'Jambay Lhakhang',
+    dates2027: '13th December 2027',
+    month: 'December',
+    description: 'Special Lion Dance (Singye Cham) performed at 7th-century Jambay Lhakhang.',
+    significance: 'Invokes spiritual courage and subdues negative forces across the valley.',
+    heroImage: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 1,
+    featured: false
+  },
+  {
+    id: 'fest-39',
+    slNo: 39,
+    slug: 'nalakhar-tshechu-2027',
+    name: 'Nalakhar Tshechu',
+    location: 'Choekhor, Bumthang',
+    dzong: 'Ngaa Lhakhang',
+    dates2027: '13th – 15th December 2027',
+    month: 'December',
+    description: 'Picturesque rural festival in Ngaa village invoking prosperity and health for winter.',
+    significance: 'Village elders host visitors with hot meals and traditional songs.',
+    heroImage: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-40',
+    slNo: 40,
+    slug: 'druk-wangyel-tshechu-2027',
+    name: 'Druk Wangyel Tshechu',
+    location: 'Thimphu',
+    dzong: 'Dochula Pass (3,100m)',
+    dates2027: '13th December 2027',
+    month: 'December',
+    description: 'Unique high-pass festival backdrop framed by 108 memorial chortens and snow-capped Himalayan peaks.',
+    significance: 'Performed by the Royal Bhutan Army honoring military bravery and national sovereignty.',
+    heroImage: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 1,
+    featured: true
+  },
+  {
+    id: 'fest-41',
+    slNo: 41,
+    slug: 'trongsa-tshechu-2028',
+    name: 'Trongsa Tshechu',
+    location: 'Trongsa',
+    dzong: 'Trongsa Dzong',
+    dates2027: '5th – 9th January 2028',
+    month: 'Jan 2028',
+    description: 'One of Bhutan’s oldest festivals held in the ancestral fortress of the Royal Wangchuck dynasty, concluding with Throngdrel unfurling.',
+    significance: 'Unfurls a giant silk Throngdrel thangka on the 5th day at dawn.',
+    heroImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 5,
+    featured: true
+  },
+  {
+    id: 'fest-42',
+    slNo: 42,
+    slug: 'lhuentse-tshechu-2028',
+    name: 'Lhuentse Tshechu',
+    location: 'Lhuentse',
+    dzong: 'Lhuentse Dzong',
+    dates2027: '5th – 9th January 2028',
+    month: 'Jan 2028',
+    description: 'Sacred winter festival in northeastern Bhutan renowned for world-class Kishuthara silk weavers dressed in ancestral attire.',
+    significance: 'Celebrates royal ancestry and intricate textile heritage with Throngdrel blessing on last day.',
+    heroImage: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 5,
+    featured: false
+  },
+  {
+    id: 'fest-43',
+    slNo: 43,
+    slug: 'samdrupjongkhar-tshechu-2028',
+    name: 'Samdrupjongkhar Tshechu',
+    location: 'Samdrupjongkhar',
+    dzong: 'Samdrupjongkhar Fortress Ground',
+    dates2027: '10th – 12th January 2028',
+    month: 'Jan 2028',
+    description: 'Southeastern border town celebration uniting diverse communities across eastern Bhutan.',
+    significance: 'Sacred Cham dances and vibrant regional market stalls.',
+    heroImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  },
+  {
+    id: 'fest-44',
+    slNo: 44,
+    slug: 'nabji-lhakhang-drup-2028',
+    name: 'Nabji Lhakhang Drup',
+    location: 'Nabji, Trongsa',
+    dzong: 'Nabji Lhakhang',
+    dates2027: '12th – 14th January 2028',
+    month: 'Jan 2028',
+    description: 'Remote village festival in Monpa country commemorating the peace treaty mediated by Guru Rinpoche.',
+    significance: 'Features the Fire Dance (Mewang) and Tercham (relic dance) in tranquil oak forests.',
+    heroImage: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80',
+    durationDays: 3,
+    featured: false
+  }
+];
+
+export const initialBrochures: Brochure[] = [
+  {
+    id: 'brochure-1',
+    title: 'BLHT Official Luxury Collection 2026',
+    subtitle: 'Ultra-luxury lodges, private helicopter itineraries, and heritage sanctuary experiences',
+    category: 'Luxury Tours',
+    fileSize: '14.8 MB',
+    totalPages: 16,
+    coverImage: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=800&q=80'
+    ],
+    pdfUrl: '#pdf-luxury-collection',
+    downloadCount: 1420,
+    year: '2026',
+    featured: true,
+    tableOfContents: [
+      { page: 1, title: 'Welcome to the Kingdom of Happiness' },
+      { page: 3, title: 'Why Travel with Bhutan Luxury & Heritage Tours' },
+      { page: 5, title: 'Six Senses & BLHT Sanctuary Lodge Circuit' },
+      { page: 8, title: 'Kingdom in the Clouds 7-Day Itinerary' },
+      { page: 12, title: 'Helicopter Charters & Private Blessings' },
+      { page: 15, title: 'Custom Travel Planning & SDF Guidelines' }
+    ]
+  },
+  {
+    id: 'brochure-2',
+    title: 'Sacred Tshechu Festivals Calendar & Cultural Guide',
+    subtitle: 'Comprehensive guide to mask dances, dates, and customs for 2026-2027',
+    category: 'Festivals & Culture',
+    fileSize: '9.2 MB',
+    totalPages: 12,
+    coverImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80'
+    ],
+    pdfUrl: '#pdf-festivals-guide',
+    downloadCount: 980,
+    year: '2026',
+    featured: true,
+    tableOfContents: [
+      { page: 1, title: 'Introduction to Bhutanese Sacred Mask Dances' },
+      { page: 4, title: 'Paro Tshechu Spring Itinerary' },
+      { page: 7, title: 'Thimphu Tshechu Autumn Celebration' },
+      { page: 10, title: 'Etiquette in Monasteries & Dzongs' }
+    ]
+  },
+  {
+    id: 'brochure-3',
+    title: 'Trans-Bhutan Trail & High Himalaya Trekking',
+    subtitle: 'Heli-trekking routes, luxury glamping, and alpine pass guides',
+    category: 'Adventure',
+    fileSize: '18.4 MB',
+    totalPages: 20,
+    coverImage: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=800&q=80',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80'
+    ],
+    pdfUrl: '#pdf-trekking-guide',
+    downloadCount: 650,
+    year: '2026',
+    featured: false,
+    tableOfContents: [
+      { page: 1, title: 'Mapping the Trans-Bhutan Trail' },
+      { page: 6, title: 'Jomolhari Mountain Circuit' },
+      { page: 14, title: 'Luxury Glamping & Gear Checklist' }
+    ]
+  },
+  {
+    id: 'brochure-4',
+    title: 'Wellness, Mindfulness & Meditation Sanctuaries',
+    subtitle: 'Spiritual retreats, hot stone therapy, and Buddhist philosophy',
+    category: 'Wellness',
+    fileSize: '7.8 MB',
+    totalPages: 10,
+    coverImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80'
+    ],
+    pdfUrl: '#pdf-wellness-guide',
+    downloadCount: 420,
+    year: '2026',
+    featured: false,
+    tableOfContents: [
+      { page: 1, title: 'Gross National Happiness & Mindful Travel' },
+      { page: 4, title: 'Traditional Menchu Hot Stone Baths' },
+      { page: 8, title: 'Guided Monastery Meditation Retreats' }
+    ]
+  }
+];
+
+export const initialGallery: GalleryItem[] = [
+  {
+    id: 'gal-1',
+    title: 'Paro Taktsang (Tiger’s Nest Monastery)',
+    location: 'Paro Valley',
+    category: 'monasteries',
+    imageUrl: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Perched dramatically 900 meters above the valley floor, where Guru Rinpoche arrived on the back of a tigress.'
+  },
+  {
+    id: 'gal-2',
+    title: 'Punakha Dzong at River Confluence',
+    location: 'Punakha Valley',
+    category: 'dzongs',
+    imageUrl: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+    caption: 'The Palace of Great Happiness framing Jacaranda trees in spring bloom.'
+  },
+  {
+    id: 'gal-3',
+    title: 'Masked Dancers at Tshechu Festival',
+    location: 'Tashichho Dzong, Thimphu',
+    category: 'festivals',
+    imageUrl: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Sacred Cham mask dancers re-enacting victory over disharmony.'
+  },
+  {
+    id: 'gal-4',
+    title: 'BLHT Paro Pine Sanctuary',
+    location: 'Paro',
+    category: 'luxury',
+    imageUrl: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Wood-burning bukhari fires and serene blue pine valley views.'
+  },
+  {
+    id: 'gal-5',
+    title: 'Gangtey Glacial Valley',
+    location: 'Phobjikha Valley',
+    category: 'nature',
+    imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Winter sanctuary for black-necked cranes framed by Gangtey Goemba.'
+  }
+];
+
+export const initialVideos: VideoItem[] = [
+  {
+    id: 'vid-1',
+    title: 'Bhutan: Kingdom of Happiness - Official BLHT Film',
+    duration: '04:15',
+    youtubeId: 'b_P-QyGvI28',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80',
+    description: 'A visual journey through ancient fortresses, high mountain passes, and world-renowned 5-star lodges.',
+    category: 'Overview'
+  },
+  {
+    id: 'vid-2',
+    title: 'Inside Six Senses & BLHT Luxury Circuits',
+    duration: '06:40',
+    youtubeId: 'Xp_J3fG-uNE',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80',
+    description: 'Explore the architectural wonders of Six Senses Thimphu, Punakha, and Paro Pine Sanctuary.',
+    category: 'Luxury Lodges'
+  },
+  {
+    id: 'vid-3',
+    title: 'The Sacred Cham Dances of Paro Tshechu',
+    duration: '03:50',
+    youtubeId: 'gq3Z3v-mEPo',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+    description: 'Experience the rhythm of horns, drums, and holy mask dances during Paro’s spring celebration.',
+    category: 'Festivals'
+  }
+];
+
+export const initialInquiries: ContactInquiry[] = [
+  {
+    id: 'inq-101',
+    createdAt: '2026-07-22T14:30:00Z',
+    fullName: 'Lady Eleanor Vance',
+    email: 'e.vance@vancemanor.co.uk',
+    phone: '+44 7700 900123',
+    country: 'United Kingdom',
+    travelDates: 'October 10 – 18, 2026',
+    durationDays: 8,
+    groupSize: 2,
+    interests: ['Luxury Lodges', 'Private Helicopter', 'Butter Lamp Blessings'],
+    estimatedBudgetPerPerson: '$10,000 - $15,000',
+    message: 'My husband and I wish to celebrate our 25th anniversary in Bhutan staying at 5-star luxury lodges and Six Senses. Please send a custom 8-day luxury proposal.',
+    packageTitle: 'Kingdom in the Clouds: Ultra-Luxury Journey',
+    status: 'new',
+    adminNotes: 'High priority inquiry. Requested private helicopter transfer to Punakha.'
+  },
+  {
+    id: 'inq-102',
+    createdAt: '2026-07-21T09:15:00Z',
+    fullName: 'Dr. Marcus Thorne',
+    email: 'm.thorne@stanford.edu',
+    phone: '+1 650 555 0192',
+    country: 'United States',
+    travelDates: 'March 27 – April 4, 2026',
+    durationDays: 9,
+    groupSize: 4,
+    interests: ['Tshechu Festivals', 'Photography', 'Monastery Access'],
+    estimatedBudgetPerPerson: '$7,000 - $10,000',
+    message: 'Looking to bring 4 colleagues to experience Paro Tshechu 2026 with VIP seating and Gho fitting.',
+    packageTitle: 'Sacred Tshechu Festivals & Spiritual Odyssey',
+    status: 'quoted',
+    adminNotes: 'Quote sent on July 22. Waiting for deposit confirmation.'
+  }
+];
+
+export const initialHomepageConfig: HomepageConfig = {
+  heroTitle: 'Experience the Last Shangri-La in Ultra-Luxury',
+  heroSubtitle: 'Bespoke Himalayan journeys, 5-star lodge circuits, private helicopter transfers, and sacred festival clearances curated by Bhutan Luxury & Heritage Tours.',
+  announcementText: '✨ Paro Tshechu 2026 VIP Booking Now Open — Limited VIP Pavilion Passes Available',
+  announcementLink: '/festivals',
+  heroVideoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-foggy-pine-trees-in-the-mountains-41584-large.mp4',
+  featuredPackagesCount: 3,
+  statsHeading: 'Why Bhutan Luxury & Heritage Tours',
+  stats: [
+    { label: 'Certified Senior Guides', value: '100%', iconName: 'Award' },
+    { label: 'GNH Sustainable Carbon Negative', value: '100%', iconName: 'Shield' },
+    { label: 'Luxury Lodge Partnerships', value: 'Six Senses / COMO / BLHT', iconName: 'Star' },
+    { label: 'Years of Bespoke Curation', value: '18+ Years', iconName: 'Calendar' }
+  ]
+};
