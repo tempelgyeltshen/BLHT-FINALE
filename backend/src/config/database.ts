@@ -3,8 +3,6 @@ import { env } from './env.js';
 import { logger } from './logger.js';
 
 export async function connectDatabase() {
-  console.log("Mongo URI:", env.mongodbUri);
-
   if (!env.mongodbUri) {
     logger.warn('MONGODB_URI not set - running without database persistence');
     return;
