@@ -31,6 +31,18 @@ jobs:
       - name: Type check
         run: npm run lint
       
+      # test:coverage runs the full suite AND enforces thresholds
+      - name: Run tests with coverage
+        run: npm run test:coverage
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: frontend/coverage/lcov.info
+          flags: frontend
+          fail_ci_if_error: true
+          verbose: true
+      
       - name: Build frontend
         run: npm run build
       
@@ -40,26 +52,12 @@ jobs:
           name: frontend-dist
           path: frontend/dist
 
-  # Backend Tests
+  # Backend Tests (integration tests mock mongoose, no DB service needed)
   backend-test:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./backend
-    
-    services:
-      mongodb:
-        image: mongo:7
-        env:
-          MONGO_INITDB_ROOT_USERNAME: admin
-          MONGO_INITDB_ROOT_PASSWORD: test_password
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     
     steps:
       - name: Checkout code
@@ -77,6 +75,25 @@ jobs:
       
       - name: Type check
         run: npm run lint
+      
+      # test:coverage runs the full suite AND enforces thresholds
+      - name: Run tests with coverage
+        run: npm run test:coverage
+      
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: backend/coverage
+          retention-days: 14
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: backend/coverage/lcov.info
+          flags: backend
+          fail_ci_if_error: true
+          verbose: true
       
       - name: Build backend
         run: npm run build

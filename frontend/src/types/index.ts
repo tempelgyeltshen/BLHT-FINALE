@@ -5,6 +5,9 @@ export type Region = 'Paro' | 'Thimphu' | 'Punakha' | 'Gangtey' | 'Bumthang';
 export type GalleryCategory = 'monasteries' | 'dzongs' | 'festivals' | 'luxury' | 'nature' | 'culture';
 export type InquiryStatus = 'new' | 'contacted' | 'quoted' | 'booked' | 'archived';
 
+// Re-export hotel types from the new feature location
+export type { Hotel, HotelBrand as HotelBrandType, HotelRegion } from '../app/features/hotels/types/hotel.types';
+
 export interface ItineraryDay {
   day: number;
   title: string;
@@ -38,55 +41,10 @@ export interface TourPackage {
   brochureId?: string;
 }
 
-export interface Hotel {
-  id: string;
-  slug: string;
-  name: string;
-  brand: HotelBrand;
-  location: string;
-  region: Region;
-  starRating: number;
-  pricePerNightUSD: number;
-  heroImage: string;
-  images: string[];
-  tagline: string;
-  description: string;
-  amenities: string[];
-  featured: boolean;
-}
-
-export interface Festival {
-  id: string;
-  slug: string;
-  name: string;
-  location: string;
-  dzong: string;
-  dates2026?: string;
-  dates2027: string;
-  month: string;
-  description: string;
-  significance: string;
-  heroImage: string;
-  durationDays: number;
-  featured: boolean;
-  slNo?: number;
-}
-
-export interface Brochure {
-  id: string;
-  title: string;
-  subtitle: string;
-  category: string;
-  fileSize: string;
-  totalPages: number;
-  coverImage: string;
-  pdfUrl: string;
-  downloadCount: number;
-  year: string;
-  featured: boolean;
-  galleryImages?: string[];
-  tableOfContents: { page: number; title: string }[];
-}
+// Re-export feature types from their canonical feature locations
+// (mirrors the Hotel re-export above).
+export type { Festival, FestivalFormData } from '../app/features/festivals/types';
+export type { Brochure, BrochureFormData, BrochureTableOfContentsEntry } from '../app/features/brochures/types';
 
 export interface GalleryItem {
   id: string;
@@ -95,6 +53,13 @@ export interface GalleryItem {
   category: GalleryCategory;
   imageUrl: string;
   caption: string;
+
+  // Cloudinary metadata for the uploaded image (kept for delete-sync).
+  public_id?: string;
+  resource_type?: 'image' | 'video' | 'raw';
+  format?: string;
+  bytes?: number;
+  upload_date?: string;
 }
 
 export interface VideoItem {
@@ -106,6 +71,15 @@ export interface VideoItem {
   thumbnailUrl: string;
   description: string;
   category: string;
+
+  // Cloudinary metadata for the uploaded video (kept for delete-sync).
+  public_id?: string;
+  resource_type?: 'image' | 'video' | 'raw';
+  format?: string;
+  bytes?: number;
+  upload_date?: string;
+  thumbnail_public_id?: string;
+  thumbnail_resource_type?: 'image' | 'video' | 'raw';
 }
 
 export interface ContactInquiry {
@@ -156,6 +130,8 @@ export type ViewRoute =
   | 'privacy'
   | 'terms'
   | 'privacy-terms'
+  | 'car-rental'
+  | 'thangka-painting'
   | 'admin-login'
   | 'admin-dashboard'
   | 'admin-packages'
