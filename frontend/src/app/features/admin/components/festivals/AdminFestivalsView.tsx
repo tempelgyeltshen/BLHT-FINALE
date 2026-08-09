@@ -137,7 +137,7 @@ export const AdminFestivalsView: React.FC = () => {
           <div className="space-y-1">
             <h2 className="font-serif font-extrabold text-lg text-amber-950 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-amber-700" />
-              <span>Bhutan Festival Registry ({festivals.length} Sacred Events)</span>
+              <span>Bhutan Festival Registry ({festivals.length} Sacred Events · 2026 & 2027)</span>
             </h2>
             <p className="text-xs text-stone-600 font-serif">Manage dates, places, and descriptions shown on the public Festivals page</p>
           </div>
@@ -185,6 +185,7 @@ export const AdminFestivalsView: React.FC = () => {
                   <th className="py-3 px-4">Image</th>
                   <th className="py-3 px-4">Festival Name</th>
                   <th className="py-3 px-4">Dzong & Location</th>
+                  <th className="py-3 px-4">2026 Dates</th>
                   <th className="py-3 px-4">2027 Dates</th>
                   <th className="py-3 px-4">Month</th>
                   <th className="py-3 px-4 text-center">Featured</th>
@@ -205,6 +206,11 @@ export const AdminFestivalsView: React.FC = () => {
                     <td className="py-3 px-4">
                       <div className="font-bold text-stone-900">{fest.dzong}</div>
                       <div className="text-[10px] text-amber-800 font-sans">{fest.location}</div>
+                    </td>
+                    <td className="py-3 px-4 font-bold text-stone-800">
+                      <span className="bg-stone-50 border border-stone-200 px-2 py-0.5 rounded text-[11px]">
+                        {fest.dates2026 || '—'}
+                      </span>
                     </td>
                     <td className="py-3 px-4 font-bold text-rose-900">
                       <span className="bg-rose-50 border border-rose-200 px-2 py-0.5 rounded text-[11px]">

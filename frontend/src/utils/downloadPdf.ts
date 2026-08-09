@@ -1,5 +1,32 @@
 import { Brochure } from '../types';
 
+/**
+ * Brochures uploaded to Cloudinary as raw files can have public delivery
+ * blocked by the account's Delivery Access Control (raw URLs return 401).
+ * When the brochure has a Cloudinary public_id, route viewing/downloading
+ * through the backend proxy (which streams via Cloudinary's authenticated
+ * download API) so it always works. Other sources (data:, blob:, http/https,
+ * or no PDF at all) keep the legacy behavior.
+ */
+export const isCloudinaryPdf = (brochure: Brochure): boolean =>
+  Boolean(brochure.pdf_public_id) &&
+  (!brochure.pdfUrl || brochure.pdfUrl.startsWith('https://res.cloudinary.com/'));
+
+// Same-origin relative path (dev Vite proxy + prod nginx proxy forward /api to
+// the backend). A relative URL keeps the framed PDF same-origin so the backend's
+// CSP `frame-ancestors 'self'` does not block the viewer iframe, and lets the
+// `download` attribute save the file directly.
+export const getBrochurePdfUrl = (brochure: Brochure, opts: { download?: boolean } = {}): string | null => {
+  if (isCloudinaryPdf(brochure) && brochure.id) {
+    return `/api/cms/brochures/${encodeURIComponent(brochure.id)}/pdf${opts.download ? '?download=1' : ''}`;
+  }
+  if (brochure.pdfUrl &&
+    (brochure.pdfUrl.startsWith('data:') || brochure.pdfUrl.startsWith('http://') || brochure.pdfUrl.startsWith('https://') || brochure.pdfUrl.startsWith('blob:'))) {
+    return brochure.pdfUrl;
+  }
+  return null;
+};
+
 const buildFallbackPdfContent = (brochure: Brochure) => {
   return `%PDF-1.7
 1 0 obj
@@ -60,11 +87,16 @@ export const downloadBrochurePdf = (brochure: Brochure, showToast?: (msg: string
   const cleanName = brochure.title.replace(/[^a-zA-Z0-9_\-]/g, '_');
   const fileName = `${cleanName}_BLHT_2026.pdf`;
 
-  if (brochure.pdfUrl && (brochure.pdfUrl.startsWith('data:') || brochure.pdfUrl.startsWith('http://') || brochure.pdfUrl.startsWith('https://') || brochure.pdfUrl.startsWith('blob:'))) {
+  const pdfUrl = getBrochurePdfUrl(brochure, { download: true });
+
+  if (pdfUrl) {
     const link = document.createElement('a');
-    link.href = brochure.pdfUrl;
+    link.href = pdfUrl;
     link.download = fileName;
-    if (!brochure.pdfUrl.startsWith('data:')) {
+    // Same-origin /api paths honor the `download` attribute (direct save).
+    // Remote http(s) URLs (e.g. a legacy Cloudinary link) can't be saved
+    // directly, so open them in a new tab instead.
+    if (!pdfUrl.startsWith('data:') && !pdfUrl.startsWith('/')) {
       link.target = '_blank';
     }
     document.body.appendChild(link);

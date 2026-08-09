@@ -75,6 +75,8 @@ const uploadResult = {
 } as const;
 
 const CHUNK_SIZE = 20 * 1024 * 1024;
+// NOTE: only used to SIZE the chunked test fixtures (120/105 MB) below — it is
+// intentionally NOT a mirror of the service's real 20 MB chunk threshold.
 const CHUNKED_THRESHOLD = 100 * 1024 * 1024;
 
 /** Creates a File whose reported size is `size` without allocating memory. */
@@ -261,6 +263,8 @@ describe('uploadFile (chunked upload)', () => {
       uploadIds.add(xhr.headers['X-Unique-Upload-Id']);
       expect(xhr.formData?.get('file')).toBeInstanceOf(Blob);
       expect(xhr.formData?.get('signature')).toBe('sig-1');
+      // Each chunk sizes its own timeout (~20 MB at 64 KB/s + 2 min buffer).
+      expect(xhr.timeout).toBe(440_000);
 
       // Intermediate chunks return done:false; the final chunk returns done:true.
       const isLast = i === chunkCount - 1;
@@ -385,6 +389,76 @@ describe('uploadFile (chunked upload)', () => {
         MockXHR.instances[attempt].ontimeout?.();
         await vi.advanceTimersByTimeAsync(attempt === 0 ? 1100 : 2100);
       }
+
+      await expect(promise).rejects.toThrow(/timed out/i);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+});
+
+describe('upload timeouts', () => {
+  it('gives large files a much longer overall timeout than small files', async () => {
+    const small = fileOfSize('small.pdf', 'application/pdf', 5 * 1024 * 1024); // 5 MB
+    const large = fileOfSize('large.pdf', 'application/pdf', 19 * 1024 * 1024); // 19 MB (still single-request)
+
+    const p1 = cloudinaryService.uploadFile(small);
+    await flush();
+    const smallTimeout = MockXHR.instances[0].timeout;
+    respond(MockXHR.instances[0], 200, uploadResult);
+    await p1;
+
+    const p2 = cloudinaryService.uploadFile(large);
+    await flush();
+    const largeTimeout = MockXHR.instances[1].timeout;
+    respond(MockXHR.instances[1], 200, uploadResult);
+    await p2;
+
+    // 5 MB at the worst-case 64 KB/s + 2 min buffer ≈ 200 s; 19 MB ≈ 7 min.
+    // (Anything above the 20 MB chunk threshold is chunked, where every chunk
+    // gets its own 440 s timeout — asserted in the chunked tests above.)
+    expect(smallTimeout).toBe(200_000);
+    expect(largeTimeout).toBeGreaterThan(smallTimeout);
+    expect(largeTimeout).toBeLessThanOrEqual(30 * 60 * 1000);
+  });
+
+  it('does not time out while upload progress keeps flowing (stall watchdog)', async () => {
+    vi.useFakeTimers();
+    try {
+      const file = fileOfSize('steady.pdf', 'application/pdf', 19 * 1024 * 1024);
+      const promise = cloudinaryService.uploadFile(file);
+      promise.catch(() => undefined);
+      await vi.advanceTimersByTimeAsync(0);
+
+      // Keep making progress well past the old 120 s budget.
+      for (let t = 0; t < 3; t++) {
+        await vi.advanceTimersByTimeAsync(60_000);
+        MockXHR.instances[0].upload.onprogress?.({
+          lengthComputable: true,
+          loaded: Math.round(((t + 1) * file.size) / 3),
+          total: file.size
+        });
+      }
+
+      // Still pending (no abort fired), then completes normally.
+      respond(MockXHR.instances[0], 200, uploadResult);
+      await vi.advanceTimersByTimeAsync(0);
+      await expect(promise).resolves.toEqual(expect.objectContaining(uploadResult));
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('aborts with a timeout when NO progress is made for the stall window', async () => {
+    vi.useFakeTimers();
+    try {
+      const file = fileOfSize('stalled.pdf', 'application/pdf', 19 * 1024 * 1024);
+      const promise = cloudinaryService.uploadFile(file);
+      promise.catch(() => undefined);
+      await vi.advanceTimersByTimeAsync(0);
+
+      // No progress events at all -> the stall watchdog rejects.
+      await vi.advanceTimersByTimeAsync(130_000);
 
       await expect(promise).rejects.toThrow(/timed out/i);
     } finally {

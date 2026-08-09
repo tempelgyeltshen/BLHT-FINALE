@@ -1,7 +1,7 @@
 import React from 'react';
 import { useApp } from '../../../core/providers/AppProvider';
 import { ArrowLeft, Download } from 'lucide-react';
-import { downloadBrochurePdf, createBrochurePreviewUrl } from '../../../../utils/downloadPdf';
+import { downloadBrochurePdf, createBrochurePreviewUrl, getBrochurePdfUrl } from '../../../../utils/downloadPdf';
 
 export const PdfViewerModal: React.FC = () => {
   const { activeBrochure, brochures, setActiveBrochure, navigate, currentRoute, brochureReturnRoute, logBrochureDownload, showToast } = useApp();
@@ -11,17 +11,16 @@ export const PdfViewerModal: React.FC = () => {
 
   const brochurePreviewUrl = React.useMemo(() => {
     if (!currentBrochure) return undefined;
-    if (currentBrochure.pdfUrl &&
-      (currentBrochure.pdfUrl.startsWith('data:') || currentBrochure.pdfUrl.startsWith('http://') || currentBrochure.pdfUrl.startsWith('https://') || currentBrochure.pdfUrl.startsWith('blob:'))
-    ) {
-      return currentBrochure.pdfUrl;
-    }
+    // Cloudinary uploads go through the backend proxy (authenticated download),
+    // which works even when the account's delivery ACL blocks public raw URLs.
+    // Other sources (data:/http/blob) are used directly; otherwise fall back to
+    // the generated placeholder PDF.
+    const resolved = getBrochurePdfUrl(currentBrochure);
+    if (resolved) return resolved;
     return createBrochurePreviewUrl(currentBrochure);
   }, [currentBrochure]);
 
-  const isPreviewBlob = Boolean(brochurePreviewUrl && brochurePreviewUrl.startsWith('blob:') && !(currentBrochure?.pdfUrl &&
-    (currentBrochure.pdfUrl.startsWith('data:') || currentBrochure.pdfUrl.startsWith('http://') || currentBrochure.pdfUrl.startsWith('https://') || currentBrochure.pdfUrl.startsWith('blob:'))
-  ));
+  const isPreviewBlob = Boolean(brochurePreviewUrl && brochurePreviewUrl.startsWith('blob:'));
 
   React.useEffect(() => {
     return () => {

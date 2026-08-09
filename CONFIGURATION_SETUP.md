@@ -5,6 +5,27 @@
 - **Username**: `admin`
 - **Password**: `admin@123`
 
+## 📧 Inquiry Emails
+
+New inquiry-form submissions are:
+1. **Stored** on the backend (`backend/data/inquiries.json`) and shown in **Admin → Customer Inquiries**.
+2. **Emailed** to the admin inbox (default: `tempelgyeltshen12345@gmail.com`) via Resend.
+
+Set these in `backend/.env` / `docker-compose.env`:
+
+```bash
+# Admin inbox that receives inquiry notifications
+ADMIN_EMAIL=tempelgyeltshen12345@gmail.com
+
+# Resend API key (https://resend.com — free tier) — actually delivers the emails
+RESEND_API_KEY=re_xxxxxxxx
+EMAIL_FROM=Inquiries <onboarding@resend.dev>
+```
+
+Fallbacks when `RESEND_API_KEY` is not set: `EMAIL_WEBHOOK_URL` (generic JSON webhook) → server console log (development).
+
+When an admin sends a proposal from **Admin → Customer Inquiries**, the client is emailed the proposal and the status is set to `quoted`.
+
 ## ☁️ Cloudinary Configuration
 
 - **Cloud Name**: `oh6ks8gw`

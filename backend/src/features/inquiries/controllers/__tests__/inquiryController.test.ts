@@ -68,22 +68,27 @@ describe('inquiryController', () => {
       expect(mockCreateInquiry).not.toHaveBeenCalled();
     });
 
-    it('should return 400 when durationDays is not an integer', async () => {
+    it('should accept inquiries without durationDays/groupSize (optional fields)', async () => {
       const res = mockRes();
+      const { durationDays, groupSize, ...withoutNumbers } = validInput;
 
-      await submitInquiry(mockReq({ ...validInput, durationDays: '7' }), res, mockNext());
+      await submitInquiry(mockReq(withoutNumbers), res, mockNext());
 
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(mockCreateInquiry).not.toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(201);
+      const [sanitized] = mockCreateInquiry.mock.calls[0];
+      expect(sanitized.durationDays).toBeUndefined();
+      expect(sanitized.groupSize).toBeUndefined();
     });
 
-    it('should return 400 when groupSize is not an integer', async () => {
+    it('should pass through valid numeric durationDays/groupSize', async () => {
       const res = mockRes();
 
-      await submitInquiry(mockReq({ ...validInput, groupSize: 2.5 }), res, mockNext());
+      await submitInquiry(mockReq(validInput), res, mockNext());
 
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(mockCreateInquiry).not.toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(201);
+      const [sanitized] = mockCreateInquiry.mock.calls[0];
+      expect(sanitized.durationDays).toBe(7);
+      expect(sanitized.groupSize).toBe(2);
     });
 
     it('should handle undefined body', async () => {

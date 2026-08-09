@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Cloud, X, Loader2, AlertCircle, RefreshCw } from 'lucide-react';
+import { Cloud, X, Loader2, AlertCircle, RefreshCw, Link as LinkIcon, Check } from 'lucide-react';
 import { useCloudinaryUpload } from '../../hooks/useCloudinaryUpload';
 import { useApp } from '../../../../core/providers/AppProvider';
 
@@ -21,8 +21,10 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   folder = 'blht/media'
 }) => {
   const [dragOver, setDragOver] = useState(false);
+  const [showUrlField, setShowUrlField] = useState(false);
+  const [urlInput, setUrlInput] = useState('');
   const { showToast } = useApp();
-  
+
   // Cloudinary upload hook
   const { uploadFile, uploadProgress, isUploading, uploadError, resetUpload } = useCloudinaryUpload();
 
@@ -38,7 +40,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     }
 
     // Determine resource type
-    const resourceType = file.type.startsWith('video/') ? 'video' : 
+    const resourceType = file.type.startsWith('video/') ? 'video' :
                         file.type === 'application/pdf' ? 'raw' : 'image';
 
     try {
@@ -53,6 +55,17 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
       console.error('Cloudinary upload failed:', error);
       throw error;
     }
+  };
+
+  // Paste a direct URL (works even when Cloudinary is not configured)
+  const handleAddUrl = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const url = urlInput.trim();
+    if (!url) return;
+    onChange(url);
+    setUrlInput('');
+    setShowUrlField(false);
+    showToast('Image URL added.');
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -89,7 +102,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           </label>
           {value && (
             <span className="text-[10px] text-amber-900 bg-amber-100 font-semibold px-2 py-0.5 rounded-full">
-              Cloudinary Hosted
+              Image Set
             </span>
           )}
         </div>
@@ -122,9 +135,37 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
             </button>
           </div>
           <div className="absolute bottom-2 left-2 bg-black/70 text-amber-200 text-[10px] font-mono px-2 py-0.5 rounded backdrop-blur-xs truncate max-w-[80%]">
-            Cloudinary Hosted
+            {value.startsWith('data:') ? 'Local Preview' : 'Hosted Image'}
           </div>
         </div>
+      )}
+
+      {/* URL Paste Toggle */}
+      {!showUrlField ? (
+        <button
+          type="button"
+          onClick={() => setShowUrlField(true)}
+          className="w-full px-3 py-2 bg-stone-100 hover:bg-amber-50 border border-stone-200 hover:border-amber-400 text-stone-600 hover:text-amber-900 text-[11px] font-bold rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+        >
+          <LinkIcon className="w-3.5 h-3.5" />
+          <span>Or paste an image URL directly</span>
+        </button>
+      ) : (
+        <form onSubmit={handleAddUrl} className="flex gap-2 bg-white p-2 border border-amber-300 rounded-xl">
+          <input
+            type="url"
+            value={urlInput}
+            onChange={e => setUrlInput(e.target.value)}
+            placeholder="Paste image URL (https://...)"
+            className="flex-1 p-2 border border-stone-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-amber-500"
+          />
+          <button
+            type="submit"
+            className="px-4 py-2 bg-[#d96b27] hover:bg-[#b85116] text-white text-xs font-bold rounded-lg flex items-center gap-1 cursor-pointer"
+          >
+            <Check className="w-4 h-4" /> Use URL
+          </button>
+        </form>
       )}
 
       {/* Cloudinary Upload Zone */}
@@ -160,8 +201,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                   <span>{uploadProgress ? `${Math.round(uploadProgress.percentage)}%` : '...'}</span>
                 </div>
                 <div className="w-full bg-amber-200 rounded-full h-2">
-                  <div 
-                    className="bg-amber-600 h-2 rounded-full transition-all duration-300" 
+                  <div
+                    className="bg-amber-600 h-2 rounded-full transition-all duration-300"
                     style={{ width: `${uploadProgress?.percentage || 0}%` }}
                   />
                 </div>

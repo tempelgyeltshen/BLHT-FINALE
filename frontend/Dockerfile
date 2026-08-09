@@ -12,6 +12,13 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+# Vite env vars are baked in at build time. Default to same-origin ("") so
+# nginx can proxy /api to the backend container; override with a build arg
+# (e.g. --build-arg VITE_API_URL=https://api.example.com) when the API is
+# served from a different host.
+ARG VITE_API_URL=""
+ENV VITE_API_URL=$VITE_API_URL
+
 # Build application
 RUN npm run build
 
@@ -23,9 +30,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy built files from builder
 COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Copy .env file if exists
-COPY .env /usr/share/nginx/html/.env
 
 # Expose port
 EXPOSE 80

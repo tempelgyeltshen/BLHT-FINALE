@@ -10,8 +10,9 @@ export const hotelSchema = z.object({
   }),
   starRating: z.number().min(1).max(5),
   pricePerNightUSD: z.number().positive('Price must be positive'),
-  heroImage: z.string().url('Hero image must be a valid URL'),
-  images: z.array(z.string().url('Image must be a valid URL')).optional(),
+  // Accept any string so data-URLs from local uploads and Cloudinary URLs both work.
+  heroImage: z.string(),
+  images: z.array(z.string()).optional(),
   tagline: z.string().min(1, 'Tagline is required'),
   description: z.string().min(1, 'Description is required'),
   amenities: z.array(z.string()).min(1, 'At least one amenity is required'),

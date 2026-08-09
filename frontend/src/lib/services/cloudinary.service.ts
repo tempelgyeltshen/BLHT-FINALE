@@ -50,17 +50,43 @@ export interface CloudinaryEagerDerivative {
 }
 
 // Chunked upload parameters (per Cloudinary docs):
-// - Files larger than 100 MB must be uploaded in chunks.
-// - Each chunk must be larger than 5 MB (SDK default is 20 MB).
+// - Files larger than 20 MB are uploaded in chunks; this also gives
+//   mid-sized files per-chunk retries on flaky connections (Cloudinary
+//   requires chunking above 100 MB regardless).
+// - Each chunk must be larger than 5 MB (SDK default is 20 MB); the final
+//   chunk may be smaller.
 // - Every chunk carries the same X-Unique-Upload-Id plus a Content-Range
 //   header; intermediate responses include done:false and the final chunk's
 //   response includes done:true with the full asset metadata.
 const CHUNK_SIZE = 20 * 1024 * 1024; // 20 MB (> 5 MB minimum)
-const CHUNKED_THRESHOLD = 100 * 1024 * 1024; // 100 MB
+const CHUNKED_THRESHOLD = 20 * 1024 * 1024; // 20 MB
 const MAX_RETRIES = 3;
-// Per-chunk request timeout so a stalled connection triggers retries
-// instead of hanging forever.
-const CHUNK_TIMEOUT_MS = 120 * 1000;
+
+// Upload timeout policy.
+//
+// The old fixed 120 s wall-clock deadline aborted large uploads (e.g. a 44 MB
+// PDF on a modest connection) even while bytes were still flowing, forcing a
+// full restart. Two changes fix this for EVERY upload path (images, videos,
+// PDFs, and chunked uploads):
+//
+// 1. The overall per-request cap is sized to the payload using a worst-case
+//    but still-alive throughput of 64 KB/s, plus a 2-minute buffer, clamped
+//    between 2 and 30 minutes. (Single requests cap at the 20 MB chunk
+//    threshold, ~7 min at 64 KB/s; the stall watchdog below is the real
+//    guard against dead connections.)
+// 2. A stall watchdog aborts only when NO progress is made for 2 straight
+//    minutes, so slow-but-progressing transfers are never cut off.
+const STALL_TIMEOUT_MS = 2 * 60 * 1000;
+const MIN_TOTAL_TIMEOUT_MS = 2 * 60 * 1000;
+const MAX_TOTAL_TIMEOUT_MS = 30 * 60 * 1000;
+const MIN_TRANSFER_BYTES_PER_SEC = 64 * 1024;
+
+/** Overall per-request timeout scaled to the payload being sent. */
+function computeRequestTimeout(payloadBytes: number): number {
+  const worstCaseMs = (payloadBytes / MIN_TRANSFER_BYTES_PER_SEC) * 1000;
+  const withBuffer = worstCaseMs + 2 * 60 * 1000;
+  return Math.min(MAX_TOTAL_TIMEOUT_MS, Math.max(MIN_TOTAL_TIMEOUT_MS, withBuffer));
+}
 
 /** Error carrying the HTTP status so retry logic can react to 401/403. */
 interface CloudinaryRequestError extends Error {
@@ -94,7 +120,8 @@ class CloudinaryUploadService {
     const fileType = this.getResourceType(file);
     const url = `https://api.cloudinary.com/v1_1/${signature.cloud_name}/${fileType}/upload`;
 
-    // Files over 100 MB must be chunked (Cloudinary upload API requirement).
+    // Files over 20 MB are chunked so mid-sized uploads get per-chunk
+    // retries (and Cloudinary requires chunking above 100 MB regardless).
     if (file.size > CHUNKED_THRESHOLD) {
       return this.uploadChunked(file, url, signature, publicId, eager, onProgress);
     }
@@ -102,7 +129,7 @@ class CloudinaryUploadService {
     return this.uploadSingle(file, url, signature, publicId, eager, onProgress);
   }
 
-  /** Single-request upload for files at or below the 100 MB threshold. */
+  /** Single-request upload for files at or below the 20 MB threshold. */
   private uploadSingle(
     file: File,
     url: string,
@@ -115,7 +142,7 @@ class CloudinaryUploadService {
     formData.append("file", file);
     this.appendSignatureFields(formData, signature, publicId, eager);
 
-    return this.postToCloudinary<CloudinaryUploadResult>(url, formData, undefined, onProgress);
+    return this.postToCloudinary<CloudinaryUploadResult>(url, formData, undefined, onProgress, file.size);
   }
 
   /** Chunked upload for large files using the upload_large REST protocol. */
@@ -150,6 +177,7 @@ class CloudinaryUploadService {
         eager,
         uploadId,
         contentRange,
+        end - start + 1,
         (chunkProgress) => {
           if (!onProgress) return;
           // Report cumulative progress across all chunks, clamped to 0-100.
@@ -184,6 +212,7 @@ class CloudinaryUploadService {
     eager: string | undefined,
     uploadId: string,
     contentRange: string,
+    payloadBytes: number,
     onChunkProgress?: (progress: UploadProgress) => void
   ): Promise<ChunkedResponse> {
     let lastError: Error | null = null;
@@ -202,7 +231,8 @@ class CloudinaryUploadService {
             "X-Unique-Upload-Id": uploadId,
             "Content-Range": contentRange
           },
-          onChunkProgress
+          onChunkProgress,
+          payloadBytes
         );
       } catch (error) {
         lastError = error instanceof Error ? error : new Error("Upload failed");
@@ -233,13 +263,53 @@ class CloudinaryUploadService {
     url: string,
     formData: FormData,
     headers: Record<string, string> | undefined,
-    onProgress?: (progress: UploadProgress) => void
+    onProgress?: (progress: UploadProgress) => void,
+    payloadBytes = 0
   ): Promise<T> {
     return new Promise<T>((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.timeout = CHUNK_TIMEOUT_MS;
+
+      // Scale the overall request cap to the payload: large files (e.g. 44 MB
+      // PDFs, videos) need minutes, not 120 seconds. The stall watchdog below
+      // is what actually protects against dead connections.
+      xhr.timeout = computeRequestTimeout(payloadBytes);
+
+      let settled = false;
+      // Stall watchdog: aborts only when NO bytes move for STALL_TIMEOUT_MS,
+      // so slow-but-progressing uploads are never cut off mid-transfer. It
+      // stops once the upload phase ends (xhr.upload.onload) because the
+      // server-side processing that follows is capped by xhr.timeout instead.
+      let lastActivity = Date.now();
+      let stallTimer: ReturnType<typeof setTimeout> | undefined;
+
+      const stopStallWatch = () => {
+        if (stallTimer !== undefined) {
+          clearTimeout(stallTimer);
+          stallTimer = undefined;
+        }
+      };
+
+      const armStallWatch = () => {
+        stopStallWatch();
+        stallTimer = setTimeout(() => {
+          stallTimer = undefined;
+          if (settled) return;
+          if (Date.now() - lastActivity >= STALL_TIMEOUT_MS) {
+            const err = new Error("Upload timed out.") as CloudinaryRequestError;
+            err.status = 408;
+            settled = true;
+            reject(err);
+            if (typeof xhr.abort === "function") {
+              xhr.abort();
+            }
+          } else {
+            armStallWatch();
+          }
+        }, STALL_TIMEOUT_MS);
+      };
 
       xhr.upload.onprogress = (event) => {
+        lastActivity = Date.now();
         if (event.lengthComputable && onProgress) {
           onProgress({
             loaded: event.loaded,
@@ -249,7 +319,16 @@ class CloudinaryUploadService {
         }
       };
 
+      // All bytes sent; server-side processing (eager transformations, etc.)
+      // begins now and no longer counts as an upload "stall".
+      xhr.upload.onload = () => {
+        stopStallWatch();
+      };
+
       xhr.onload = () => {
+        stopStallWatch();
+        if (settled) return;
+        settled = true;
         if (xhr.status === 200) {
           try {
             resolve(JSON.parse(xhr.responseText) as T);
@@ -264,13 +343,26 @@ class CloudinaryUploadService {
       };
 
       xhr.ontimeout = () => {
+        stopStallWatch();
+        if (settled) return;
+        settled = true;
         const err = new Error("Upload timed out.") as CloudinaryRequestError;
         err.status = 408;
         reject(err);
       };
 
       xhr.onerror = () => {
+        stopStallWatch();
+        if (settled) return;
+        settled = true;
         reject(new Error("Upload failed due to a network error."));
+      };
+
+      xhr.onabort = () => {
+        stopStallWatch();
+        if (settled) return;
+        settled = true;
+        reject(new Error("Upload aborted."));
       };
 
       xhr.open("POST", url);
@@ -279,6 +371,7 @@ class CloudinaryUploadService {
           xhr.setRequestHeader(name, value);
         }
       }
+      armStallWatch();
       xhr.send(formData);
     });
   }

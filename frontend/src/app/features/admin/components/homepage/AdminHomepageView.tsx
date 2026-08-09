@@ -24,17 +24,6 @@ export const AdminHomepageView: React.FC = () => {
         <form onSubmit={handleSave} className="bg-white rounded-2xl border border-amber-200 p-6 shadow-sm space-y-6 text-xs">
           
           <div className="space-y-3">
-            <h3 className="font-serif font-bold text-base text-amber-950 border-b pb-2">Top Announcement Bar</h3>
-            <Input
-              label="Announcement Text"
-              variant="amber"
-              className="text-stone-800"
-              value={cfg.announcementText}
-              onChange={e => setCfg({ ...cfg, announcementText: e.target.value })}
-            />
-          </div>
-
-          <div className="space-y-3 pt-2 border-t border-stone-200">
             <h3 className="font-serif font-bold text-base text-amber-950 border-b pb-2">Hero Section Content</h3>
             <Input
               label="Hero Title"

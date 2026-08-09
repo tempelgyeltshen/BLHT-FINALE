@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { createResource, deleteResource, getResource, listResource, updateResource } from '../controllers/cmsController.js';
+import { createResource, deleteResource, getResource, listResource, streamBrochurePdf, updateResource } from '../controllers/cmsController.js';
 import { requireAdmin } from '../../../core/middleware/auth.js';
 import { validate } from '../../../core/middleware/validate.js';
 import { csrfProtection } from '../../../core/middleware/csrf.js';
@@ -37,6 +37,15 @@ cmsRouter.param('resource', (req, res, next, resource) => {
 
 // Public read endpoints
 cmsRouter.get('/:resource', listResource);
+
+// Public PDF proxy. Registered before the generic /:resource/:id route for
+// clarity (the 3-segment path can't match the 2-segment generic route, but
+// keeping it here makes the intent explicit). Streams brochure PDFs via
+// Cloudinary's authenticated download API, which bypasses the account's
+// Delivery Access Control (raw delivery ACL) that otherwise returns 401 on
+// public res.cloudinary.com raw URLs.
+cmsRouter.get('/brochures/:id/pdf', streamBrochurePdf);
+
 cmsRouter.get('/:resource/:id', getResource);
 
 // Protected write endpoints

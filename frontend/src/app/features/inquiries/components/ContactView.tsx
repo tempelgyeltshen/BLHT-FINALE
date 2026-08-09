@@ -14,6 +14,9 @@ export const ContactView: React.FC = () => {
     email: '',
     phone: '',
     country: '',
+    travelDates: '',
+    durationDays: 0,
+    groupSize: 0,
     interests: ['Luxury Tour'],
     message: ''
   });
@@ -47,8 +50,13 @@ ${formData.message}
     const mailtoLink = `mailto:tempelgyeltshen12345@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
     window.open(mailtoLink, '_blank');
 
-    // Also submit to the system
-    submitInquiry(formData);
+    // Also submit to the system (omit empty optional numeric fields so the
+    // backend validation passes)
+    submitInquiry({
+      ...formData,
+      durationDays: formData.durationDays > 0 ? formData.durationDays : undefined,
+      groupSize: formData.groupSize > 0 ? formData.groupSize : undefined,
+    });
     setSubmitted(true);
     showToast('Inquiry submitted - Email client opened');
   };
@@ -223,6 +231,26 @@ ${formData.message}
                     required
                   />
                 </div>
+
+                <Input
+                  label="Preferred Travel Dates"
+                  labelClassName="block text-xs font-semibold text-stone-700 mb-1"
+                  variant="public"
+                  placeholder="e.g. October 2026"
+                  value={formData.travelDates}
+                  onChange={e => setFormData({ ...formData, travelDates: e.target.value })}
+                />
+
+                <Input
+                  label="Group Size (Guests)"
+                  labelClassName="block text-xs font-semibold text-stone-700 mb-1"
+                  variant="public"
+                  type="number"
+                  min={1}
+                  placeholder="e.g. 2"
+                  value={formData.groupSize || ''}
+                  onChange={e => setFormData({ ...formData, groupSize: Number(e.target.value) })}
+                />
               </div>
 
               <TextArea

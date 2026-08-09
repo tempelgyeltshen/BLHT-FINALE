@@ -13,4 +13,13 @@ export const inquirySchema = z.object({
   message: z.string().min(1, 'Message is required'),
 });
 
+export const inquiryStatusSchema = z.enum(['new', 'contacted', 'quoted', 'booked', 'archived']);
+
+/** Admin-only updates to an existing inquiry (status + internal notes). */
+export const inquiryUpdateSchema = z.object({
+  status: inquiryStatusSchema.optional(),
+  adminNotes: z.string().optional(),
+});
+
 export type InquiryInputSchema = z.infer<typeof inquirySchema>;
+export type InquiryUpdateSchema = z.infer<typeof inquiryUpdateSchema>;

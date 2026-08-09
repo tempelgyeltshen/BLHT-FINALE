@@ -97,7 +97,10 @@ export const AdminBrochuresView: React.FC = () => {
         showToast(`PDF uploaded to Cloudinary successfully! Verify the URL before publishing: ${result.secure_url}`);
       } catch (error) {
         console.error('PDF upload failed:', error);
-        showToast('PDF upload failed. Please try again.');
+        // Surface the real reason (auth, signature, timeout, network, etc.) so
+        // the admin can act on it instead of a generic "try again" message.
+        const detail = error instanceof Error && error.message ? error.message : 'Please try again.';
+        showToast(`PDF upload failed: ${detail}`);
       }
     }
   };

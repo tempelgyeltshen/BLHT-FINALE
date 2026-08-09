@@ -10,6 +10,8 @@ interface AutoImageSliderProps {
   showDots?: boolean;
   showArrows?: boolean;
   showCounter?: boolean;
+  /** External pause control (e.g. parent hover) — OR'd with the internal hover state. */
+  paused?: boolean;
   children?: React.ReactNode; // Overlay content like titles, badges, etc.
 }
 
@@ -22,6 +24,7 @@ export const AutoImageSlider: React.FC<AutoImageSliderProps> = ({
   showDots = true,
   showArrows = true,
   showCounter = true,
+  paused = false,
   children
 }) => {
   // Deduplicate and filter valid images
@@ -34,16 +37,24 @@ export const AutoImageSlider: React.FC<AutoImageSliderProps> = ({
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
-  // Auto-slide effect with 1.5s interval
+  const effectivePaused = isPaused || paused;
+
+  // Auto-slide effect — pauses when hovered (internal) or externally controlled
   useEffect(() => {
-    if (validImages.length <= 1 || isPaused) return;
+    if (validImages.length <= 1 || effectivePaused) return;
 
     const timer = setInterval(() => {
       setCurrentIndex(prev => (prev + 1) % validImages.length);
     }, intervalMs);
 
     return () => clearInterval(timer);
-  }, [validImages.length, intervalMs, isPaused]);
+  }, [validImages.length, intervalMs, effectivePaused]);
+
+  // Clamp the index if the image list changes size (e.g. gallery loads async)
+  useEffect(() => {
+    if (validImages.length === 0) return;
+    setCurrentIndex(prev => Math.min(prev, validImages.length - 1));
+  }, [validImages.length]);
 
   const goToPrev = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();

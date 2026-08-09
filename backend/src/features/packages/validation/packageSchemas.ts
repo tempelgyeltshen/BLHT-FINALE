@@ -13,7 +13,8 @@ export const packageSchema = z.object({
   rating: z.number().optional(),
   reviewsCount: z.number().optional(),
   featured: z.boolean().optional(),
-  heroImage: z.string().url('Hero image must be a valid URL').optional(),
+  // Accept any string so data-URLs from local uploads and Cloudinary URLs both work.
+  heroImage: z.string().optional(),
   galleryImages: z.array(z.string()).optional(),
   description: z.string().min(1, 'Description is required'),
   highlights: z.array(z.string()).optional(),

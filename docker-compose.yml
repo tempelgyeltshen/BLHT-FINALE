@@ -34,8 +34,10 @@ services:
     container_name: blht-frontend
     ports:
       - "80:80"
-    environment:
-      - VITE_API_URL=http://localhost:4000
+    # API calls are same-origin (/api) and nginx proxies them to the backend
+    # container, so no VITE_API_URL is needed at runtime. (Vite env vars are
+    # baked at build time; a runtime value is ignored by the static build and
+    # http://localhost:4000 would point at the visitor's own machine.)
     depends_on:
       - backend
     restart: unless-stopped

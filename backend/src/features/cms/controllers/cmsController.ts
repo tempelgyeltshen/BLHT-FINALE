@@ -92,6 +92,84 @@ export const getResource = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
+/**
+ * Stream a brochure PDF to the client through Cloudinary's authenticated
+ * download endpoint. Cloudinary's public raw delivery can be blocked by the
+ * account's Delivery Access Control (ACL) rules (401 "deny or ACL failure"),
+ * which makes public res.cloudinary.com raw URLs unusable for viewing or
+ * downloading. The Admin API download endpoint is signed with the API secret
+ * and is never subject to the delivery ACL, so proxying through it restores
+ * reliable PDF viewing/downloading.
+ *
+ * GET /api/cms/brochures/:id/pdf?download=1  (download=1 → attachment)
+ */
+export const streamBrochurePdf = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const repository = getRepository('brochures');
+    const brochure = await repository.get(req.params.id);
+    if (!brochure || !brochure.pdf_public_id) {
+      return res.status(404).json({ error: { message: 'Brochure PDF not found.' } });
+    }
+
+    const wantDownload = req.query.download === '1' || req.query.download === 'true';
+    const publicId = brochure.pdf_public_id as string;
+    const resourceType = (brochure.pdf_resource_type as string) || 'raw';
+
+    if (!env.cloudinaryCloudName || !env.cloudinaryApiKey || !env.cloudinaryApiSecret) {
+      return res.status(503).json({ error: { message: 'Cloudinary is not configured.' } });
+    }
+
+    // Signed, time-limited (1 hour) authenticated download URL. Credentials
+    // are taken from the cloudinary instance configured above (env-based).
+    const expiresAt = Math.floor(Date.now() / 1000) + 3600;
+    const downloadUrl = cloudinary.utils.private_download_url(publicId, 'pdf', {
+      resource_type: resourceType,
+      type: 'upload',
+      expires_at: expiresAt,
+      attachment: false,
+    });
+
+    // Guard against a hung upstream request holding the connection open.
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000);
+    // Use the global fetch Response type (the express `Response` import above
+    // would otherwise shadow it and break the .ok/.body accessors below).
+    let upstream: Awaited<ReturnType<typeof fetch>>;
+    try {
+      upstream = await fetch(downloadUrl, { redirect: 'follow', signal: controller.signal });
+    } finally {
+      clearTimeout(timeout);
+    }
+    if (!upstream.ok || !upstream.body) {
+      return res.status(502).json({ error: { message: 'Failed to retrieve the PDF from storage.' } });
+    }
+
+    const safeTitle = String(brochure.title || 'brochure').replace(/[^a-zA-Z0-9_\- ]/g, '').trim() || 'brochure';
+    const filename = `${safeTitle}_BLHT.pdf`;
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', wantDownload
+      ? `attachment; filename="${filename}"`
+      : `inline; filename="${filename}"`);
+    // Revalidate so an admin re-upload for the same brochure id never serves
+    // a stale cached PDF to visitors.
+    res.setHeader('Cache-Control', 'public, no-cache');
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition, Content-Length');
+
+    // Pipe the upstream PDF body straight through to the client.
+    const { Readable } = await import('stream');
+    const nodeStream = Readable.fromWeb(upstream.body as any);
+    nodeStream.on('error', () => {
+      if (!res.headersSent) {
+        res.status(502).end();
+      }
+    });
+    nodeStream.pipe(res);
+  } catch (e) {
+    next(e);
+  }
+};
+
 const isDuplicateKeyError = (error: unknown): boolean =>
   error instanceof Error && 'code' in error && (error as { code?: number }).code === 11000;
 

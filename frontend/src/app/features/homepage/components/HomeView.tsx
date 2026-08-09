@@ -1,16 +1,19 @@
-import React, { useRef } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useApp } from '../../../core/providers/AppProvider';
+import { AutoImageSlider } from '../../shared/components/media/AutoImageSlider';
 import { Hotel } from '../../../../types';
 import { luxuryHoverProps } from '../../../../utils/motion';
+import { FALLBACK_HERO_IMAGES } from '../../shared/constants/media';
 
 export const HomeView: React.FC = () => {
   const { 
-    navigate, hotels, brochures, 
+    navigate, hotels, brochures, homepageConfig, gallery,
     setActiveHotel, setActiveBrochure
   } = useApp();
   const navigateRouter = useNavigate();
+  const [heroHovered, setHeroHovered] = useState(false);
 
   // Scroll Parallax for Hero Section
   const heroRef = useRef<HTMLDivElement>(null);
@@ -21,7 +24,13 @@ export const HomeView: React.FC = () => {
 
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 90]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
-  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+
+  // Hero slider images come from the admin-managed photo gallery; fall back to
+  // curated scenery when the gallery is unavailable.
+  const heroSlideImages = useMemo(() => {
+    const fromGallery = gallery.map(g => g.imageUrl).filter(Boolean);
+    return fromGallery.length >= 3 ? fromGallery : FALLBACK_HERO_IMAGES;
+  }, [gallery]);
 
   const handleSelectHotel = (hotel: Hotel) => {
     setActiveHotel(hotel);
@@ -35,23 +44,34 @@ export const HomeView: React.FC = () => {
   return (
     <div className="bg-[#fcf8f2] text-[#2b1d14] space-y-20 pb-24 overflow-hidden">
       
-      {/* Hero Header Block with Parallax Scroll & Staggered Luxury Fade-In */}
-      <div ref={heroRef} className="relative pt-8 sm:pt-16 pb-6 overflow-hidden">
-        
-        {/* Subtle Ambient Parallax Background Watermark */}
-        <motion.div 
-          style={{ y: heroY, scale: bgScale, opacity: heroOpacity }}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-20 z-0"
-        >
-          <div className="w-[500px] h-[500px] rounded-full bg-radial from-[#d96b27]/20 via-[#f5eee4]/10 to-transparent blur-3xl" />
-          <span className="font-serif font-black text-[100px] sm:text-[200px] text-[#3b2314]/5 tracking-widest uppercase absolute">
-            BHUTAN
-          </span>
-        </motion.div>
+      {/* Hero Header Block with Auto-Sliding Image Background */}
+      <div
+        ref={heroRef}
+        className="relative min-h-[72vh] sm:min-h-[86vh] flex items-center overflow-hidden bg-[#1f130b]"
+        onMouseEnter={() => setHeroHovered(true)}
+        onMouseLeave={() => setHeroHovered(false)}
+      >
+        {/* Auto-sliding hero background — slides on its own, pauses on hover */}
+        <div className="absolute inset-0">
+          <AutoImageSlider
+            images={heroSlideImages}
+            intervalMs={5000}
+            paused={heroHovered}
+            showDots
+            showArrows={false}
+            showCounter={false}
+            className="w-full h-full"
+            imageClassName="object-cover"
+          >
+            {/* Readability overlays blending into the page background */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#140c06]/85 via-[#1f130b]/40 to-[#fcf8f2]/95 pointer-events-none z-10" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#140c06]/70 via-[#1f130b]/20 to-transparent pointer-events-none z-10" />
+          </AutoImageSlider>
+        </div>
 
         <motion.section 
           style={{ y: heroY, opacity: heroOpacity }}
-          className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center space-y-6 sm:space-y-8"
+          className="relative z-20 w-full max-w-5xl mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center space-y-6 sm:space-y-8"
         >
           <motion.span 
             initial={{ opacity: 0, y: 15 }}
@@ -66,18 +86,18 @@ export const HomeView: React.FC = () => {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="font-serif text-2xl sm:text-4xl md:text-5xl font-medium tracking-[0.08em] sm:tracking-[0.1em] uppercase text-[#3b2314] leading-tight"
+            className="font-serif text-2xl sm:text-4xl md:text-5xl font-medium tracking-[0.08em] sm:tracking-[0.1em] uppercase text-[#f7f1e7] drop-shadow-md leading-tight"
           >
-            Bhutan Land Of Happiness Tourism
+            {homepageConfig.heroTitle || 'Bhutan Land Of Happiness Tourism'}
           </motion.h1>
 
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="font-serif text-sm sm:text-lg text-[#5c3820] max-w-3xl mx-auto leading-relaxed font-normal"
+            className="font-serif text-sm sm:text-lg text-amber-100/90 max-w-3xl mx-auto leading-relaxed font-normal drop-shadow-sm"
           >
-            Immerse yourself in the world’s first carbon-negative Kingdom. Guided by the Gross National Happiness philosophy, we orchestrate bespoke journeys across Bhutan’s sacred valleys, 5-star sanctuaries, and authentic cultural celebrations.
+            {homepageConfig.heroSubtitle || 'Immerse yourself in the world’s first carbon-negative Kingdom. Guided by the Gross National Happiness philosophy, we orchestrate bespoke journeys across Bhutan’s sacred valleys, 5-star sanctuaries, and authentic cultural celebrations.'}
           </motion.p>
 
           {/* Section Divider */}
@@ -99,7 +119,7 @@ export const HomeView: React.FC = () => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="font-serif text-xs sm:text-base text-[#5c3820] max-w-3xl mx-auto leading-relaxed"
+            className="font-serif text-xs sm:text-base text-amber-100/80 max-w-3xl mx-auto leading-relaxed drop-shadow-sm"
           >
             Discover our curated itineraries across Paro, Thimphu, Punakha, Gangtey, and Bumthang. Plan your journey with Bhutan Land Of Happiness Tourism for an unmatched spiritual and cultural renewal.
           </motion.p>

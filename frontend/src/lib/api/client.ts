@@ -165,6 +165,17 @@ export const api = {
     });
   },
 
+  listInquiries: <T = any>() => {
+    return request<{ data: T[] }>("/api/inquiries");
+  },
+
+  updateInquiry: <T = any>(id: string, body: { status?: string; adminNotes?: string }) => {
+    return request<{ data: T }>(`/api/inquiries/${id}`, {
+      method: "PATCH",
+      body
+    });
+  },
+
   // CMS
   cmsList: <T = any>(resource: string) => {
     return request<{ data: T[] }>(`/api/cms/${resource}`);

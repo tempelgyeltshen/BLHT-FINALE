@@ -310,7 +310,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             data = res.data;
           }
           if (Array.isArray(data) && data.length > 0) {
-            setter(data);
+            if (name === 'festivals') {
+              // The backend may hold an older/partial festival seed. Merge the
+              // server data on top of the full initial calendar so admin edits
+              // win, but the complete 44-festival schedule is always shown.
+              const apiFestivals = data as Festival[];
+              const merged: Festival[] = [...initialFestivals];
+              apiFestivals.forEach(apiFest => {
+                const idx = merged.findIndex(
+                  f => (apiFest.id && f.id === apiFest.id) || (apiFest.slug && f.slug === apiFest.slug)
+                );
+                if (idx >= 0) {
+                  merged[idx] = { ...merged[idx], ...apiFest };
+                } else {
+                  merged.push(apiFest);
+                }
+              });
+              setter(merged);
+            } else {
+              setter(data);
+            }
           }
         } catch {
           // API unreachable — keep existing localStorage data
@@ -326,6 +345,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       } catch {
         // keep localStorage fallback
       }
+
+      // Inquiries (admin inbox) — the API returns real submissions from the
+      // server file store; merge them on top of any locally-seeded data.
+      try {
+        const res = await api.listInquiries<ContactInquiry>();
+        if (Array.isArray(res.data) && res.data.length > 0) {
+          setInquiries(res.data);
+        }
+      } catch {
+        // 401 when not logged in / API unreachable — keep local seed data
+      }
     };
 
     fetchCollections();
@@ -334,6 +364,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const auth = useAuth() as any;
   const isAdminLoggedIn = auth.isAuthenticated && auth.isAdmin;
   const adminUser = auth.user;
+
+  // When the admin logs in, pull the real inquiry inbox from the server (the
+  // initial mount fetch runs before login and would 401).
+  useEffect(() => {
+    if (!isAdminLoggedIn) return;
+    api.listInquiries<ContactInquiry>()
+      .then(res => {
+        if (Array.isArray(res.data) && res.data.length > 0) {
+          setInquiries(res.data);
+        }
+      })
+      .catch(() => {
+        // keep existing data when the API is unreachable
+      });
+  }, [isAdminLoggedIn]);
 
   const [activeBrochureState, setActiveBrochureState] = useState<Brochure | null>(null);
   const [brochureReturnRoute, setBrochureReturnRoute] = useState<ViewRoute>('brochures');
@@ -744,13 +789,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const updateInquiryStatus = async (id: string, status: ContactInquiry['status'], notes?: string): Promise<void> => {
     if (!requireAdminAction('update inquiry status')) return;
     try {
-      // There is no dedicated endpoint in the client for inquiries' status; use cmsUpdate if inquiries exposed via CMS, otherwise update locally
-      // For now, update local state and show toast; ideally, implement server endpoint and call it here.
-      setInquiries(prev => prev.map(inq => inq.id === id ? { ...inq, status, adminNotes: notes !== undefined ? notes : inq.adminNotes } : inq));
+      const res = await api.updateInquiry<ContactInquiry>(id, { status, adminNotes: notes });
+      const updated = res.data;
+      setInquiries(prev => prev.map(inq => inq.id === id ? (updated as ContactInquiry) : inq));
       showToast(`Inquiry status updated to ${status}`);
     } catch (err) {
       console.error('Update inquiry status failed', err);
-      showToast('Failed to update inquiry status');
+      // Keep local state consistent even if the API is unreachable.
+      setInquiries(prev => prev.map(inq => inq.id === id ? { ...inq, status, adminNotes: notes !== undefined ? notes : inq.adminNotes } : inq));
+      showToast(err instanceof Error ? `Failed to update inquiry status: ${err.message}` : 'Failed to update inquiry status');
     }
   };
 
