@@ -1,8 +1,18 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Car, Shield, Clock, Users, MapPin, Phone, Mail, ExternalLink, Fuel, Wrench, Star } from 'lucide-react';
+import { Car, Shield, Clock, Users, MapPin, Phone, Mail, ExternalLink, Fuel, Wrench, Star, Download, BookOpen, FileText } from 'lucide-react';
+import { useApp } from '../../../core/providers/AppProvider';
+import { downloadBrochurePdf } from '../../../../utils/downloadPdf';
 
 export const CarRentalView: React.FC = () => {
+  const { brochures, setActiveBrochure, logBrochureDownload, showToast } = useApp();
+  const carRentalBrochures = brochures.filter(b => b.category.includes('Car Rental'));
+
+  const handleDownload = (b: typeof brochures[0]) => {
+    logBrochureDownload(b.id, 'guest@blht.bt');
+    downloadBrochurePdf(b, showToast);
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16 overflow-hidden">
       
@@ -201,6 +211,74 @@ export const CarRentalView: React.FC = () => {
 
         </div>
       </motion.div>
+
+      {/* Car Rental Brochures */}
+      {carRentalBrochures.length > 0 && (
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          className="space-y-8"
+        >
+          <div className="text-center space-y-2">
+            <span className="text-[#d96b27] font-bold text-xs uppercase tracking-widest font-serif">Brochures & Rate Cards</span>
+            <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#3b2314]">Download Our Car Rental Brochures</h2>
+            <p className="text-xs text-stone-600 font-serif max-w-2xl mx-auto">
+              Browse our official fleet guides and rate cards in the interactive reader, or download the PDFs for offline use.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {carRentalBrochures.map((b) => (
+              <div
+                key={b.id}
+                className="bg-white rounded-2xl border border-[#e2d1be] shadow-xs overflow-hidden flex flex-col hover:border-[#d96b27] transition-all hover:-translate-y-1"
+              >
+                <div className="relative h-40 bg-[#3b2314] flex items-center justify-center cursor-pointer group" onClick={() => setActiveBrochure(b)}>
+                  <img src={b.coverImage} alt={b.title} className="w-full h-full object-cover opacity-90 group-hover:opacity-70 transition-opacity" />
+                  <div className="absolute inset-0 bg-[#3b2314]/50 flex items-center justify-center">
+                    <span className="bg-[#d96b27] text-white text-[10px] font-extrabold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-md">
+                      <FileText className="w-3.5 h-3.5" /> PDF Brochure
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-5 space-y-3 flex-1 flex flex-col">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="bg-[#f5eee4] text-[#d96b27] text-[10px] font-extrabold px-2 py-0.5 rounded-md border border-[#e2d1be]">
+                      {b.category}
+                    </span>
+                    <span className="text-[10px] text-stone-600 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+                      {b.fileSize}
+                    </span>
+                  </div>
+                  <h3 className="font-serif font-bold text-sm text-[#3b2314] leading-snug">{b.title}</h3>
+                  <p className="text-[11px] text-stone-600 font-serif leading-relaxed flex-1">{b.subtitle}</p>
+
+                  <div className="pt-3 border-t border-[#e2d1be] flex flex-col sm:flex-row gap-2">
+                    <button
+                      onClick={() => setActiveBrochure(b)}
+                      className="flex-1 py-2.5 px-3 rounded-xl bg-[#3b2314] hover:bg-[#2b1d14] text-amber-100 font-bold text-[11px] flex items-center justify-center gap-1.5 cursor-pointer transition-all"
+                    >
+                      <BookOpen className="w-3.5 h-3.5 text-[#d96b27]" />
+                      <span>Read Brochure</span>
+                    </button>
+                    <button
+                      onClick={() => handleDownload(b)}
+                      className="flex-1 py-2.5 px-3 rounded-xl bg-[#f5eee4] hover:bg-[#efe2d3] border border-[#d8c7b2] text-[#3b2314] font-bold text-[11px] flex items-center justify-center gap-1.5 cursor-pointer transition-all"
+                      title="Direct Download PDF"
+                    >
+                      <Download className="w-3.5 h-3.5 text-[#d96b27]" />
+                      <span>Download</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {/* Contact Banner */}
       <motion.div 

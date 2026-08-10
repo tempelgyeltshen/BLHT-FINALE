@@ -92,3 +92,6 @@ tmp/
 
 # Devin configuration
 .devin/
+# Large brochure PDFs (served from backend/assets at runtime; too large for GitHub)
+backend/assets/
+frontend/src/assets/brochure/

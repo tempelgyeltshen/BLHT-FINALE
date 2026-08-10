@@ -8,7 +8,12 @@ import { usePagination } from '../../../shared/hooks/usePagination';
 import { FileText, Plus, Trash2, Eye, X, Upload, CheckCircle, Loader2 } from 'lucide-react';
 import { useCloudinaryUpload } from '../../../shared/hooks/useCloudinaryUpload';
 import { cloudinaryService } from '../../../../../lib/services/cloudinary.service';
+import { api } from '../../../../../lib/api/client';
 import { isValidHttpUrl } from '../../../../../utils/helpers';
+
+// Cloudinary's free plan caps raw (PDF) uploads at 10 MB. Larger PDFs are
+// stored in MongoDB GridFS and streamed through the backend at /api/uploads/mongo.
+const CLOUDINARY_RAW_MAX_BYTES = 10 * 1024 * 1024;
 
 interface BrochureFormData {
   title: string;
@@ -29,6 +34,7 @@ export const AdminBrochuresView: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pdfUploadMode, setPdfUploadMode] = useState<'file' | 'url'>('file');
   const [pdfFileName, setPdfFileName] = useState<string>('');
+  const [isMongoUploading, setIsMongoUploading] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; title: string } | null>(null);
 
   // Cloudinary upload hook for PDFs
@@ -74,8 +80,42 @@ export const AdminBrochuresView: React.FC = () => {
         return;
       }
       
+      resetPdfUpload();
+
+      // Files above Cloudinary's 10 MB raw limit are stored in MongoDB GridFS
+      // (streamed through the backend) instead of uploaded to Cloudinary.
+      if (file.size > CLOUDINARY_RAW_MAX_BYTES) {
+        setIsMongoUploading(true);
+        try {
+          const formData = new FormData();
+          formData.append('file', file);
+          const res = await api.post<{ data: { url: string; fileId: string; size: number } }>(
+            '/api/uploads/mongo',
+            formData
+          );
+          const { url, fileId, size } = res.data;
+
+          setPdfFileName(file.name);
+          setPdfMetadata({ storage: 'mongo', fileId });
+          setFormData(prev => ({
+            ...prev,
+            pdfUrl: url,
+            fileSize: cloudinaryService.formatFileSize(size),
+            totalPages: 0 // page count is not available for stored PDFs
+          }));
+
+          showToast('PDF stored successfully. Verify the URL before publishing.');
+        } catch (error) {
+          console.error('PDF upload failed:', error);
+          const detail = error instanceof Error && error.message ? error.message : 'Please try again.';
+          showToast(`PDF upload failed: ${detail}`);
+        } finally {
+          setIsMongoUploading(false);
+        }
+        return;
+      }
+
       try {
-        resetPdfUpload();
         const result = await uploadPdf(file, {
           folder: 'blht/brochures',
           resourceType: 'raw'
@@ -157,12 +197,18 @@ export const AdminBrochuresView: React.FC = () => {
     };
 
     // Add Cloudinary metadata if available
-    if (pdfMetadata) {
+    if (pdfMetadata && pdfMetadata.public_id) {
       brochureData.pdf_public_id = pdfMetadata.public_id;
       brochureData.pdf_resource_type = pdfMetadata.resource_type;
       brochureData.pdf_format = pdfMetadata.format;
       brochureData.pdf_bytes = pdfMetadata.bytes;
       brochureData.pdf_upload_date = pdfMetadata.created_at;
+    }
+
+    // Add MongoDB GridFS metadata for large PDFs (kept for delete-sync)
+    if (pdfMetadata && pdfMetadata.storage === 'mongo') {
+      brochureData.pdf_storage = 'mongo';
+      brochureData.pdf_file_id = pdfMetadata.fileId;
     }
 
     addBrochure(brochureData);
@@ -309,12 +355,12 @@ export const AdminBrochuresView: React.FC = () => {
                         accept=".pdf,application/pdf"
                         onChange={handlePdfFileChange}
                         className="hidden"
-                        disabled={isPdfUploading}
+                        disabled={isPdfUploading || isMongoUploading}
                       />
-                      {isPdfUploading ? (
+                      {isPdfUploading || isMongoUploading ? (
                         <>
                           <Loader2 className="w-6 h-6 text-amber-700 mb-1 animate-spin" />
-                          <span className="font-bold text-amber-900">Uploading to Cloudinary {pdfUploadProgress ? `${Math.round(pdfUploadProgress.percentage)}%` : '...'}</span>
+                          <span className="font-bold text-amber-900">{isMongoUploading ? 'Uploading to server...' : `Uploading to Cloudinary ${pdfUploadProgress ? `${Math.round(pdfUploadProgress.percentage)}%` : '...'}`}</span>
                         </>
                       ) : (
                         <>
@@ -358,6 +404,11 @@ export const AdminBrochuresView: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => {
+                            // Best-effort cleanup of the stored GridFS file when
+                            // a large PDF is removed before publishing.
+                            if (pdfMetadata && pdfMetadata.storage === 'mongo' && pdfMetadata.fileId) {
+                              api.delete(`/api/uploads/mongo/${pdfMetadata.fileId}`).catch(() => {});
+                            }
                             setPdfFileName('');
                             setPdfMetadata(null);
                             setFormData(prev => ({ ...prev, pdfUrl: '' }));

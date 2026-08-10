@@ -10,8 +10,9 @@ export const packageSchema = z.object({
   ], { errorMap: () => ({ message: 'Invalid category' }) }),
   durationDays: z.number().positive('Duration must be positive'),
   priceUSD: z.number().positive('Price must be positive'),
-  rating: z.number().optional(),
-  reviewsCount: z.number().optional(),
+  // Star rating and review count are set by the admin (0-5 stars).
+  rating: z.number().min(0).max(5).optional(),
+  reviewsCount: z.number().min(0).optional(),
   featured: z.boolean().optional(),
   // Accept any string so data-URLs from local uploads and Cloudinary URLs both work.
   heroImage: z.string().optional(),

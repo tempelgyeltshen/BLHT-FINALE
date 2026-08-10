@@ -29,6 +29,10 @@ export interface Brochure {
   pdf_format?: string;
   pdf_bytes?: number;
   pdf_upload_date?: string;
+
+  // MongoDB GridFS metadata for PDFs too large for Cloudinary's raw limit.
+  pdf_storage?: 'cloudinary' | 'mongo';
+  pdf_file_id?: string;
 }
 
 /** Payload used when creating/updating a brochure (id/downloadCount derived). */

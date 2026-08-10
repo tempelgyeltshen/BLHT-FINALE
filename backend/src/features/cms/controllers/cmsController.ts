@@ -5,6 +5,7 @@ import { slugify } from '../../../core/utils/helpers.js';
 import { autoPopulateVideoMetadata, autoPopulateBrochureMetadata } from '../../../core/utils/autoCalculate.js';
 import { v2 as cloudinary } from 'cloudinary';
 import { env } from '../../../core/config/env.js';
+import { mongoUploadService } from '../../uploads/services/mongoUploadService.js';
 
 cloudinary.config({
   cloud_name: env.cloudinaryCloudName,
@@ -257,6 +258,17 @@ export const deleteResource = async (req: Request, res: Response, next: NextFunc
       } catch (cloudinaryError) {
         console.error('Failed to delete PDF from Cloudinary:', cloudinaryError);
         // Continue with MongoDB deletion even if Cloudinary deletion fails
+      }
+    }
+
+    // Handle MongoDB GridFS-hosted PDFs (used when the file exceeds
+    // Cloudinary's raw upload limit)
+    if (data.pdf_storage === 'mongo' && data.pdf_file_id) {
+      try {
+        await mongoUploadService.deletePdf(data.pdf_file_id as string);
+      } catch (mongoError) {
+        console.error('Failed to delete PDF from MongoDB:', mongoError);
+        // Continue with MongoDB deletion even if GridFS deletion fails
       }
     }
 

@@ -1,8 +1,19 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Brush, Palette, Award, Eye, ExternalLink, Phone, Mail, Star, Sparkles, Scroll, Mountain } from 'lucide-react';
+import { Brush, Palette, Award, Eye, ExternalLink, Phone, Mail, Star, Sparkles, Scroll, Mountain, Download, BookOpen, FileText } from 'lucide-react';
+import { useApp } from '../../../core/providers/AppProvider';
+import { downloadBrochurePdf } from '../../../../utils/downloadPdf';
 
 export const ThangkaPaintingView: React.FC = () => {
+  const { brochures, setActiveBrochure, logBrochureDownload, showToast } = useApp();
+  const thangkaBrochures = brochures.filter(b => b.category.includes('Thangka'));
+  const mainBrochure = thangkaBrochures[0];
+
+  const handleDownload = (b: typeof brochures[0]) => {
+    logBrochureDownload(b.id, 'guest@blht.bt');
+    downloadBrochurePdf(b, showToast);
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16 overflow-hidden">
       
@@ -204,6 +215,57 @@ export const ThangkaPaintingView: React.FC = () => {
 
         </div>
       </motion.div>
+
+      {/* Thangka Painting Brochure - Main Publication */}
+      {mainBrochure && (
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          className="bg-[#3b2314] text-amber-50 rounded-3xl p-6 sm:p-10 border border-[#d96b27]/40 shadow-xl overflow-hidden relative"
+        >
+          <div className="absolute inset-0 opacity-10">
+            <img src={mainBrochure.coverImage} alt="" className="w-full h-full object-cover" />
+          </div>
+          <div className="relative flex flex-col sm:flex-row items-center gap-6 sm:gap-10">
+            <div className="w-40 h-52 sm:w-48 sm:h-60 rounded-2xl overflow-hidden border-2 border-[#d96b27]/60 shadow-lg shrink-0 cursor-pointer group" onClick={() => setActiveBrochure(mainBrochure)}>
+              <img src={mainBrochure.coverImage} alt={mainBrochure.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            </div>
+            <div className="flex-1 space-y-3 text-center sm:text-left">
+              <span className="inline-block bg-[#d96b27] text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full">
+                Official Thangka Painting Brochure
+              </span>
+              <h2 className="font-serif text-xl sm:text-3xl font-bold text-amber-100 leading-snug">{mainBrochure.title}</h2>
+              <p className="text-amber-200/90 text-xs sm:text-sm font-serif leading-relaxed max-w-2xl mx-auto sm:mx-0">
+                {mainBrochure.subtitle}
+              </p>
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 text-[10px] font-bold">
+                <span className="bg-amber-50/10 border border-amber-200/30 px-2.5 py-1 rounded-md">{mainBrochure.fileSize}</span>
+                <span className="bg-amber-50/10 border border-amber-200/30 px-2.5 py-1 rounded-md">{mainBrochure.totalPages} Pages</span>
+                <span className="bg-amber-50/10 border border-amber-200/30 px-2.5 py-1 rounded-md">{mainBrochure.year}</span>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3 pt-2 justify-center sm:justify-start">
+                <button
+                  onClick={() => setActiveBrochure(mainBrochure)}
+                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#d96b27] to-[#b85116] hover:from-[#e07a35] hover:to-[#c85c1a] text-white font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-lg transition-all hover:scale-105"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  <span>Read the Full 26-Page Brochure</span>
+                </button>
+                <button
+                  onClick={() => handleDownload(mainBrochure)}
+                  className="px-6 py-3 rounded-xl bg-[#f5eee4] hover:bg-[#efe2d3] border border-[#d8c7b2] text-[#3b2314] font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md transition-all hover:scale-105"
+                  title="Direct Download PDF"
+                >
+                  <Download className="w-4 h-4 text-[#d96b27]" />
+                  <span>Download PDF</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       {/* Contact Banner */}
       <motion.div 

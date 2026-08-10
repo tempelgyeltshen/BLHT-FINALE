@@ -10,7 +10,7 @@ import {
   CheckCircle2, 
   ShieldCheck
 } from 'lucide-react';
-import ceoPhoto from '../../../../assets/images/ceo_executive_headshot_1785125034063.jpg';
+import ceoPhoto from '../../../../assets/images/CEO.jpeg';
 
 interface CeoSectionProps {
   /** Optional custom CEO Name placeholder. Defaults to "Mr. Pema Tshering" */

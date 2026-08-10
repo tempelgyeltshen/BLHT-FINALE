@@ -5,7 +5,7 @@ import { ImageUploader } from '../../shared/components/media/ImageUploader';
 import { MultiImageUploader } from '../../shared/components/media/MultiImageUploader';
 import { Button, ConfirmDialog, Input, Modal, Pagination, Select, TextArea } from '../../shared/components/ui';
 import { usePagination } from '../../shared/hooks/usePagination';
-import { Plus, Edit3, Trash2 } from 'lucide-react';
+import { Plus, Edit3, Trash2, Star } from 'lucide-react';
 import { TourPackage } from '../../../../types';
 
 export const AdminPackagesView: React.FC = () => {
@@ -113,6 +113,7 @@ export const AdminPackagesView: React.FC = () => {
                 <th className="p-4 whitespace-nowrap">Category</th>
                 <th className="p-4 min-w-[160px]">Duration & Valleys</th>
                 <th className="p-4 whitespace-nowrap">Tariff</th>
+                <th className="p-4 whitespace-nowrap">Rating</th>
                 <th className="p-4 whitespace-nowrap text-center">Featured</th>
                 <th className="p-4 whitespace-nowrap text-right">Actions</th>
               </tr>
@@ -135,6 +136,13 @@ export const AdminPackagesView: React.FC = () => {
                     <div className="text-[10px] text-stone-500 max-w-[200px] truncate">{pkg.destinations.join(', ')}</div>
                   </td>
                   <td className="p-4 font-bold text-amber-900 whitespace-nowrap">${pkg.priceUSD.toLocaleString()} USD</td>
+                  <td className="p-4 whitespace-nowrap">
+                    <div className="flex items-center gap-1.5">
+                      <Star className="w-3 h-3 fill-amber-500 text-amber-500 shrink-0" />
+                      <span className="font-bold text-amber-900">{pkg.rating ?? '—'}</span>
+                      <span className="text-[10px] text-stone-500">({pkg.reviewsCount ?? 0})</span>
+                    </div>
+                  </td>
                   <td className="p-4 text-center whitespace-nowrap">
                     <button
                       onClick={() => updatePackage(pkg.id, { featured: !pkg.featured })}
@@ -218,6 +226,29 @@ export const AdminPackagesView: React.FC = () => {
               label="Hotel Style"
               value={formData.hotelCategory}
               onChange={e => setFormData({ ...formData, hotelCategory: e.target.value as any })}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <Input
+              label="Star Rating (0 – 5)"
+              type="number"
+              min={0}
+              max={5}
+              step={0.1}
+              hint="Set by admin — e.g. 4.8"
+              value={formData.rating ?? 0}
+              onChange={e => setFormData({ ...formData, rating: Math.min(5, Math.max(0, Number(e.target.value))) })}
+            />
+
+            <Input
+              label="Reviews Count"
+              type="number"
+              min={0}
+              step={1}
+              hint="Number of reviews displayed"
+              value={formData.reviewsCount ?? 0}
+              onChange={e => setFormData({ ...formData, reviewsCount: Math.max(0, Math.round(Number(e.target.value))) })}
             />
           </div>
 

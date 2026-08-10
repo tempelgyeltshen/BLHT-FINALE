@@ -297,41 +297,84 @@ export const seedFestivals = [
 
 export const seedBrochures = [
   {
-    title: 'BLHT Official Luxury Collection 2026',
-    subtitle: 'Ultra-luxury lodges, private helicopter itineraries, and heritage sanctuary experiences',
-    category: 'Luxury Tours',
-    fileSize: '14.8 MB',
-    totalPages: 16,
-    coverImage: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80',
+    title: 'Thangka Painting & Sacred Art Collection 2026',
+    subtitle: 'FINAL 26 Pages - Authentic traditional Bhutanese thangka masterpieces, artist profiles, commissioning guide, and sacred art heritage',
+    category: 'Thangka Painting',
+    pdfUrl: '/api/uploads/brochures/thangka-painting-brochure.pdf',
+    fileSize: '44.3 MB',
+    totalPages: 26,
+    coverImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
     galleryImages: [
-      'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80'
     ],
     downloadCount: 1420,
     year: '2026',
     featured: true,
     tableOfContents: [
-      { page: 1, title: 'Welcome to the Kingdom of Happiness' },
-      { page: 3, title: 'Why Travel with BLHT' },
-      { page: 5, title: 'Lodge Circuit Details' }
+      { page: 1, title: 'The Sacred Art of Thangka' },
+      { page: 4, title: 'Master Artists of Bhutan' },
+      { page: 10, title: 'Commissioning Your Own Thangka' }
     ]
   },
   {
-    title: 'Sacred Tshechu Festivals Calendar',
-    subtitle: 'Comprehensive guide to mask dances, dates, and customs for 2026-2027',
-    category: 'Festivals & Culture',
-    fileSize: '9.2 MB',
-    totalPages: 12,
-    coverImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+    title: 'HQ Car Rental Pamphlet',
+    subtitle: 'High Quality Car Rental - official fleet pamphlet with vehicle options and rates',
+    category: 'Car Rental',
+    pdfUrl: '/api/uploads/brochures/car-rental-hq-pamphlet.pdf',
+    fileSize: '275.5 MB',
+    totalPages: 0,
+    coverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
     galleryImages: [
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
     ],
-    downloadCount: 980,
+    downloadCount: 520,
     year: '2026',
-    featured: true,
+    featured: false,
     tableOfContents: [
-      { page: 1, title: 'Introduction to Sacred Mask Dances' },
-      { page: 4, title: 'Paro Tshechu Spring Itinerary' }
+      { page: 1, title: 'Our Fleet & Vehicle Options' },
+      { page: 3, title: 'Rates & Packages' },
+      { page: 5, title: 'Booking & Contact Details' }
+    ]
+  },
+  {
+    title: 'Amankora Car Rental Rate Sheet 2026',
+    subtitle: 'Official 2026 rate card for Amankora guest transfers and private car hire',
+    category: 'Car Rental',
+    pdfUrl: '/api/uploads/brochures/car-rental-amankora-rates-2026.pdf',
+    fileSize: '33.9 MB',
+    totalPages: 0,
+    coverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
+    ],
+    downloadCount: 380,
+    year: '2026',
+    featured: false,
+    tableOfContents: [
+      { page: 1, title: 'Amankora Guest Transfer Rates' },
+      { page: 3, title: 'Private Car Hire Options' },
+      { page: 5, title: 'Booking & Contact Details' }
+    ]
+  },
+  {
+    title: 'New Car Rental Brochure',
+    subtitle: 'Complete car rental guide - SUVs, Land Cruisers, buses and chauffeur services',
+    category: 'Car Rental',
+    pdfUrl: '/api/uploads/brochures/car-rental-new-brochure.pdf',
+    fileSize: '913.5 MB',
+    totalPages: 0,
+    coverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
+    ],
+    downloadCount: 640,
+    year: '2026',
+    featured: false,
+    tableOfContents: [
+      { page: 1, title: 'Our Fleet & Vehicle Options' },
+      { page: 3, title: 'Rates & Packages' },
+      { page: 5, title: 'Booking & Contact Details' }
     ]
   }
 ];

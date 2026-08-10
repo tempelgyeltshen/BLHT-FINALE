@@ -1071,102 +1071,90 @@ export const initialFestivals: Festival[] = [
 export const initialBrochures: Brochure[] = [
   {
     id: 'brochure-1',
-    title: 'BLHT Official Luxury Collection 2026',
-    subtitle: 'Ultra-luxury lodges, private helicopter itineraries, and heritage sanctuary experiences',
-    category: 'Luxury Tours',
-    fileSize: '14.8 MB',
-    totalPages: 16,
-    coverImage: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80',
+    title: 'Thangka Painting & Sacred Art Collection 2026',
+    subtitle: 'FINAL 26 Pages - Authentic traditional Bhutanese thangka masterpieces, artist profiles, commissioning guide, and sacred art heritage',
+    category: 'Thangka Painting',
+    fileSize: '44.3 MB',
+    totalPages: 26,
+    coverImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
     galleryImages: [
-      'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80'
     ],
-    pdfUrl: '#pdf-luxury-collection',
+    pdfUrl: '/api/uploads/brochures/thangka-painting-brochure.pdf',
     downloadCount: 1420,
     year: '2026',
     featured: true,
     tableOfContents: [
-      { page: 1, title: 'Welcome to the Kingdom of Happiness' },
-      { page: 3, title: 'Why Travel with Bhutan Luxury & Heritage Tours' },
-      { page: 5, title: 'Six Senses & BLHT Sanctuary Lodge Circuit' },
-      { page: 8, title: 'Kingdom in the Clouds 7-Day Itinerary' },
-      { page: 12, title: 'Helicopter Charters & Private Blessings' },
-      { page: 15, title: 'Custom Travel Planning & SDF Guidelines' }
+      { page: 1, title: 'The Sacred Art of Thangka' },
+      { page: 4, title: 'Master Artists of Bhutan' },
+      { page: 10, title: 'Commissioning Your Own Thangka' }
     ]
   },
   {
     id: 'brochure-2',
-    title: 'Sacred Tshechu Festivals Calendar & Cultural Guide',
-    subtitle: 'Comprehensive guide to mask dances, dates, and customs for 2026-2027',
-    category: 'Festivals & Culture',
-    fileSize: '9.2 MB',
-    totalPages: 12,
-    coverImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+    title: 'HQ Car Rental Pamphlet',
+    subtitle: 'High Quality Car Rental - official fleet pamphlet with vehicle options and rates',
+    category: 'Car Rental',
+    fileSize: '275.5 MB',
+    totalPages: 0,
+    coverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
     galleryImages: [
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
     ],
-    pdfUrl: '#pdf-festivals-guide',
-    downloadCount: 980,
+    pdfUrl: '/api/uploads/brochures/car-rental-hq-pamphlet.pdf',
+    downloadCount: 520,
     year: '2026',
-    featured: true,
+    featured: false,
     tableOfContents: [
-      { page: 1, title: 'Introduction to Bhutanese Sacred Mask Dances' },
-      { page: 4, title: 'Paro Tshechu Spring Itinerary' },
-      { page: 7, title: 'Thimphu Tshechu Autumn Celebration' },
-      { page: 10, title: 'Etiquette in Monasteries & Dzongs' }
+      { page: 1, title: 'Our Fleet & Vehicle Options' },
+      { page: 3, title: 'Rates & Packages' },
+      { page: 5, title: 'Booking & Contact Details' }
     ]
   },
   {
     id: 'brochure-3',
-    title: 'Trans-Bhutan Trail & High Himalaya Trekking',
-    subtitle: 'Heli-trekking routes, luxury glamping, and alpine pass guides',
-    category: 'Adventure',
-    fileSize: '18.4 MB',
-    totalPages: 20,
-    coverImage: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=800&q=80',
+    title: 'Amankora Car Rental Rate Sheet 2026',
+    subtitle: 'Official 2026 rate card for Amankora guest transfers and private car hire',
+    category: 'Car Rental',
+    fileSize: '33.9 MB',
+    totalPages: 0,
+    coverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
     galleryImages: [
-      'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
     ],
-    pdfUrl: '#pdf-trekking-guide',
-    downloadCount: 650,
+    pdfUrl: '/api/uploads/brochures/car-rental-amankora-rates-2026.pdf',
+    downloadCount: 380,
     year: '2026',
     featured: false,
     tableOfContents: [
-      { page: 1, title: 'Mapping the Trans-Bhutan Trail' },
-      { page: 6, title: 'Jomolhari Mountain Circuit' },
-      { page: 14, title: 'Luxury Glamping & Gear Checklist' }
+      { page: 1, title: 'Amankora Guest Transfer Rates' },
+      { page: 3, title: 'Private Car Hire Options' },
+      { page: 5, title: 'Booking & Contact Details' }
     ]
   },
   {
     id: 'brochure-4',
-    title: 'Wellness, Mindfulness & Meditation Sanctuaries',
-    subtitle: 'Spiritual retreats, hot stone therapy, and Buddhist philosophy',
-    category: 'Wellness',
-    fileSize: '7.8 MB',
-    totalPages: 10,
-    coverImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+    title: 'New Car Rental Brochure',
+    subtitle: 'Complete car rental guide - SUVs, Land Cruisers, buses and chauffeur services',
+    category: 'Car Rental',
+    fileSize: '913.5 MB',
+    totalPages: 0,
+    coverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
     galleryImages: [
-      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
     ],
-    pdfUrl: '#pdf-wellness-guide',
-    downloadCount: 420,
+    pdfUrl: '/api/uploads/brochures/car-rental-new-brochure.pdf',
+    downloadCount: 640,
     year: '2026',
     featured: false,
     tableOfContents: [
-      { page: 1, title: 'Gross National Happiness & Mindful Travel' },
-      { page: 4, title: 'Traditional Menchu Hot Stone Baths' },
-      { page: 8, title: 'Guided Monastery Meditation Retreats' }
+      { page: 1, title: 'Our Fleet & Vehicle Options' },
+      { page: 3, title: 'Rates & Packages' },
+      { page: 5, title: 'Booking & Contact Details' }
     ]
   }
-];
-
-export const initialGallery: GalleryItem[] = [
+];export const initialGallery: GalleryItem[] = [
   {
     id: 'gal-1',
     title: 'Paro Taktsang (Tiger’s Nest Monastery)',

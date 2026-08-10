@@ -37,6 +37,9 @@ RUN npm ci --omit=dev
 # Copy compiled application
 COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
 
+# Copy static assets (brochure PDFs served by the app)
+COPY --from=builder --chown=nodejs:nodejs /app/assets ./assets
+
 # Switch to non-root user
 USER nodejs
 
