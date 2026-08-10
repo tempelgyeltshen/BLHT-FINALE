@@ -92,6 +92,12 @@ tmp/
 
 # Devin configuration
 .devin/
-# Large brochure PDFs (served from backend/assets at runtime; too large for GitHub)
-backend/assets/
+# Brochure PDFs served by the backend at runtime (committed - compressed to ~21 MB total)
+backend/assets/*
+!backend/assets/brochures/
+backend/assets/brochures/*
+!backend/assets/brochures/*.pdf
+
+# Frontend duplicates of the same PDFs are unreferenced (all pdfUrls point to the
+# backend API) - keep them out of the repo to avoid a 21 MB duplication.
 frontend/src/assets/brochure/
