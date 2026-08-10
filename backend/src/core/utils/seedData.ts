@@ -301,7 +301,7 @@ export const seedBrochures = [
     subtitle: 'FINAL 26 Pages - Authentic traditional Bhutanese thangka masterpieces, artist profiles, commissioning guide, and sacred art heritage',
     category: 'Thangka Painting',
     pdfUrl: '/api/uploads/brochures/thangka-painting-brochure.pdf',
-    fileSize: '44.3 MB',
+    fileSize: '17.6 MB',
     totalPages: 26,
     coverImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
     galleryImages: [
@@ -342,7 +342,7 @@ export const seedBrochures = [
     subtitle: 'Official 2026 rate card for Amankora guest transfers and private car hire',
     category: 'Car Rental',
     pdfUrl: '/api/uploads/brochures/car-rental-amankora-rates-2026.pdf',
-    fileSize: '33.9 MB',
+    fileSize: '0.4 MB',
     totalPages: 0,
     coverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
     galleryImages: [
