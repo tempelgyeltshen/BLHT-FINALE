@@ -117,6 +117,56 @@ describe('uploadService', () => {
         expect(callArgs[0].resource_type).toBe('image');
       });
 
+      it('should reject when cloudinary reports an upload error', async () => {
+        mockUploadStream.mockImplementation((_opts: any, callback: Function) => {
+          callback(new Error('Upload failed.'), null);
+          return { pipe: vi.fn() };
+        });
+
+        const mockFile = { mimetype: 'image/jpeg', path: '/tmp/test.jpg', originalname: 'test.jpg', size: 1000 } as any;
+
+        await expect(provider.store(mockFile, 'images')).rejects.toThrow('Upload failed.');
+      });
+
+      it('should reject when the file stream emits an error', async () => {
+        // Never call the upload callback so the store promise stays pending
+        // until the file stream error handler fires.
+        mockUploadStream.mockImplementation((_opts: any, _callback: Function) => {
+          return { pipe: vi.fn() };
+        });
+
+        const mockFile = { mimetype: 'image/jpeg', path: '/tmp/test.jpg', originalname: 'test.jpg', size: 1000 } as any;
+
+        const promise = provider.store(mockFile, 'images');
+        const stream = vi.mocked(fs.createReadStream).mock.results[0].value as any;
+        const errorHandler = stream.on.mock.calls.find(([event]: [string]) => event === 'error')?.[1];
+        errorHandler(new Error('stream broken'));
+
+        await expect(promise).rejects.toThrow('stream broken');
+      });
+
+      it('should warn and continue when temp file cleanup fails', async () => {
+        mockUploadStream.mockImplementation((_opts: any, callback: Function) => {
+          callback(null, { public_id: 'test', secure_url: 'https://example.com/test' });
+          return { pipe: vi.fn() };
+        });
+
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+        (fs.unlinkSync as any).mockImplementation(() => {
+          throw new Error('EACCES: permission denied');
+        });
+
+        const mockFile = { mimetype: 'image/jpeg', path: '/tmp/test.jpg', originalname: 'test.jpg', size: 1000 } as any;
+
+        const result = await provider.store(mockFile, 'images');
+
+        expect(result.key).toBe('test');
+        expect(warnSpy).toHaveBeenCalled();
+        warnSpy.mockRestore();
+        // Restore the original mock behavior so it doesn't leak into other tests
+        (fs.unlinkSync as any).mockImplementation(() => {});
+      });
+
       it('should clean up temporary file after upload', async () => {
         mockUploadStream.mockImplementation((_opts: any, callback: Function) => {
           callback(null, { public_id: 'test', secure_url: 'https://example.com/test' });
