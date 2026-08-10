@@ -34,9 +34,17 @@ export class MongoRepository<T extends Entity> implements BaseRepository<T> {
   }
   
   async update(id: string, data: Partial<Omit<T, keyof Entity>>) {
+    // Merge only the provided fields into the existing document instead of
+    // replacing the whole `data` object. A full replacement would silently
+    // drop unset fields (e.g. slug, pdfUrl) on partial PATCHes and can trip
+    // unique indexes (e.g. two documents with slug: null).
+    const set: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(data)) {
+      set[`data.${key}`] = value;
+    }
     const row = await ContentModel.findOneAndUpdate(
       { _id: id, collection: this.collection },
-      { $set: { data } },
+      { $set: set },
       { new: true, runValidators: true }
     ).lean() as unknown as Row | null;
     

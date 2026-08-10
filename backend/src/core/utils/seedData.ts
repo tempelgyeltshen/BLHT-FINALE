@@ -322,7 +322,7 @@ export const seedBrochures = [
     subtitle: 'High Quality Car Rental - official fleet pamphlet with vehicle options and rates',
     category: 'Car Rental',
     pdfUrl: '/api/uploads/brochures/car-rental-hq-pamphlet.pdf',
-    fileSize: '275.5 MB',
+    fileSize: '1.0 MB',
     totalPages: 0,
     coverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
     galleryImages: [
@@ -362,7 +362,7 @@ export const seedBrochures = [
     subtitle: 'Complete car rental guide - SUVs, Land Cruisers, buses and chauffeur services',
     category: 'Car Rental',
     pdfUrl: '/api/uploads/brochures/car-rental-new-brochure.pdf',
-    fileSize: '913.5 MB',
+    fileSize: '1.3 MB',
     totalPages: 0,
     coverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
     galleryImages: [

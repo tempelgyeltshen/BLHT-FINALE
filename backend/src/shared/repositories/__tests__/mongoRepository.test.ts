@@ -35,7 +35,15 @@ vi.mock('../../models/Content.js', () => ({
         const items = store.get(query.collection) || [];
         const idx = items.findIndex((_, i) => `mock-id-${query.collection}-${i}` === query._id);
         if (idx < 0) return null;
-        if (update.$set?.data) items[idx] = { ...items[idx], ...update.$set.data };
+        // The repository now issues field-level $set updates (data.<field>)
+        // so partial PATCHes merge instead of replacing the whole object.
+        if (update.$set) {
+          for (const [path, value] of Object.entries(update.$set)) {
+            if (path.startsWith('data.')) {
+              items[idx][path.slice('data.'.length)] = value;
+            }
+          }
+        }
         return mockDoc(query.collection, items[idx], idx);
       })())
     })),

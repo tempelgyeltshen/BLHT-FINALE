@@ -52,7 +52,7 @@ export const PdfViewerModal: React.FC = () => {
     );
   }
 
-  const totalPages = currentBrochure.totalPages || 16;
+  const totalPages = currentBrochure.totalPages > 0 ? currentBrochure.totalPages : null;
 
   const handleDownload = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -89,7 +89,7 @@ export const PdfViewerModal: React.FC = () => {
                 {currentBrochure.title}
               </h1>
               <p className="text-[9px] sm:text-[10px] text-[#d96b27] font-bold truncate">
-                PDF • {currentBrochure.fileSize} • {totalPages} Pgs
+                PDF • {currentBrochure.fileSize}{totalPages ? ` • ${totalPages} Pgs` : ''}
               </p>
             </div>
           </div>
@@ -151,10 +151,17 @@ export const PdfViewerModal: React.FC = () => {
                       <span className="text-stone-600 text-xs">File Size</span>
                       <p className="font-bold text-[#d96b27]">{currentBrochure.fileSize}</p>
                     </div>
-                    <div className="bg-[#f5eee4] p-3 rounded-lg border border-[#e2d5c3]">
-                      <span className="text-stone-600 text-xs">Pages</span>
-                      <p className="font-bold text-[#d96b27]">{totalPages}</p>
-                    </div>
+                    {totalPages ? (
+                      <div className="bg-[#f5eee4] p-3 rounded-lg border border-[#e2d5c3]">
+                        <span className="text-stone-600 text-xs">Pages</span>
+                        <p className="font-bold text-[#d96b27]">{totalPages}</p>
+                      </div>
+                    ) : (
+                      <div className="bg-[#f5eee4] p-3 rounded-lg border border-[#e2d5c3]">
+                        <span className="text-stone-600 text-xs">Format</span>
+                        <p className="font-bold text-[#d96b27]">PDF</p>
+                      </div>
+                    )}
                   </div>
 
                   <div>

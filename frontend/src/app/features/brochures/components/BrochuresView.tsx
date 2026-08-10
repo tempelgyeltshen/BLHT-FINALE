@@ -69,7 +69,7 @@ export const BrochuresView: React.FC = () => {
                     {b.category}
                   </span>
                   <span className="text-[10px] text-stone-600 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
-                    {b.fileSize} • {b.totalPages} Pages
+                    {b.fileSize}{b.totalPages > 0 ? ` • ${b.totalPages} Pages` : ''}
                   </span>
                 </div>
 
