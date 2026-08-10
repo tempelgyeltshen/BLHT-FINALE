@@ -63,9 +63,18 @@ const mockContentModel = {
     const idx = findIndexById(query.collection, query._id);
     
     if (idx >= 0) {
-      // Apply the update
-      if (update.$set?.data) {
-        items[idx] = { ...items[idx], ...update.$set.data };
+      // Apply the update. MongoRepository.update issues field-level $set paths
+      // (data.<field>) so partial PATCHes merge instead of replacing the whole
+      // object. Keep whole-object $set.data support for legacy callers.
+      if (update.$set) {
+        if (update.$set.data && typeof update.$set.data === 'object') {
+          items[idx] = { ...items[idx], ...update.$set.data };
+        }
+        for (const [path, value] of Object.entries(update.$set)) {
+          if (path.startsWith('data.')) {
+            items[idx][path.slice('data.'.length)] = value;
+          }
+        }
       }
       const doc = createMockDoc(query.collection, items[idx], idx);
       
