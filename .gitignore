@@ -73,8 +73,8 @@ tmp/
 *.tar.gz
 
 # Uploads
-uploads/
-public/uploads/
+/uploads/
+/public/uploads/
 
 # Certificates
 *.pem

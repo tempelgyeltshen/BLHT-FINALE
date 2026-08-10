@@ -47,5 +47,5 @@ Thumbs.db
 temp/
 
 # Uploads
-uploads/
-public/uploads/
+/uploads/
+/public/uploads/
