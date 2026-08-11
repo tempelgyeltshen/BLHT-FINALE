@@ -41,6 +41,9 @@ export async function streamStaticBrochure(req: Request, res: Response, next: Ne
         : `inline; filename="${safeName}"`
     );
     res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.setHeader('Accept-Ranges', 'bytes');
+    // Allow PDF embedding in iframe
+    res.setHeader('X-Content-Type-Options', 'nosniff');
 
     fs.createReadStream(fullPath).pipe(res);
   } catch (error) {

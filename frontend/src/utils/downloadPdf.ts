@@ -20,6 +20,10 @@ export const getBrochurePdfUrl = (brochure: Brochure, opts: { download?: boolean
   if (isCloudinaryPdf(brochure) && brochure.id) {
     return `/api/cms/brochures/${encodeURIComponent(brochure.id)}/pdf${opts.download ? '?download=1' : ''}`;
   }
+  // Static brochure PDFs served from backend assets/brochures/
+  if (brochure.pdfUrl && brochure.pdfUrl.startsWith('/api/uploads/brochures/')) {
+    return `${brochure.pdfUrl}${opts.download ? '?download=1' : ''}`;
+  }
   // MongoDB GridFS-hosted PDFs (stored when a file exceeds Cloudinary's raw
   // limit) use a same-origin /api path that streams directly from the backend.
   if (brochure.pdfUrl && brochure.pdfUrl.startsWith('/api/')) {

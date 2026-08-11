@@ -8,4 +8,7 @@ export const corsMiddleware = cors({
   // exposing it, cross-origin JS (VITE_API_URL set) never sees the token
   // and every state-changing request fails with 403 Invalid CSRF token.
   exposedHeaders: ['x-csrf-token'],
+  // Allow PDF embedding and downloading
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
 });

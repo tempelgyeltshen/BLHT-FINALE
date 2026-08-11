@@ -1,4 +1,5 @@
 import helmet from 'helmet';
+import { env } from '../config/env.js';
 
 export const helmetMiddleware = helmet({
   crossOriginResourcePolicy: {
@@ -13,7 +14,8 @@ export const helmetMiddleware = helmet({
       imgSrc: ["'self'", 'data:', 'https:'],
       connectSrc: ["'self'"],
       objectSrc: ["'none'"],
-      frameSrc: ["'none'"],
+      // Allow PDF embedding from frontend domain for brochure viewing
+      frameSrc: ["'self'", env.frontendOrigin],
       upgradeInsecureRequests: [],
     },
   },
