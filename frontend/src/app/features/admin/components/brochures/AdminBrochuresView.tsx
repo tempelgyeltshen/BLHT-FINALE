@@ -26,7 +26,7 @@ interface BrochureFormData {
   pdfUrl: string;
   year: string;
   featured: boolean;
-  tableOfContents: Array<{ page: number; title: string }>;
+  tableOfContents?: Array<{ page: number; title: string }>;
 }
 
 export const AdminBrochuresView: React.FC = () => {
@@ -56,12 +56,7 @@ export const AdminBrochuresView: React.FC = () => {
     ],
     pdfUrl: '',
     year: '2026',
-    featured: true,
-    tableOfContents: [
-      { page: 1, title: 'Welcome to Bhutan' },
-      { page: 5, title: 'Lodge Circuit Details' },
-      { page: 10, title: 'Travel Concierge & Permits' }
-    ]
+    featured: true
   });
 
   const handlePdfFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,11 +154,7 @@ export const AdminBrochuresView: React.FC = () => {
       ],
       pdfUrl: '',
       year: '2026',
-      featured: true,
-      tableOfContents: [
-        { page: 1, title: 'Welcome to Bhutan' },
-        { page: 5, title: 'Lodge Circuit Details' }
-      ]
+      featured: true
     });
     setPdfFileName('');
     setPdfMetadata(null);

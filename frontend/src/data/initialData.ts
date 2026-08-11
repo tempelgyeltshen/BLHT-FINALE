@@ -1072,7 +1072,7 @@ export const initialBrochures: Brochure[] = [
   {
     id: 'brochure-1',
     title: 'Thangka Painting & Sacred Art Collection 2026',
-    subtitle: 'FINAL 26 Pages - Authentic traditional Bhutanese thangka masterpieces, artist profiles, commissioning guide, and sacred art heritage',
+    subtitle: 'FINAL 26 Pages - Authentic traditional Bhutanese thangka masterpieces and sacred art heritage',
     category: 'Thangka Painting',
     fileSize: '17.6 MB',
     totalPages: 26,
@@ -1084,12 +1084,7 @@ export const initialBrochures: Brochure[] = [
     pdfUrl: '/api/uploads/brochures/thangka-painting-brochure.pdf',
     downloadCount: 1420,
     year: '2026',
-    featured: true,
-    tableOfContents: [
-      { page: 1, title: 'The Sacred Art of Thangka' },
-      { page: 4, title: 'Master Artists of Bhutan' },
-      { page: 10, title: 'Commissioning Your Own Thangka' }
-    ]
+    featured: true
   },
   {
     id: 'brochure-2',
@@ -1105,12 +1100,7 @@ export const initialBrochures: Brochure[] = [
     pdfUrl: '/api/uploads/brochures/car-rental-hq-pamphlet.pdf',
     downloadCount: 520,
     year: '2026',
-    featured: false,
-    tableOfContents: [
-      { page: 1, title: 'Our Fleet & Vehicle Options' },
-      { page: 3, title: 'Rates & Packages' },
-      { page: 5, title: 'Booking & Contact Details' }
-    ]
+    featured: false
   },
   {
     id: 'brochure-3',
@@ -1126,12 +1116,7 @@ export const initialBrochures: Brochure[] = [
     pdfUrl: '/api/uploads/brochures/car-rental-amankora-rates-2026.pdf',
     downloadCount: 380,
     year: '2026',
-    featured: false,
-    tableOfContents: [
-      { page: 1, title: 'Amankora Guest Transfer Rates' },
-      { page: 3, title: 'Private Car Hire Options' },
-      { page: 5, title: 'Booking & Contact Details' }
-    ]
+    featured: false
   },
   {
     id: 'brochure-4',
@@ -1147,14 +1132,11 @@ export const initialBrochures: Brochure[] = [
     pdfUrl: '/api/uploads/brochures/car-rental-new-brochure.pdf',
     downloadCount: 640,
     year: '2026',
-    featured: false,
-    tableOfContents: [
-      { page: 1, title: 'Our Fleet & Vehicle Options' },
-      { page: 3, title: 'Rates & Packages' },
-      { page: 5, title: 'Booking & Contact Details' }
-    ]
+    featured: false
   }
-];export const initialGallery: GalleryItem[] = [
+];
+
+export const initialGallery: GalleryItem[] = [
   {
     id: 'gal-1',
     title: 'Paro Taktsang (Tiger’s Nest Monastery)',

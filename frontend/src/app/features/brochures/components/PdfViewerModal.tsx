@@ -164,18 +164,6 @@ export const PdfViewerModal: React.FC = () => {
                     )}
                   </div>
 
-                  <div>
-                    <h3 className="font-bold text-sm text-[#3b2314] mb-2">Table of Contents</h3>
-                    <ul className="space-y-2 text-sm">
-                      {currentBrochure.tableOfContents?.map(toc => (
-                        <li key={toc.page} className="flex justify-between border-b border-[#e2d5c3] pb-2">
-                          <span className="text-stone-700">{toc.title}</span>
-                          <span className="text-[#d96b27] font-bold">p.{toc.page}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
                   <button
                     onClick={handleDownload}
                     className="w-full py-3 rounded-xl bg-gradient-to-r from-[#d96b27] to-[#b85c1a] text-white font-bold flex items-center justify-center gap-2 cursor-pointer shadow-md hover:shadow-lg transition-shadow"

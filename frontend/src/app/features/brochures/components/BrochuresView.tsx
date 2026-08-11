@@ -79,19 +79,6 @@ export const BrochuresView: React.FC = () => {
                 <p className="text-stone-700 text-xs mt-1 font-serif font-medium leading-normal">
                   {b.subtitle}
                 </p>
-
-                <div className="mt-3 space-y-1">
-                  <span className="text-[10px] font-extrabold text-rose-900 uppercase tracking-widest block">
-                    Table of Contents Sample:
-                  </span>
-                  <ul className="text-[11px] text-stone-800 font-medium space-y-0.5">
-                    {b.tableOfContents?.slice(0, 3).map(toc => (
-                      <li key={toc.page} className="flex justify-between border-b border-amber-100 pb-0.5">
-                        <span className="truncate min-w-0 flex-1">p.{toc.page} {toc.title}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
               </div>
 
               {/* Actions */}

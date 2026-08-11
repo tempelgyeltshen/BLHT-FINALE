@@ -21,7 +21,7 @@ export interface Brochure {
   year: string;
   featured: boolean;
   galleryImages?: string[];
-  tableOfContents: BrochureTableOfContentsEntry[];
+  tableOfContents?: BrochureTableOfContentsEntry[];
 
   // Cloudinary metadata for the uploaded PDF (kept for delete-sync).
   pdf_public_id?: string;

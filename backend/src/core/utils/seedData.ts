@@ -298,7 +298,7 @@ export const seedFestivals = [
 export const seedBrochures = [
   {
     title: 'Thangka Painting & Sacred Art Collection 2026',
-    subtitle: 'FINAL 26 Pages - Authentic traditional Bhutanese thangka masterpieces, artist profiles, commissioning guide, and sacred art heritage',
+    subtitle: 'FINAL 26 Pages - Authentic traditional Bhutanese thangka masterpieces and sacred art heritage',
     category: 'Thangka Painting',
     pdfUrl: '/api/uploads/brochures/thangka-painting-brochure.pdf',
     fileSize: '17.6 MB',
@@ -310,12 +310,7 @@ export const seedBrochures = [
     ],
     downloadCount: 1420,
     year: '2026',
-    featured: true,
-    tableOfContents: [
-      { page: 1, title: 'The Sacred Art of Thangka' },
-      { page: 4, title: 'Master Artists of Bhutan' },
-      { page: 10, title: 'Commissioning Your Own Thangka' }
-    ]
+    featured: true
   },
   {
     title: 'HQ Car Rental Pamphlet',
@@ -330,12 +325,7 @@ export const seedBrochures = [
     ],
     downloadCount: 520,
     year: '2026',
-    featured: false,
-    tableOfContents: [
-      { page: 1, title: 'Our Fleet & Vehicle Options' },
-      { page: 3, title: 'Rates & Packages' },
-      { page: 5, title: 'Booking & Contact Details' }
-    ]
+    featured: false
   },
   {
     title: 'Amankora Car Rental Rate Sheet 2026',
@@ -350,12 +340,7 @@ export const seedBrochures = [
     ],
     downloadCount: 380,
     year: '2026',
-    featured: false,
-    tableOfContents: [
-      { page: 1, title: 'Amankora Guest Transfer Rates' },
-      { page: 3, title: 'Private Car Hire Options' },
-      { page: 5, title: 'Booking & Contact Details' }
-    ]
+    featured: false
   },
   {
     title: 'New Car Rental Brochure',
@@ -370,12 +355,7 @@ export const seedBrochures = [
     ],
     downloadCount: 640,
     year: '2026',
-    featured: false,
-    tableOfContents: [
-      { page: 1, title: 'Our Fleet & Vehicle Options' },
-      { page: 3, title: 'Rates & Packages' },
-      { page: 5, title: 'Booking & Contact Details' }
-    ]
+    featured: false
   }
 ];
 
