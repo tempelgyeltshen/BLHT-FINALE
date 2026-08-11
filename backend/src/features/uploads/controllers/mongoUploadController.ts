@@ -17,8 +17,11 @@ export async function uploadPdfToMongo(req: Request, res: Response, next: NextFu
       return res.status(400).json({ error: { message: 'Only PDF files are supported.' } });
     }
 
+    // Handle both memory storage (buffer) and disk storage (file path)
+    const fileData = req.file.buffer || req.file.path;
+
     const { fileId, size } = await mongoUploadService.storePdf(
-      req.file.path,
+      fileData,
       req.file.originalname,
       req.file.mimetype
     );
@@ -35,8 +38,7 @@ export async function uploadPdfToMongo(req: Request, res: Response, next: NextFu
   } catch (error) {
     next(error);
   } finally {
-    // Always remove the multer temp file, including when the GridFS upload
-    // fails (otherwise up to 44 MB can leak in backend/uploads/).
+    // Always remove the multer temp file if using disk storage
     try {
       if (req.file?.path && fs.existsSync(req.file.path)) {
         fs.unlinkSync(req.file.path);

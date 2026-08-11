@@ -42,10 +42,10 @@ export interface PdfInfo {
 
 export const mongoUploadService = {
   /**
-   * Stream a file from disk (multer temp file) into a GridFS document.
+   * Stream a file from disk (multer temp file) or memory (buffer) into a GridFS document.
    * Returns the GridFS file id and stored size.
    */
-  async storePdf(filePath: string, filename: string, mimeType: string): Promise<StoredPdf> {
+  async storePdf(filePath: string | Buffer, filename: string, mimeType: string): Promise<StoredPdf> {
     const bucket = getBucket();
 
     return new Promise<StoredPdf>((resolve, reject) => {
@@ -53,12 +53,7 @@ export const mongoUploadService = {
         contentType: mimeType || 'application/pdf',
         metadata: { uploadedAt: new Date() },
       });
-      const fileStream = fs.createReadStream(filePath);
 
-      fileStream.on('error', (error) => {
-        uploadStream.destroy();
-        reject(error);
-      });
       uploadStream.on('error', reject);
       uploadStream.on('finish', () => {
         resolve({
@@ -67,7 +62,22 @@ export const mongoUploadService = {
         });
       });
 
-      fileStream.pipe(uploadStream);
+      // Handle both memory storage (buffer) and disk storage (file path)
+      if (Buffer.isBuffer(filePath)) {
+        // Memory storage - use buffer directly
+        uploadStream.write(filePath);
+        uploadStream.end();
+      } else {
+        // Disk storage - read from file
+        const fileStream = fs.createReadStream(filePath);
+
+        fileStream.on('error', (error) => {
+          uploadStream.destroy();
+          reject(error);
+        });
+
+        fileStream.pipe(uploadStream);
+      }
     });
   },
 

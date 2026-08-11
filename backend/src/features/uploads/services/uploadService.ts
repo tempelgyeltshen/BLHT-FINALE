@@ -42,18 +42,27 @@ export class CloudinaryUploadProvider implements UploadProvider {
         }
       );
 
-      // Read from disk file instead of memory buffer
-      const fileStream = fs.createReadStream(file.path);
-      fileStream.pipe(stream);
+      // Handle both memory storage (buffer) and disk storage (file path)
+      if (file.buffer) {
+        // Memory storage - use buffer directly
+        stream.write(file.buffer);
+        stream.end();
+      } else if (file.path) {
+        // Disk storage - read from file
+        const fileStream = fs.createReadStream(file.path);
+        fileStream.pipe(stream);
 
-      fileStream.on('error', (error) => {
-        reject(error);
-      });
+        fileStream.on('error', (error) => {
+          reject(error);
+        });
+      } else {
+        reject(new Error('No file data available (neither buffer nor path)'));
+      }
     });
 
-    // Clean up temporary file after upload
+    // Clean up temporary file after upload (only for disk storage)
     try {
-      if (fs.existsSync(file.path)) {
+      if (file.path && fs.existsSync(file.path)) {
         fs.unlinkSync(file.path);
       }
     } catch (error) {

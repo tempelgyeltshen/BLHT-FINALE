@@ -25,9 +25,6 @@ RUN npm run build
 # Remove devDependencies to reduce image size
 RUN npm prune --omit=dev
 
-# Create logs directory with proper permissions before switching to non-root user
-RUN mkdir -p /app/logs && chown -R nodejs:nodejs /app/logs
-
 # Switch to non-root user
 USER nodejs
 
