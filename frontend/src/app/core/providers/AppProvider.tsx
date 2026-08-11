@@ -261,7 +261,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [brochures, setBrochures] = useState<Brochure[]>(() => {
     const saved = localStorage.getItem(`${LOCAL_STORAGE_KEY}_brochures`);
-    return saved ? JSON.parse(saved) : initialBrochures;
+    if (!saved) return initialBrochures;
+    try {
+      const parsed = JSON.parse(saved);
+      if (!Array.isArray(parsed) || parsed.length === 0) return initialBrochures;
+      // Stale caches (from the Cloudinary/GridFS era) may not carry a usable
+      // pdfUrl, which would make the viewer/download silently break. Restore
+      // the shipped static PDF (and its size/page metadata) for the known
+      // brochures; unmatched/admin-created records are left untouched.
+      return parsed.map((b: Brochure) => {
+        const hasUsablePdf = typeof b.pdfUrl === 'string' && b.pdfUrl.startsWith('/api/uploads/brochures/');
+        if (hasUsablePdf) return b;
+        const match =
+          initialBrochures.find(s => s.id === b.id) ||
+          initialBrochures.find(s => s.title === b.title);
+        return match ? { ...b, pdfUrl: match.pdfUrl, fileSize: match.fileSize, totalPages: match.totalPages } : b;
+      });
+    } catch {
+      return initialBrochures;
+    }
   });
 
   const [gallery, setGallery] = useState<GalleryItem[]>(() => {

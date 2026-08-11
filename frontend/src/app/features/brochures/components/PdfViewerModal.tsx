@@ -1,6 +1,6 @@
 import React from 'react';
 import { useApp } from '../../../core/providers/AppProvider';
-import { ArrowLeft, Download } from 'lucide-react';
+import { ArrowLeft, Download, ExternalLink } from 'lucide-react';
 import { downloadBrochurePdf, createBrochurePreviewUrl, getBrochurePdfUrl } from '../../../../utils/downloadPdf';
 
 export const PdfViewerModal: React.FC = () => {
@@ -29,6 +29,45 @@ export const PdfViewerModal: React.FC = () => {
       }
     };
   }, [brochurePreviewUrl, isPreviewBlob]);
+
+  // Track PDF load state so we can show a spinner and a helpful fallback
+  // instead of a silent blank box when the document fails to load. An iframe's
+  // onError only fires for network failures (not HTTP 404), so a cheap HEAD
+  // preflight catches missing documents up front.
+  const [pdfLoadFailed, setPdfLoadFailed] = React.useState(false);
+  const [pdfLoading, setPdfLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    setPdfLoadFailed(false);
+    setPdfLoading(true);
+    const url = brochurePreviewUrl;
+    // blob:/data: previews render instantly — no preflight needed.
+    if (!url || url.startsWith('blob:') || url.startsWith('data:')) {
+      return () => { cancelled = true; };
+    }
+    fetch(url, { method: 'HEAD', credentials: 'include' })
+      .then(res => {
+        if (!cancelled && !res.ok) setPdfLoadFailed(true);
+      })
+      .catch(() => {
+        if (!cancelled) setPdfLoadFailed(true);
+      });
+    return () => { cancelled = true; };
+  }, [brochurePreviewUrl]);
+
+  const handlePdfLoaded = () => setPdfLoading(false);
+
+  const handlePdfError = () => {
+    setPdfLoading(false);
+    setPdfLoadFailed(true);
+  };
+
+  const openInNewTab = () => {
+    if (brochurePreviewUrl) {
+      window.open(brochurePreviewUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
 
   const brochureImages = React.useMemo(() => {
     if (!currentBrochure) return [];
@@ -97,6 +136,14 @@ export const PdfViewerModal: React.FC = () => {
 
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <button
+              onClick={openInNewTab}
+              className="p-2 sm:px-3 sm:py-2 rounded-xl bg-[#efe2d3] hover:bg-[#e4d3bf] border border-[#d8c7b2] text-xs font-semibold text-[#3b2314] flex items-center gap-1.5 cursor-pointer min-h-[40px] min-w-[40px] sm:min-w-0 justify-center transition-colors"
+              title="Open PDF in new tab"
+            >
+              <ExternalLink className="w-4 h-4 text-[#d96b27]" />
+              <span className="hidden sm:inline">Open</span>
+            </button>
+            <button
               onClick={handleDownload}
               className="p-2 sm:px-3 sm:py-2 rounded-xl bg-[#efe2d3] hover:bg-[#e4d3bf] border border-[#d8c7b2] text-xs font-semibold text-[#3b2314] flex items-center gap-1.5 cursor-pointer min-h-[40px] min-w-[40px] sm:min-w-0 justify-center transition-colors"
               title="Download PDF"
@@ -110,12 +157,47 @@ export const PdfViewerModal: React.FC = () => {
         {/* Main Viewing Area */}
         <div className="flex-1 overflow-y-auto p-2 sm:p-6 flex flex-col items-center justify-center bg-[#eae0d2]/70 relative min-h-[500px] sm:min-h-[600px]">
           {brochurePreviewUrl ? (
-            <div className="w-full h-full min-h-[520px] sm:min-h-[620px] bg-stone-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-[#e2d5c3] flex flex-col my-auto">
-              <iframe
-                src={brochurePreviewUrl}
-                title={currentBrochure.title}
-                className="w-full h-full min-h-[520px] sm:min-h-[620px] border-0"
-              />
+            <div className="w-full h-full min-h-[520px] sm:min-h-[620px] bg-stone-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-[#e2d5c3] flex flex-col my-auto relative">
+              {pdfLoadFailed ? (
+                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 p-6 text-center bg-stone-900">
+                  <p className="text-amber-100 font-serif text-lg font-bold">The PDF could not be loaded.</p>
+                  <p className="text-amber-100/70 text-xs max-w-sm leading-relaxed">
+                    The document may be temporarily unavailable. You can still open it in a new tab or download the file directly.
+                  </p>
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    <button
+                      onClick={openInNewTab}
+                      className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#d96b27] to-[#b85c1a] text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md hover:shadow-lg transition-shadow"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      <span>Open in New Tab</span>
+                    </button>
+                    <button
+                      onClick={handleDownload}
+                      className="px-4 py-2.5 rounded-xl bg-[#efe2d3] hover:bg-[#e4d3bf] border border-[#d8c7b2] text-[#3b2314] text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors"
+                    >
+                      <Download className="w-4 h-4 text-[#d96b27]" />
+                      <span>Download PDF</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {pdfLoading && (
+                    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-stone-900/95">
+                      <div className="w-10 h-10 rounded-full border-4 border-amber-500/30 border-t-amber-400 animate-spin" />
+                      <p className="text-amber-100/80 text-xs font-bold tracking-wide">Preparing PDF…</p>
+                    </div>
+                  )}
+                  <iframe
+                    src={brochurePreviewUrl}
+                    title={currentBrochure.title}
+                    className="w-full h-full min-h-[520px] sm:min-h-[620px] border-0"
+                    onLoad={handlePdfLoaded}
+                    onError={handlePdfError}
+                  />
+                </>
+              )}
             </div>
           ) : (
             <div className="w-full max-w-4xl bg-[#fdfbf7] border border-[#e2d5c3] rounded-2xl p-4 sm:p-6 shadow-inner flex flex-col">

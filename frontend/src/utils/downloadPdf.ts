@@ -93,8 +93,11 @@ export const downloadBrochurePdf = (brochure: Brochure, showToast?: (msg: string
     showToast(`Downloading ${brochure.title} (PDF)...`);
   }
 
+  // Prefer the real file name (e.g. thangka-painting-brochure.pdf) so saved
+  // downloads keep the source document's name; fall back to the title.
+  const staticFileMatch = brochure.pdfUrl?.match(/\/([^/]+\.pdf)(?:\?.*)?$/i);
   const cleanName = brochure.title.replace(/[^a-zA-Z0-9_\-]/g, '_');
-  const fileName = `${cleanName}_BLHT_2026.pdf`;
+  const fileName = staticFileMatch ? staticFileMatch[1] : `${cleanName}_BLHT_2026.pdf`;
 
   const pdfUrl = getBrochurePdfUrl(brochure, { download: true });
 
