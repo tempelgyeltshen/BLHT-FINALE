@@ -6,8 +6,12 @@ import {
   handleUnauthorized,
   setAccessToken,
 } from './interceptors';
+import { API_BASE_URL } from '../../app/config/api.config';
 
-const apiBaseUrl = import.meta.env.VITE_API_URL || "";
+// API_BASE_URL ignores localhost/loopback values so a production build can
+// never call the visitor's own machine; it falls back to same-origin /api
+// (proxied to the backend by Vercel / nginx).
+const apiBaseUrl = API_BASE_URL;
 
 let csrfToken: string | null = null;
 
