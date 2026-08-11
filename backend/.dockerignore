@@ -12,3 +12,7 @@ README.md
 .vscode
 .idea
 .DS_Store
+coverage
+logs
+*.test.ts
+src/__tests__

@@ -47,6 +47,8 @@ await seedDatabase();
 
 const server = app.listen(env.port, "0.0.0.0", () => {
   logger.info(`Backend API listening on port ${env.port}`);
+  logger.info(`Environment: ${env.nodeEnv}`);
+  logger.info(`Frontend origin: ${env.frontendOrigin}`);
 });
 
 server.on('error', (error: NodeJS.ErrnoException) => {
@@ -56,4 +58,13 @@ server.on('error', (error: NodeJS.ErrnoException) => {
     logger.error('Backend startup failed', { error: error.message });
   }
   process.exitCode = 1;
+});
+
+// Handle graceful shutdown
+process.on('SIGTERM', () => {
+  logger.info('SIGTERM signal received: closing HTTP server');
+  server.close(() => {
+    logger.info('HTTP server closed');
+    process.exit(0);
+  });
 });
