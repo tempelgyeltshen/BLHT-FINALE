@@ -24,5 +24,11 @@ export default defineConfig(() => {
         },
       },
     },
+    // Vercel deployment configuration
+    base: process.env.NODE_ENV === 'production' ? '/' : '/',
+    build: {
+      outDir: 'dist',
+      sourcemap: true,
+    },
   };
 });

@@ -6,6 +6,12 @@
 .env.development
 .env.*.local
 docker-compose.env
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+frontend/.env.staging
+frontend/.env.development
+frontend/.env.*.local
 
 # Dependencies
 node_modules/
