@@ -9,6 +9,7 @@ import { FileText, Plus, Trash2, Eye, X, Upload, CheckCircle, Loader2 } from 'lu
 import { useCloudinaryUpload } from '../../../shared/hooks/useCloudinaryUpload';
 import { cloudinaryService } from '../../../../../lib/services/cloudinary.service';
 import { api } from '../../../../../lib/api/client';
+import { BROCHURE_CATEGORIES } from '../../../shared/constants/mediaCategories';
 import { isValidHttpUrl } from '../../../../../utils/helpers';
 
 // Cloudinary's free plan caps raw (PDF) uploads at 10 MB. Larger PDFs are
@@ -295,11 +296,9 @@ export const AdminBrochuresView: React.FC = () => {
               value={formData.category}
               onChange={e => setFormData({ ...formData, category: e.target.value })}
             >
-              <option value="Luxury Tours">Luxury Tours</option>
-              <option value="Festivals & Culture">Festivals & Culture</option>
-              <option value="Wellness & Mindfulness">Wellness & Mindfulness</option>
-              <option value="Trekking & Adventure">Trekking & Adventure</option>
-              <option value="Sanctuary Lodges">Sanctuary Lodges</option>
+              {BROCHURE_CATEGORIES.map(c => (
+                <option key={c.id} value={c.id}>{c.label}</option>
+              ))}
             </Select>
 
             <Input

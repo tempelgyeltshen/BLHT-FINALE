@@ -67,7 +67,7 @@ export const GalleryView: React.FC = () => {
             active={selectedCategory === 'all'}
             onClick={() => setSelectedCategory('all')}
           >
-            All Photos
+            All Photos ({gallery.length})
           </FilterPill>
           {categoryOptions.map(cat => (
             <FilterPill
@@ -76,7 +76,7 @@ export const GalleryView: React.FC = () => {
               active={selectedCategory === cat.id}
               onClick={() => setSelectedCategory(cat.id)}
             >
-              {cat.label}
+              {cat.label} ({gallery.filter(g => g.category === cat.id).length})
             </FilterPill>
           ))}
         </div>

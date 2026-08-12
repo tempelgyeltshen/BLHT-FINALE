@@ -65,6 +65,13 @@ export const VideosView: React.FC = () => {
         </div>
 
         <div className="flex flex-wrap gap-1.5 w-full md:w-auto">
+          <FilterPill
+            variant="square"
+            active={selectedCategory === 'all'}
+            onClick={() => setSelectedCategory('all')}
+          >
+            All Videos ({videos.length})
+          </FilterPill>
           {categories.map(cat => (
             <FilterPill
               key={cat}
@@ -72,7 +79,7 @@ export const VideosView: React.FC = () => {
               active={selectedCategory === cat}
               onClick={() => setSelectedCategory(cat)}
             >
-              {categoryLabel(cat, VIDEO_CATEGORIES)}
+              {categoryLabel(cat, VIDEO_CATEGORIES)} ({videos.filter(v => v.category === cat).length})
             </FilterPill>
           ))}
         </div>

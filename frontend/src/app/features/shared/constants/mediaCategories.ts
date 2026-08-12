@@ -30,6 +30,17 @@ export const VIDEO_CATEGORIES: MediaCategory[] = [
   { id: 'Testimonials', label: 'Guest Testimonials' },
 ];
 
+/** Brochure / publication categories. */
+export const BROCHURE_CATEGORIES: MediaCategory[] = [
+  { id: 'Luxury Tours', label: 'Luxury Tours' },
+  { id: 'Festivals & Culture', label: 'Festivals & Culture' },
+  { id: 'Thangka Painting', label: 'Thangka Painting' },
+  { id: 'Car Rental', label: 'Car Rental' },
+  { id: 'Wellness & Mindfulness', label: 'Wellness & Mindfulness' },
+  { id: 'Trekking & Adventure', label: 'Trekking & Adventure' },
+  { id: 'Sanctuary Lodges', label: 'Sanctuary Lodges' },
+];
+
 /** Resolve a category id to its display label (falls back to the raw id). */
 export const categoryLabel = (
   id: string | undefined,
