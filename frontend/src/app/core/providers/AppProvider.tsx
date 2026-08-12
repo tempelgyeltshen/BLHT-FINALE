@@ -345,17 +345,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       } catch {
         // keep localStorage fallback
       }
-
-      // Inquiries (admin inbox) — the API returns real submissions from the
-      // server file store; merge them on top of any locally-seeded data.
-      try {
-        const res = await api.listInquiries<ContactInquiry>();
-        if (Array.isArray(res.data) && res.data.length > 0) {
-          setInquiries(res.data);
-        }
-      } catch {
-        // 401 when not logged in / API unreachable — keep local seed data
-      }
+      // Note: the admin inquiry inbox is intentionally NOT fetched here —
+      // GET /api/inquiries requires admin auth and would 401 for public
+      // visitors (logged in the browser console). It is fetched by the
+      // dedicated effect below whenever an admin session is active.
     };
 
     fetchCollections();

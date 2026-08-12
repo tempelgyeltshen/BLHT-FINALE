@@ -6,6 +6,7 @@ import { usePagination } from '../../../shared/hooks/usePagination';
 import { Image as ImageIcon, Plus, Edit, Trash2, MapPin, X, Check, Maximize2, Upload, Loader2 } from 'lucide-react';
 import { GalleryItem } from '../../../../../types';
 import { useCloudinaryUpload } from '../../../shared/hooks/useCloudinaryUpload';
+import { GALLERY_CATEGORIES } from '../../../shared/constants/mediaCategories';
 import { isValidHttpUrl } from '../../../../../utils/helpers';
 
 export const AdminGalleryView: React.FC = () => {
@@ -31,14 +32,7 @@ export const AdminGalleryView: React.FC = () => {
   // Cloudinary metadata state
   const [imageMetadata, setImageMetadata] = useState<any>(null);
 
-  const categories: { id: GalleryItem['category']; label: string }[] = [
-    { id: 'monasteries', label: 'Sacred Monasteries' },
-    { id: 'dzongs', label: 'Ancient Fortresses (Dzongs)' },
-    { id: 'festivals', label: 'Mask Dance Festivals' },
-    { id: 'luxury', label: 'BLHT & Six Senses Lodges' },
-    { id: 'nature', label: 'Glacial Valleys & Nature' },
-    { id: 'culture', label: 'Cultural & Local Life' },
-  ];
+  const categories = GALLERY_CATEGORIES;
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

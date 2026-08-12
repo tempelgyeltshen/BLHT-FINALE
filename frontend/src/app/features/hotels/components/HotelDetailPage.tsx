@@ -88,11 +88,14 @@ export const HotelDetailPage: React.FC = () => {
     .slice(0, 3);
 
   // Tour packages visiting this hotel's region or category
-  const relatedPackages = packages.filter(p => 
-    p.destinations.some(d => d.toLowerCase().includes(currentHotel.region.toLowerCase()) || d.toLowerCase().includes(currentHotel.location.toLowerCase())) ||
-    p.hotelCategory.toLowerCase().includes(currentHotel.brand.toLowerCase()) ||
-    p.featured
-  ).slice(0, 3);
+  const relatedPackages = packages.filter(p => {
+    const destinations = Array.isArray(p.destinations) ? p.destinations : [];
+    const hotelCategory = p.hotelCategory || '';
+    return destinations.some(d => 
+      d.toLowerCase().includes(currentHotel.region.toLowerCase()) || 
+      d.toLowerCase().includes(currentHotel.location.toLowerCase())
+    ) || hotelCategory.toLowerCase().includes(currentHotel.brand.toLowerCase()) || p.featured;
+  }).slice(0, 3);
 
   return (
     <div className="bg-[#fcf8f2] min-h-screen pb-20">
@@ -378,13 +381,13 @@ export const HotelDetailPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {relatedPackages.map(pkg => (
+            {relatedPackages.length > 0 ? relatedPackages.map(pkg => (
               <div
                 key={pkg.id}
                 onClick={() => {
                   setActivePackage(pkg);
-                  navigate('package-detail');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  const packageSlug = pkg.slug || pkg.id;
+                  navigateRouter(`/packages/${packageSlug}`);
                 }}
                 className="bg-white border border-[#e2d1be] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group flex flex-col"
               >
@@ -394,7 +397,7 @@ export const HotelDetailPage: React.FC = () => {
                     {pkg.category}
                   </span>
                   <div className="absolute bottom-3 right-3 bg-[#3b2314]/90 text-amber-200 text-xs font-bold font-serif px-2.5 py-1 rounded-md">
-                    ${pkg.priceUSD.toLocaleString()} / guest
+                    ${pkg.priceUSD ? pkg.priceUSD.toLocaleString() : 'Contact'} / guest
                   </div>
                 </div>
 
@@ -414,7 +417,20 @@ export const HotelDetailPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="col-span-3 text-center py-10 bg-white rounded-2xl border border-[#e2d1be]">
+                <Compass className="w-10 h-10 text-[#d96b27] mx-auto mb-3" />
+                <p className="text-sm text-stone-600 font-serif max-w-md mx-auto">
+                  No specific itineraries currently feature this lodge. Contact our journey designers to create a custom experience including this sanctuary.
+                </p>
+                <button
+                  onClick={() => navigate('contact')}
+                  className="mt-5 px-6 py-2.5 bg-[#d96b27] hover:bg-[#b85116] text-white font-serif font-bold text-xs rounded-xl transition-colors cursor-pointer"
+                >
+                  Request Custom Itinerary
+                </button>
+              </div>
+            )}
           </div>
         </div>
 

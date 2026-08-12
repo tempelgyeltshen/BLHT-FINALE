@@ -4,6 +4,7 @@ import { useApp } from '../../../core/providers/AppProvider';
 import { X, MapPin, Image as ImageIcon, Search } from 'lucide-react';
 import { luxuryHoverProps } from '../../../../utils/motion';
 import { FilterPill } from '../../shared/components/ui';
+import { GALLERY_CATEGORIES } from '../../shared/constants/mediaCategories';
 import { GalleryItem } from '../../../../types';
 
 export const GalleryView: React.FC = () => {
@@ -12,15 +13,7 @@ export const GalleryView: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [lightboxImage, setLightboxImage] = useState<GalleryItem | null>(null);
 
-  const categoryOptions: { id: GalleryItem['category']; label: string }[] = [
-    { id: 'monasteries', label: 'Sacred Monasteries' },
-    { id: 'dzongs', label: 'Ancient Fortresses (Dzongs)' },
-    { id: 'festivals', label: 'Mask Dance Festivals' },
-    { id: 'luxury', label: 'BLHT & Six Senses' },
-    { id: 'nature', label: 'Glacial Valleys & Nature' },
-    { id: 'culture', label: 'Cultural & Local Life' },
-  ];
-
+  const categoryOptions = GALLERY_CATEGORIES;
 
   const filtered = gallery.filter(item => {
     const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;

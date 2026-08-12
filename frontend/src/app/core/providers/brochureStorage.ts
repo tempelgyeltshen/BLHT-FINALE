@@ -26,13 +26,19 @@ export const mergeBrochuresWithShippedPdfs = (
   if (!Array.isArray(saved) || saved.length === 0) return fallback;
   return saved.map((b) => {
     if (!b || typeof b !== 'object') return b;
-    if (hasUsableStaticPdf(b)) return b;
     const match =
       fallback.find((s) => s.id === b.id) ||
       fallback.find((s) => s.title === b.title);
-    return match
-      ? { ...b, pdfUrl: match.pdfUrl, fileSize: match.fileSize, totalPages: match.totalPages }
-      : b;
+    if (!match) return b;
+    // Restore the shipped cover art for known brochures so the real product
+    // photos are shown instead of stale/stock image URLs from older caches.
+    const restored = {
+      ...b,
+      coverImage: match.coverImage,
+      galleryImages: match.galleryImages,
+    };
+    if (hasUsableStaticPdf(b)) return restored;
+    return { ...restored, pdfUrl: match.pdfUrl, fileSize: match.fileSize, totalPages: match.totalPages };
   });
 };
 

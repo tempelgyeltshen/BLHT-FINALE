@@ -1,14 +1,18 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
+import { useNavigate as useReactNavigate } from 'react-router-dom';
 import { useHotels } from '../hooks/useHotels';
 import { Star } from 'lucide-react';
 import { luxuryHoverProps } from '../../../../utils/motion';
 import { FilterPill } from '../../shared/components/ui';
 import { AutoImageSlider } from '../../shared/components/media/AutoImageSlider';
 import { FALLBACK_HERO_IMAGES } from '../../shared/constants/media';
+import { useApp } from '../../../core/providers/AppProvider';
 
 export const HotelsView: React.FC = () => {
   const { hotels, loading } = useHotels();
+  const { setActiveHotel } = useApp();
+  const navigateRouter = useReactNavigate();
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const [heroHovered, setHeroHovered] = useState(false);
 
@@ -32,6 +36,12 @@ export const HotelsView: React.FC = () => {
     if (selectedRegion === 'all') return true;
     return h.region.toLowerCase() === selectedRegion.toLowerCase();
   });
+
+  const handleHotelClick = (hotel: any) => {
+    setActiveHotel(hotel);
+    const hotelSlug = hotel.slug || hotel.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    navigateRouter(`/hotels/${hotelSlug}`);
+  };
 
   if (loading) {
     return (
@@ -164,6 +174,7 @@ export const HotelsView: React.FC = () => {
             <motion.div
               key={hotel.id}
               {...luxuryHoverProps}
+              onClick={() => handleHotelClick(hotel)}
               className="bg-white rounded-2xl overflow-hidden border border-amber-200 shadow-md transition-all group flex flex-col justify-between cursor-pointer"
             >
               <div>
@@ -209,6 +220,10 @@ export const HotelsView: React.FC = () => {
 
               <div className="p-6 pt-0 flex gap-3">
                 <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleHotelClick(hotel);
+                  }}
                   className="flex-1 py-3 rounded-xl bg-[#d96b27] hover:bg-[#b85116] text-white font-serif font-bold text-xs cursor-pointer transition-all shadow-md flex items-center justify-center gap-2"
                 >
                   <span>More Details</span>

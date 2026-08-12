@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useApp } from '../../../core/providers/AppProvider';
 import { Play, X, Film, Search } from 'lucide-react';
 import { FilterPill } from '../../shared/components/ui';
+import { VIDEO_CATEGORIES, categoryLabel } from '../../shared/constants/mediaCategories';
 import { VideoItem } from '../../../../types';
 
 export const VideosView: React.FC = () => {
@@ -11,7 +12,12 @@ export const VideosView: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  const categories = ['all', ...Array.from(new Set(videos.map(v => v.category)))];
+  // Curated categories first, then any legacy/free-text categories still
+  // present in older data so those videos remain filterable too.
+  const categories = [
+    ...VIDEO_CATEGORIES.map(c => c.id),
+    ...Array.from(new Set(videos.map(v => v.category))),
+  ].filter((id, i, arr) => id && arr.indexOf(id) === i);
 
   const filteredVideos = videos.filter(v => {
     const matchesCat = selectedCategory === 'all' || v.category === selectedCategory;
@@ -63,11 +69,10 @@ export const VideosView: React.FC = () => {
             <FilterPill
               key={cat}
               variant="square"
-              className="capitalize"
               active={selectedCategory === cat}
               onClick={() => setSelectedCategory(cat)}
             >
-              {cat}
+              {categoryLabel(cat, VIDEO_CATEGORIES)}
             </FilterPill>
           ))}
         </div>

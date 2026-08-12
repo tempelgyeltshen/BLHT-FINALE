@@ -48,38 +48,22 @@ export const AboutView: React.FC = () => {
         <CeoSection />
       </motion.div>
 
-      {/* Philosophy & Mission */}
+      {/* Our Vision */}
       <motion.div 
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch"
+        className="bg-[#f5eee4] border border-[#e2d1be] rounded-3xl p-8 sm:p-12 space-y-6 text-center"
       >
-        <div className="bg-[#f5eee4] border border-[#e2d1be] rounded-3xl p-6 sm:p-8 space-y-4 flex flex-col justify-between">
-          <div className="space-y-3">
-            <span className="text-[10px] font-bold text-[#d96b27] uppercase tracking-wider font-serif">Our Foundation</span>
-            <h3 className="font-serif text-xl font-bold text-[#3b2314]">Gross National Happiness Philosophy</h3>
-            <p className="text-xs sm:text-sm text-stone-700 font-serif leading-relaxed">
-              The name of our company is derived from Bhutan’s internationally recognized national goal of <strong>Gross National Happiness (GNH)</strong>. Our service is targeted toward achieving Gross National Happiness for all those who work with us and who avail our services.
-            </p>
-            <p className="text-xs sm:text-sm text-stone-700 font-serif leading-relaxed italic border-l-2 border-[#d96b27] pl-3 py-1">
-              "Our primary concern is not to kill the golden goose, but to take care of it with utmost love and affection. We strive to give the best and diversified tour programmes to our guests augmented by our superlative services."
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-[#f5eee4] border border-[#e2d1be] rounded-3xl p-6 sm:p-8 space-y-4 flex flex-col justify-between">
-          <div className="space-y-3">
-            <span className="text-[10px] font-bold text-[#d96b27] uppercase tracking-wider font-serif">Cultural Mastery</span>
-            <h3 className="font-serif text-xl font-bold text-[#3b2314]">Deep Tradition & Thangka Paintings</h3>
-            <p className="text-xs sm:text-sm text-stone-700 font-serif leading-relaxed">
-              We are the most competent tour operator in terms of handling guests who are enthusiastic about Bhutan’s Tradition and Culture. There is no tour operator with the capacity to introduce visitors as closely to our traditions and culture, especially sacred <strong>Thangka Paintings</strong>.
-            </p>
-            <p className="text-xs sm:text-sm text-stone-700 font-serif leading-relaxed">
-              We know our history better and will never mislead our guests with exaggerated information. From the time you step in Bhutan till the moment you leave, we treat you as a part of our family.
-            </p>
-          </div>
+        <div className="space-y-4">
+          <span className="text-[10px] font-bold text-[#d96b27] uppercase tracking-wider font-serif">Our Vision</span>
+          <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#3b2314] leading-relaxed">
+            Remember, it's not about where you start; it's about where you're headed and the impact you make along the way.
+          </h3>
+          <p className="text-xs sm:text-sm text-stone-700 font-serif leading-relaxed max-w-3xl mx-auto">
+            This vision guides every journey we craft and every guest we welcome. We believe that meaningful travel is about transformation—how Bhutan's ancient wisdom, sacred landscapes, and warm hospitality can change not just your itinerary, but your perspective.
+          </p>
         </div>
       </motion.div>
 
@@ -222,4 +206,3 @@ export const AboutView: React.FC = () => {
     </div>
   );
 };
-

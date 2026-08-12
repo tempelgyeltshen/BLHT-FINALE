@@ -4,11 +4,14 @@ import { useApp } from '../../../core/providers/AppProvider';
 import { Download, Eye, BookOpen, Play, ExternalLink, Maximize2, X, Search } from 'lucide-react';
 import { luxuryHoverProps } from '../../../../utils/motion';
 import { downloadBrochurePdf } from '../../../../utils/downloadPdf';
+import { FilterPill } from '../../shared/components/ui';
+import { GALLERY_CATEGORIES, VIDEO_CATEGORIES, categoryLabel } from '../../shared/constants/mediaCategories';
 import { GalleryItem } from '../../../../types';
 
 export const ContentShowcaseView: React.FC = () => {
   const { brochures, videos, gallery, setActiveBrochure, logBrochureDownload, showToast } = useApp();
   const [activeTab, setActiveTab] = useState<'all' | 'brochures' | 'videos' | 'gallery'>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [lightboxImage, setLightboxImage] = useState<GalleryItem | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -23,6 +26,18 @@ export const ContentShowcaseView: React.FC = () => {
     { id: 'videos', label: 'Videos' },
     { id: 'gallery', label: 'Photos' },
   ];
+
+  // Category pills shown for the active media type (hidden on 'all' where
+  // mixed content types don't share a vocabulary).
+  const activeCategories: { id: string; label: string; count: number }[] =
+    activeTab === 'videos'
+      ? VIDEO_CATEGORIES.map(c => ({ ...c, count: videos.filter(v => v.category === c.id).length }))
+      : activeTab === 'gallery'
+      ? GALLERY_CATEGORIES.map(c => ({ ...c, count: gallery.filter(g => g.category === c.id).length }))
+      : activeTab === 'brochures'
+      ? Array.from(new Set(brochures.map(b => b.category).filter(Boolean)))
+          .map(id => ({ id, label: id, count: brochures.filter(b => b.category === id).length }))
+      : [];
 
   const filteredContent = () => {
     let content: any[] = [];
@@ -46,6 +61,11 @@ export const ContentShowcaseView: React.FC = () => {
         ...content,
         ...gallery.map(g => ({ ...g, type: 'gallery' }))
       ];
+    }
+
+    // Apply category filter for single-type tabs
+    if (activeTab !== 'all' && selectedCategory !== 'all') {
+      content = content.filter(item => item.category === selectedCategory);
     }
 
     // Apply search filter
@@ -101,7 +121,10 @@ export const ContentShowcaseView: React.FC = () => {
           {categoryOptions.map(cat => (
             <button
               key={cat.id}
-              onClick={() => setActiveTab(cat.id as any)}
+              onClick={() => {
+                setActiveTab(cat.id as any);
+                setSelectedCategory('all');
+              }}
               className={`px-4 py-2 rounded-xl text-xs font-bold font-serif cursor-pointer transition-colors ${
                 activeTab === cat.id
                   ? 'bg-amber-950 text-amber-100 shadow-xs'
@@ -113,6 +136,32 @@ export const ContentShowcaseView: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Category Filter for the active media type */}
+      {activeCategories.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 items-center justify-center bg-[#fcf8f2] p-3 rounded-2xl border border-amber-200">
+          <FilterPill
+            variant="square"
+            active={selectedCategory === 'all'}
+            onClick={() => setSelectedCategory('all')}
+          >
+            All {activeTab === 'videos' ? 'Videos' : activeTab === 'gallery' ? 'Photos' : 'Brochures'}
+          </FilterPill>
+          {activeCategories.map(c => (
+            <FilterPill
+              key={c.id}
+              variant="square"
+              active={selectedCategory === c.id}
+              onClick={() => setSelectedCategory(c.id)}
+            >
+              {categoryLabel(
+                c.id,
+                activeTab === 'gallery' ? GALLERY_CATEGORIES : activeTab === 'videos' ? VIDEO_CATEGORIES : []
+              )} ({c.count})
+            </FilterPill>
+          ))}
+        </div>
+      )}
 
       {/* Content Grid */}
       <motion.div 
@@ -141,7 +190,10 @@ export const ContentShowcaseView: React.FC = () => {
               </span>
               {item.category && (
                 <span className="text-[10px] text-stone-600 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
-                  {item.category}
+                  {categoryLabel(
+                    item.category,
+                    item.type === 'gallery' ? GALLERY_CATEGORIES : item.type === 'video' ? VIDEO_CATEGORIES : []
+                  )}
                 </span>
               )}
             </div>
@@ -161,7 +213,7 @@ export const ContentShowcaseView: React.FC = () => {
 
               {item.type === 'video' && (
                 <>
-                  <img src={item.thumbnail || item.coverImage} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={item.thumbnailUrl} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <span className="bg-gradient-to-r from-blue-500 to-blue-600 text-white font-extrabold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-lg">
                       <Play className="w-4 h-4" /> Watch Video
@@ -222,7 +274,10 @@ export const ContentShowcaseView: React.FC = () => {
 
                 {item.type === 'video' && (
                   <button
-                    onClick={() => window.open(item.url, '_blank')}
+                    onClick={() => {
+                      const vUrl = item.videoUrl || (item.youtubeId ? `https://www.youtube.com/watch?v=${item.youtubeId}` : '');
+                      if (vUrl) window.open(vUrl, '_blank');
+                    }}
                     className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-md min-h-[40px]"
                   >
                     <Play className="w-3.5 h-3.5 shrink-0" />

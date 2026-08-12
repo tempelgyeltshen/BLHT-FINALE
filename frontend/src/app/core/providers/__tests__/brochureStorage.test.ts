@@ -40,8 +40,18 @@ describe('mergeBrochuresWithShippedPdfs', () => {
 
   it('keeps brochures whose pdfUrl already points at a shipped static PDF', () => {
     const result = mergeBrochuresWithShippedPdfs([initialBrochures[0]]);
-    expect(result[0]).toBe(initialBrochures[0]);
+    expect(result[0]).toEqual(initialBrochures[0]);
     expect(result[0].pdfUrl).toBe('/api/uploads/brochures/thangka-painting-brochure.pdf');
+    expect(result[0].coverImage).toBe(initialBrochures[0].coverImage);
+  });
+
+  it('restores the shipped cover image for a stale record with an old/stock image URL', () => {
+    const [restored] = mergeBrochuresWithShippedPdfs([
+      staleRecord({ coverImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80' }),
+    ]);
+    expect(restored.coverImage).toBe(initialBrochures[0].coverImage);
+    expect(restored.galleryImages).toEqual(initialBrochures[0].galleryImages);
+    expect(restored.pdfUrl).toBe('/api/uploads/brochures/thangka-painting-brochure.pdf');
   });
 
   it('restores the shipped static PDF for a stale Cloudinary record matched by id', () => {
@@ -56,6 +66,7 @@ describe('mergeBrochuresWithShippedPdfs', () => {
       staleRecord({ id: 'some-mongo-object-id', title: 'HQ Car Rental Pamphlet' }),
     ]);
     expect(restored.pdfUrl).toBe('/api/uploads/brochures/car-rental-hq-pamphlet.pdf');
+    expect(restored.coverImage).toBe(initialBrochures[1].coverImage);
   });
 
   it('restores an empty/missing pdfUrl for a matched brochure', () => {
@@ -101,6 +112,7 @@ describe('mergeBrochuresWithShippedPdfs', () => {
     expect(restored.subtitle).toBe('Admin updated subtitle');
     expect(restored.featured).toBe(true);
     expect(restored.pdfUrl).toBe('/api/uploads/brochures/thangka-painting-brochure.pdf');
+    expect(restored.coverImage).toBe(initialBrochures[0].coverImage);
   });
 
   it('leaves unmatched admin-created records untouched', () => {

@@ -104,6 +104,14 @@ backend/assets/*
 backend/assets/brochures/*
 !backend/assets/brochures/*.pdf
 
+# Real product photos served by the backend as brochure cover art (committed)
+!backend/assets/images/
+backend/assets/images/*
+!backend/assets/images/*.jpg
+!backend/assets/images/*.jpeg
+!backend/assets/images/*.png
+!backend/assets/images/*.webp
+
 # Frontend duplicates of the same PDFs are unreferenced (all pdfUrls point to the
 # backend API) - keep them out of the repo to avoid a 21 MB duplication.
 frontend/src/assets/brochure/

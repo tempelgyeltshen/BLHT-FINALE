@@ -1,5 +1,12 @@
 import { TourPackage, Hotel, Festival, Brochure, GalleryItem, VideoItem, ContactInquiry, HomepageConfig } from '../types';
 
+// Real product photos (showroom thangka artwork and our rental fleet) used as
+// brochure cover art instead of stock internet images.
+import thangkaShowroomImage from '../assets/images/thangka-showroom.webp';
+import carRentalImage1 from '../assets/images/carental1.jpg';
+import carRentalImage2 from '../assets/images/carental2.jpg';
+import carRentalImage3 from '../assets/images/carental3.jpg';
+
 export const initialPackages: TourPackage[] = [
   {
     id: 'pkg-1',
@@ -278,10 +285,11 @@ export const initialHotels: Hotel[] = [
     region: 'Paro',
     starRating: 5,
     pricePerNightUSD: 2200,
-    heroImage: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Taktsang_Palphug_Monastery_aka_Paro_Taktsang_aka_Tiger%27s_Nest%2C_July_2016_05.jpg/1200px-Taktsang_Palphug_Monastery_aka_Paro_Taktsang_aka_Tiger%27s_Nest%2C_July_2016_05.jpg',
     images: [
-      'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80'
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Taktsang_Palphug_Monastery_aka_Paro_Taktsang_aka_Tiger%27s_Nest%2C_July_2016_05.jpg/1200px-Taktsang_Palphug_Monastery_aka_Paro_Taktsang_aka_Tiger%27s_Nest%2C_July_2016_05.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Paro_Taktsang%2C_Taktsang_Palphug_Monastery%2C_Tiger%27s_Nest_-views_from_the_trekking_path-_during_LGFC_-_Bhutan_2019_%285%29.jpg/1200px-Paro_Taktsang%2C_Taktsang_Palphug_Monastery%2C_Tiger%27s_Nest_-views_from_the_trekking_path-_during_LGFC_-_Bhutan_2019_%285%29.jpg',
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80'
     ],
     tagline: 'A sanctuary tucked inside a blue pine forest beneath ruined Drukyel Dzong.',
     description: 'BLHT Paro Pine Sanctuary features 24 wood-panelled suites with king beds, traditional wood-burning stoves (bukhari), and terrazzo baths. Surrounded by whispering pines, it offers unmatched tranquility and direct access to Tiger’s Nest.',
@@ -297,9 +305,11 @@ export const initialHotels: Hotel[] = [
     region: 'Thimphu',
     starRating: 5,
     pricePerNightUSD: 1950,
-    heroImage: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80',
     images: [
-      'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80'
+      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80'
     ],
     tagline: 'Perched high on the valley wall with panoramic views of the Buddha Dordenma.',
     description: 'Designed as a majestic sky palace with grand reflection ponds overlooking the capital valley. Features world-class Six Senses Integrative Wellness spa, heated indoor pool, and organic gardens.',
@@ -315,8 +325,10 @@ export const initialHotels: Hotel[] = [
     region: 'Paro',
     starRating: 5,
     pricePerNightUSD: 1600,
-    heroImage: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=1200&q=80',
     images: [
+      'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80'
     ],
     tagline: 'Understated luxury combining local artisan craftsmanship with COMO Shambhala wellness.',
@@ -333,8 +345,10 @@ export const initialHotels: Hotel[] = [
     region: 'Thimphu',
     starRating: 5,
     pricePerNightUSD: 1250,
-    heroImage: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80',
     images: [
+      'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80'
     ],
     tagline: 'Traditional Dzong architecture meets modern elegance in the heart of the capital.',
@@ -351,9 +365,11 @@ export const initialHotels: Hotel[] = [
     region: 'Paro',
     starRating: 5,
     pricePerNightUSD: 950,
-    heroImage: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80',
+    heroImage: 'https://images.unsplash.com/photo-1590073242678-70ee3fc28e8e?auto=format&fit=crop&w=1200&q=80',
     images: [
-      'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80'
+      'https://images.unsplash.com/photo-1590073242678-70ee3fc28e8e?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1200&q=80'
     ],
     tagline: '100% Bhutanese owned lodge featuring hand-carved woodwork and a shrine room in the main tower.',
     description: 'Set on 10 acres of landscaped gardens, Zhiwa Ling combines ancient master art with solar heating, swedish fireplaces, and authentic warm hospitalities.',
@@ -1076,11 +1092,8 @@ export const initialBrochures: Brochure[] = [
     category: 'Thangka Painting',
     fileSize: '17.6 MB',
     totalPages: 26,
-    coverImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
-    galleryImages: [
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80'
-    ],
+    coverImage: thangkaShowroomImage,
+    galleryImages: [thangkaShowroomImage],
     pdfUrl: '/api/uploads/brochures/thangka-painting-brochure.pdf',
     downloadCount: 1420,
     year: '2026',
@@ -1093,10 +1106,8 @@ export const initialBrochures: Brochure[] = [
     category: 'Car Rental',
     fileSize: '1.0 MB',
     totalPages: 0,
-    coverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
-    galleryImages: [
-      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
-    ],
+    coverImage: carRentalImage1,
+    galleryImages: [carRentalImage1],
     pdfUrl: '/api/uploads/brochures/car-rental-hq-pamphlet.pdf',
     downloadCount: 520,
     year: '2026',
@@ -1109,10 +1120,8 @@ export const initialBrochures: Brochure[] = [
     category: 'Car Rental',
     fileSize: '0.4 MB',
     totalPages: 0,
-    coverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
-    galleryImages: [
-      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
-    ],
+    coverImage: carRentalImage2,
+    galleryImages: [carRentalImage2],
     pdfUrl: '/api/uploads/brochures/car-rental-amankora-rates-2026.pdf',
     downloadCount: 380,
     year: '2026',
@@ -1125,10 +1134,8 @@ export const initialBrochures: Brochure[] = [
     category: 'Car Rental',
     fileSize: '1.3 MB',
     totalPages: 0,
-    coverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
-    galleryImages: [
-      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
-    ],
+    coverImage: carRentalImage3,
+    galleryImages: [carRentalImage3],
     pdfUrl: '/api/uploads/brochures/car-rental-new-brochure.pdf',
     downloadCount: 640,
     year: '2026',
@@ -1187,7 +1194,7 @@ export const initialVideos: VideoItem[] = [
     youtubeId: 'b_P-QyGvI28',
     thumbnailUrl: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80',
     description: 'A visual journey through ancient fortresses, high mountain passes, and world-renowned 5-star lodges.',
-    category: 'Overview'
+    category: 'Documentary'
   },
   {
     id: 'vid-2',
@@ -1205,7 +1212,7 @@ export const initialVideos: VideoItem[] = [
     youtubeId: 'gq3Z3v-mEPo',
     thumbnailUrl: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
     description: 'Experience the rhythm of horns, drums, and holy mask dances during Paro’s spring celebration.',
-    category: 'Festivals'
+    category: 'Festivals & Culture'
   }
 ];
 

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../../core/providers/AppProvider';
 import { AdminLayout } from '../shared/AdminLayout';
-import { Button, ConfirmDialog, FilterPill, Input, Modal, Pagination, SearchInput, TextArea } from '../../../shared/components/ui';
+import { Button, ConfirmDialog, FilterPill, Input, Modal, Pagination, SearchInput, Select, TextArea } from '../../../shared/components/ui';
 import { usePagination } from '../../../shared/hooks/usePagination';
 import { Film, Plus, Edit, Trash2, Play, Check, Upload, Video, Loader2 } from 'lucide-react';
 import { VideoItem } from '../../../../../types';
 import { useCloudinaryUpload } from '../../../shared/hooks/useCloudinaryUpload';
 import { cloudinaryService } from '../../../../../lib/services/cloudinary.service';
+import { VIDEO_CATEGORIES } from '../../../shared/constants/mediaCategories';
 import { isValidHttpUrl } from '../../../../../utils/helpers';
 
 // Eager poster generated at upload: 16:9, 640px wide, frame at 5s.
@@ -138,7 +139,8 @@ export const AdminVideosView: React.FC = () => {
     setVideoUrl(vid.videoUrl || (vid.youtubeId ? `https://www.youtube.com/watch?v=${vid.youtubeId}` : ''));
     setThumbnailUrl(vid.thumbnailUrl);
     setDuration(vid.duration || '05:00');
-    setCategory(vid.category);
+    // Normalize legacy/free-text categories to a valid curated one on edit.
+    setCategory(VIDEO_CATEGORIES.some(c => c.id === vid.category) ? vid.category : 'Documentary');
     setDescription(vid.description);
     setVideoMetadata(null);
     setThumbnailMetadata(null);
@@ -204,7 +206,7 @@ export const AdminVideosView: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const categoriesList = ['all', ...Array.from(new Set(videos.map(v => v.category)))];
+  const categoriesList = VIDEO_CATEGORIES;
 
   const filteredVideos = videos.filter(v => {
     const matchesCat = selectedCategory === 'all' || v.category === selectedCategory;
@@ -257,16 +259,21 @@ export const AdminVideosView: React.FC = () => {
           />
 
           <div className="flex flex-wrap gap-1.5 w-full md:w-auto">
-            {categoriesList.map(cat => (
-              <FilterPill
-                key={cat}
-                active={selectedCategory === cat}
-                onClick={() => setSelectedCategory(cat)}
-                className="capitalize"
-              >
-                {cat}
-              </FilterPill>
-            ))}
+            <FilterPill active={selectedCategory === 'all'} onClick={() => setSelectedCategory('all')}>
+              All ({videos.length})
+            </FilterPill>
+            {categoriesList.map(c => {
+              const count = videos.filter(v => v.category === c.id).length;
+              return (
+                <FilterPill
+                  key={c.id}
+                  active={selectedCategory === c.id}
+                  onClick={() => setSelectedCategory(c.id)}
+                >
+                  {c.label} ({count})
+                </FilterPill>
+              );
+            })}
           </div>
         </div>
 
@@ -434,14 +441,17 @@ export const AdminVideosView: React.FC = () => {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <Input
-                        label="Category"
+                      <Select
+                        label="Category *"
                         labelClassName="block text-stone-800 font-bold mb-1"
                         variant="cream"
-                        placeholder="e.g. Documentary, Culture, Luxury Lodges, Trekking"
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
-                      />
+                      >
+                        {categoriesList.map(c => (
+                          <option key={c.id} value={c.id}>{c.label}</option>
+                        ))}
+                      </Select>
 
                       <Input
                         label="Duration (MM:SS or text)"

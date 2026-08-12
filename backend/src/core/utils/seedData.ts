@@ -303,11 +303,8 @@ export const seedBrochures = [
     pdfUrl: '/api/uploads/brochures/thangka-painting-brochure.pdf',
     fileSize: '17.6 MB',
     totalPages: 26,
-    coverImage: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
-    galleryImages: [
-      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80'
-    ],
+    coverImage: '/api/uploads/images/thangka-showroom.webp',
+    galleryImages: ['/api/uploads/images/thangka-showroom.webp'],
     downloadCount: 1420,
     year: '2026',
     featured: true
@@ -319,10 +316,8 @@ export const seedBrochures = [
     pdfUrl: '/api/uploads/brochures/car-rental-hq-pamphlet.pdf',
     fileSize: '1.0 MB',
     totalPages: 0,
-    coverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
-    galleryImages: [
-      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
-    ],
+    coverImage: '/api/uploads/images/carental1.jpg',
+    galleryImages: ['/api/uploads/images/carental1.jpg'],
     downloadCount: 520,
     year: '2026',
     featured: false
@@ -334,10 +329,8 @@ export const seedBrochures = [
     pdfUrl: '/api/uploads/brochures/car-rental-amankora-rates-2026.pdf',
     fileSize: '0.4 MB',
     totalPages: 0,
-    coverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
-    galleryImages: [
-      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
-    ],
+    coverImage: '/api/uploads/images/carental2.jpg',
+    galleryImages: ['/api/uploads/images/carental2.jpg'],
     downloadCount: 380,
     year: '2026',
     featured: false
@@ -349,10 +342,8 @@ export const seedBrochures = [
     pdfUrl: '/api/uploads/brochures/car-rental-new-brochure.pdf',
     fileSize: '1.3 MB',
     totalPages: 0,
-    coverImage: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
-    galleryImages: [
-      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'
-    ],
+    coverImage: '/api/uploads/images/carental3.jpg',
+    galleryImages: ['/api/uploads/images/carental3.jpg'],
     downloadCount: 640,
     year: '2026',
     featured: false
@@ -404,7 +395,7 @@ export const seedVideos = [
     youtubeId: 'b_P-QyGvI28',
     thumbnailUrl: 'https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=1200&q=80',
     description: 'A visual journey through ancient fortresses, high mountain passes, and world-renowned 5-star lodges.',
-    category: 'Overview'
+    category: 'Documentary'
   },
   {
     title: 'Inside Six Senses and BLHT Luxury Circuits',
@@ -420,7 +411,7 @@ export const seedVideos = [
     youtubeId: 'gq3Z3v-mEPo',
     thumbnailUrl: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
     description: 'Experience the rhythm of horns, drums, and holy mask dances during Paro\'s spring celebration.',
-    category: 'Festivals'
+    category: 'Festivals & Culture'
   }
 ];
 
