@@ -8,7 +8,7 @@ import { usePagination } from '../../shared/hooks/usePagination';
 import { Plus, Edit3, Trash2, Star, MapPin } from 'lucide-react';
 import type { Hotel, HotelFormData } from '../types/hotel.types';
 
-const BRANDS = ['BLHT Sanctuary', 'Six Senses', 'COMO', 'Pemako', 'Zhiwa Ling', 'Boutique'] as const;
+const BRANDS = ['BLHT Sanctuary', 'Six Senses', 'COMO', 'Aman', 'Pemako', 'Zhiwa Ling', 'Boutique'] as const;
 const REGIONS = ['Paro', 'Thimphu', 'Punakha', 'Gangtey', 'Bumthang'] as const;
 
 const DEFAULT_HERO = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80';

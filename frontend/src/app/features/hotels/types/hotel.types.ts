@@ -1,4 +1,4 @@
-export type HotelBrand = 'BLHT Sanctuary' | 'Six Senses' | 'COMO' | 'Pemako' | 'Zhiwa Ling' | 'Boutique';
+export type HotelBrand = 'BLHT Sanctuary' | 'Six Senses' | 'COMO' | 'Aman' | 'Pemako' | 'Zhiwa Ling' | 'Boutique';
 export type HotelRegion = 'Paro' | 'Thimphu' | 'Punakha' | 'Gangtey' | 'Bumthang';
 
 export interface Hotel {

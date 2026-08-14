@@ -22,7 +22,7 @@ export const seedPackages = [
       'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80'
     ],
-    description: 'Immerse yourself in the world\'s most serene Kingdom with private helicopter transfers, personal butler service, private blessings by senior incarnate lamas, and exclusive stays at Six Senses and BLHT sanctuaries.',
+    description: 'Immerse yourself in the world\'s most serene Kingdom with private helicopter transfers, personal butler service, private blessings by senior incarnate lamas, and exclusive stays at Aman Amankora, Six Senses, and BLHT sanctuaries.',
     highlights: [
       'Private VIP arrival clearance at Paro International Airport with traditional scarf ceremony',
       'Helicopter flight over Himalayan peaks to Punakha Valley',
@@ -31,7 +31,7 @@ export const seedPackages = [
       'Traditional hot stone bath infused with wild Artemisia'
     ],
     included: [
-      '5-Star Ultra-Luxury Accommodations',
+      '5-Star Ultra-Luxury Accommodations (Aman Amankora / Six Senses / BLHT Sanctuaries)',
       'Private SUV with dedicated senior guide and butler',
       'SDF Sustainable Development Fees included',
       'All gourmet farm-to-table meals',
@@ -49,15 +49,17 @@ export const seedPackages = [
         day: 1,
         title: 'Arrival in Paro and Drive to Thimphu Valley',
         location: 'Thimphu',
-        description: 'Land in Paro where your personal host greets you. Enjoy a scenic private transfer to Six Senses Thimphu.',
-        highlights: ['Private arrival reception', 'Six Senses Thimphu check-in', 'Welcome dinner']
+        description: 'Land in Paro where your personal host greets you. Enjoy a scenic private transfer to Six Senses Thimphu or Amankora Thimphu, perched above the valley.',
+        highlights: ['Private arrival reception', 'Six Senses Thimphu / Amankora Thimphu check-in', 'Welcome dinner'],
+        accommodation: 'Six Senses Thimphu / Amankora Thimphu'
       },
       {
         day: 2,
         title: 'Thimphu Cultural Immersion',
         location: 'Thimphu',
         description: 'Visit the Giant Buddha Dordenma, Tashichho Dzong, and experience traditional archery.',
-        highlights: ['Buddha Dordenma', 'Tashichho Dzong', 'Archery experience']
+        highlights: ['Buddha Dordenma', 'Tashichho Dzong', 'Archery experience'],
+        accommodation: 'Six Senses Thimphu / Amankora Thimphu'
       }
     ]
   },
@@ -100,8 +102,9 @@ export const seedPackages = [
         day: 1,
         title: 'Arrival in Paro',
         location: 'Paro',
-        description: 'Welcome to Bhutan. Transfer to heritage hotel.',
-        highlights: ['Airport greeting', 'Hotel check-in']
+        description: 'Welcome to Bhutan. Transfer to Zhiwa Ling Heritage or Amankora Paro.',
+        highlights: ['Airport greeting', 'Hotel check-in'],
+        accommodation: 'Zhiwa Ling Heritage / Amankora Paro'
       }
     ]
   },
@@ -143,8 +146,9 @@ export const seedPackages = [
         day: 1,
         title: 'Arrival and Orientation',
         location: 'Paro',
-        description: 'Arrive in Paro and transfer to lodge. Evening orientation.',
-        highlights: ['Airport transfer', 'Welcome briefing']
+        description: 'Arrive in Paro and transfer to Amankora Paro or COMO Uma Paro. Evening orientation.',
+        highlights: ['Airport transfer', 'Welcome briefing'],
+        accommodation: 'Amankora Paro / COMO Uma Paro'
       }
     ]
   },
@@ -220,9 +224,12 @@ export const seedHotels = [
     region: 'Thimphu',
     starRating: 5,
     pricePerNightUSD: 1950,
-    heroImage: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80',
+    heroImage: '/api/uploads/images/sixsenses-thimphu-hero.jpg',
     images: [
-      'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80'
+      '/api/uploads/images/sixsenses-thimphu-hero.jpg',
+      '/api/uploads/images/sixsenses-thimphu-bedroom.jpg',
+      '/api/uploads/images/sixsenses-thimphu-courtyard.jpg',
+      '/api/uploads/images/sixsenses-thimphu-livingroom.jpg'
     ],
     tagline: 'Perched high on the valley wall with panoramic views of the Buddha Dordenma.',
     description: 'Designed as a majestic sky palace with grand reflection ponds overlooking the capital valley. Features world-class wellness spa, heated indoor pool, and organic gardens.',
@@ -237,13 +244,69 @@ export const seedHotels = [
     region: 'Paro',
     starRating: 5,
     pricePerNightUSD: 1600,
-    heroImage: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80',
+    heroImage: '/api/uploads/images/como-uma-paro-hero.webp',
     images: [
-      'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80'
+      '/api/uploads/images/como-uma-paro-hero.webp',
+      '/api/uploads/images/como-uma-paro-2.jpg',
+      '/api/uploads/images/como-uma-paro-3.jpg'
     ],
     tagline: 'Contemporary luxury nestled in a pristine pine forest setting.',
     description: 'COMO Uma Paro offers understated luxury with stunning valley views, COMO Shambhala wellness programs, and farm-to-table dining.',
     amenities: ['COMO Shambhala Spa', 'Valley View Restaurant', 'Yoga Deck', 'Library'],
+    featured: false
+  },
+  {
+    slug: 'amankora-paro',
+    name: 'Amankora Paro',
+    brand: 'Aman',
+    location: 'Paro Valley',
+    region: 'Paro',
+    starRating: 5,
+    pricePerNightUSD: 2100,
+    heroImage: '/api/uploads/images/amankora-paro-exterior.webp',
+    images: [
+      '/api/uploads/images/amankora-paro-exterior.webp',
+      '/api/uploads/images/amankora-paro-15.webp',
+      '/api/uploads/images/amankora-paro-tigersnest.webp'
+    ],
+    tagline: 'A serene pine-forest retreat in the valley beneath Tiger\'s Nest.',
+    description: 'Amankora Paro sits in a secluded blue pine grove on the edge of the Paro valley, offering the world\'s most elegant base for exploring Taktsang Monastery. Stone-and-wood suites open onto the forest, while the lodge\'s hot stone baths and meditation pavilion embody Aman\'s signature calm.',
+    amenities: ['Private Hot Stone Bath', 'Meditation Pavilion', 'Forest Dining Hall', 'Guided Tiger\'s Nest Treks', 'Archery Range'],
+    featured: true
+  },
+  {
+    slug: 'amankora-punakha',
+    name: 'Amankora Punakha',
+    brand: 'Aman',
+    location: 'Mo Chhu River Valley',
+    region: 'Punakha',
+    starRating: 5,
+    pricePerNightUSD: 1750,
+    heroImage: '/api/uploads/images/amankora-punakha-11.webp',
+    images: [
+      '/api/uploads/images/amankora-punakha-11.webp',
+      '/api/uploads/images/amankora-punakha-arrival.webp'
+    ],
+    tagline: 'Riverside serenity amid terraced paddy fields near Punakha Dzong.',
+    description: 'Set on a bend of the Mo Chhu river beneath towering terraced rice paddies, Amankora Punakha offers spacious suites with dramatic valley views. Days begin with sunrise walks to the winter capital\'s great dzong and end with farm-to-table dinners from the lodge\'s own gardens.',
+    amenities: ['Riverside Dining', 'Outdoor Pool', 'Farm-to-Table Cuisine', 'Punakha Dzong Excursions', 'Bicycle Hire'],
+    featured: false
+  },
+  {
+    slug: 'amankora-thimphu',
+    name: 'Amankora Thimphu',
+    brand: 'Aman',
+    location: 'Motithang, Thimphu',
+    region: 'Thimphu',
+    starRating: 5,
+    pricePerNightUSD: 1650,
+    heroImage: '/api/uploads/images/amankora-thimphu-9.webp',
+    images: [
+      '/api/uploads/images/amankora-thimphu-9.webp'
+    ],
+    tagline: 'A whitewashed dzong-style lodge above the capital\'s sacred stupa.',
+    description: 'Perched in the wooded Motithang hills, Amankora Thimphu is an intimate whitewashed lodge inspired by the monasteries that crown Bhutan\'s valleys. Six suites open onto the national Memorial Chorten, while the dining room serves contemporary Bhutanese cuisine by the fire.',
+    amenities: ['Hilltop Garden Suites', 'Holistic Wellness Treatments', 'Memorial Chorten Views', 'Traditional Dining Hall', 'Monastery Visits'],
     featured: false
   }
 ];

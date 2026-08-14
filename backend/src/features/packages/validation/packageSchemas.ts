@@ -29,6 +29,8 @@ export const packageSchema = z.object({
     location: z.string(),
     description: z.string(),
     highlights: z.array(z.string()).optional(),
+    accommodation: z.string().optional(),
+    meals: z.string().optional(),
   })).optional(),
 });
 

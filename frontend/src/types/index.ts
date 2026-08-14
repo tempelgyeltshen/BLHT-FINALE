@@ -1,6 +1,6 @@
 export type CategoryType = 'Cultural Tours' | 'Trekking Packages' | 'Adventure Tours' | 'cultural' | 'trekking' | 'adventure' | 'luxury' | 'festival' | 'wellness';
 export type HotelCategory = '5-Star Luxury' | 'Boutique Lodge' | 'Heritage Suite' | 'Luxury Camp';
-export type HotelBrand = 'BLHT Sanctuary' | 'Six Senses' | 'COMO' | 'Pemako' | 'Zhiwa Ling' | 'Boutique';
+export type HotelBrand = 'BLHT Sanctuary' | 'Six Senses' | 'COMO' | 'Aman' | 'Pemako' | 'Zhiwa Ling' | 'Boutique';
 export type Region = 'Paro' | 'Thimphu' | 'Punakha' | 'Gangtey' | 'Bumthang';
 export type GalleryCategory = 'monasteries' | 'dzongs' | 'festivals' | 'luxury' | 'nature' | 'culture';
 export type InquiryStatus = 'new' | 'contacted' | 'quoted' | 'booked' | 'archived';

@@ -27,6 +27,8 @@ export interface ItineraryItem {
   location: string;
   description: string;
   highlights?: string[];
+  accommodation?: string;
+  meals?: string;
 }
 
 export interface PackageCreateRequest {

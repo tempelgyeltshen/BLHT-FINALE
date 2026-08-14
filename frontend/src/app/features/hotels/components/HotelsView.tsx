@@ -111,7 +111,7 @@ export const HotelsView: React.FC = () => {
             transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="font-serif text-sm sm:text-lg text-amber-100/90 max-w-3xl mx-auto leading-relaxed font-normal drop-shadow-sm"
           >
-            Partnered with the world's most prestigious luxury hospitality brands: Six Senses Bhutan, COMO Uma Paro, Pemako Thimphu, Zhiwa Ling Heritage, and BLHT Sanctuaries.
+            Partnered with the world's most prestigious luxury hospitality brands: Aman (Amankora), Six Senses Bhutan, COMO Uma Paro, Pemako Thimphu, Zhiwa Ling Heritage, and BLHT Sanctuaries.
           </motion.p>
 
           {/* Section Divider */}

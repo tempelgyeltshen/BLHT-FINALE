@@ -70,7 +70,7 @@ export const AdminDashboardView: React.FC = () => {
               </div>
             </div>
             <span className="font-serif font-bold text-3xl text-amber-950">{hotels.length}</span>
-            <p className="text-[11px] text-stone-500">Six Senses, COMO, Pemako, BLHT</p>
+            <p className="text-[11px] text-stone-500">Aman, Six Senses, COMO, Pemako, BLHT</p>
           </div>
 
         </div>

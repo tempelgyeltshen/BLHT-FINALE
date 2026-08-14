@@ -26,7 +26,7 @@ export const initialPackages: TourPackage[] = [
       'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80'
     ],
-    description: 'Immerse yourself in the world’s most serene Kingdom with private helicopter transfers, personal butler service, private blessings by senior incarnate lamas, and exclusive stays at Six Senses and BLHT sanctuaries.',
+    description: 'Immerse yourself in the world’s most serene Kingdom with private helicopter transfers, personal butler service, private blessings by senior incarnate lamas, and exclusive stays at Aman Amankora, Six Senses, and BLHT sanctuaries.',
     highlights: [
       'Private VIP arrival clearance at Paro International Airport with traditional scarf (Khadhar) ceremony',
       'Helicopter flight over Himalayan peaks to Punakha Valley',
@@ -35,7 +35,7 @@ export const initialPackages: TourPackage[] = [
       'Traditional hot stone bath (Menchu) infused with wild Artemisia'
     ],
     included: [
-      '5-Star Ultra-Luxury Accommodations (Six Senses / BLHT Sanctuaries)',
+      '5-Star Ultra-Luxury Accommodations (Aman Amankora / Six Senses / BLHT Sanctuaries)',
       'Private SUV with dedicated senior guide & butler',
       'SDF Sustainable Development Fees ($100/night included)',
       'All gourmet farm-to-table meals and fine cellar pairings',
@@ -56,7 +56,7 @@ export const initialPackages: TourPackage[] = [
         location: 'Thimphu',
         description: 'Land in Paro where your personal host greets you with silk Khadhar scarves. Enjoy a scenic 1-hour private transfer to Six Senses Thimphu (Palace in the Sky). Unwind with a welcome herbal tea overlooking Thimphu Valley.',
         highlights: ['Private arrival reception', 'Six Senses Thimphu check-in', 'Welcome 7-course gourmet Bhutanese dinner'],
-        accommodation: 'Six Senses Thimphu / BLHT Thimphu Sanctuary',
+        accommodation: 'Six Senses Thimphu / Amankora Thimphu',
         meals: 'Dinner included'
       },
       {
@@ -65,16 +65,16 @@ export const initialPackages: TourPackage[] = [
         location: 'Thimphu',
         description: 'Ascend to Buddha Dordenma, a giant 169ft bronze Buddha statue. Private audience with a senior Buddhist scholar at Pangri Zampa astrological monastery.',
         highlights: ['Buddha Point private tour', 'Astrological reading at Pangri Zampa', 'Centenary Farmers Market private tasting'],
-        accommodation: 'Six Senses Thimphu / BLHT Thimphu Sanctuary',
+        accommodation: 'Six Senses Thimphu / Amankora Thimphu',
         meals: 'Breakfast, Lunch & Dinner'
       },
       {
         day: 3,
         title: 'Dochula Pass & Scenic Descent to Punakha',
         location: 'Punakha',
-        description: 'Cross the Dochula Pass (3,100m) framed by 108 memorial chortens. Descend into subtropical Punakha Valley. Stay at BLHT Punakha Sanctuary, accessed via a suspension bridge over the Mo Chhu river.',
+        description: 'Cross the Dochula Pass (3,100m) framed by 108 memorial chortens. Descend into subtropical Punakha Valley. Stay at Amankora Punakha or BLHT Punakha Sanctuary, reached via a suspension bridge over the Mo Chhu river.',
         highlights: ['108 Chortens photo session', 'Riverside afternoon tea at the lodge', 'Private chef barbecue under the pine canopy'],
-        accommodation: 'BLHT Punakha Sanctuary / Six Senses Punakha',
+        accommodation: 'Amankora Punakha / BLHT Punakha Sanctuary',
         meals: 'Breakfast, Lunch & Dinner'
       },
       {
@@ -83,16 +83,16 @@ export const initialPackages: TourPackage[] = [
         location: 'Punakha',
         description: 'Visit Punakha Dzong, the "Palace of Great Happiness", sitting at the confluence of Pho Chhu and Mo Chhu rivers. Afternoon walk through rice paddies to Chimi Lhakhang.',
         highlights: ['Private tour of Punakha Dzong', 'Traditional archers demonstration', 'Riverside wine tasting'],
-        accommodation: 'BLHT Punakha Sanctuary / Six Senses Punakha',
+        accommodation: 'Amankora Punakha / BLHT Punakha Sanctuary',
         meals: 'Breakfast, Lunch & Dinner'
       },
       {
         day: 5,
         title: 'Return to Paro & Cultural Heritage Experience',
         location: 'Paro',
-        description: 'Drive back to Paro Valley. Check into COMO Uma Paro or Pemako Paro. Visit Kyichu Lhakhang, one of Bhutan’s oldest 7th-century shrines.',
+        description: 'Drive back to Paro Valley. Check into Amankora Paro or COMO Uma Paro. Visit Kyichu Lhakhang, one of Bhutan’s oldest 7th-century shrines.',
         highlights: ['Kyichu Lhakhang butter lamp ceremony', 'COMO Shambhala spa treatment', 'Traditional hot stone bath'],
-        accommodation: 'COMO Uma Paro / Paro Pine Lodge',
+        accommodation: 'Amankora Paro / COMO Uma Paro',
         meals: 'Breakfast, Lunch & Dinner'
       },
       {
@@ -101,7 +101,7 @@ export const initialPackages: TourPackage[] = [
         location: 'Paro',
         description: 'Early morning private hike or pony ride to Tiger’s Nest monastery clinging to a cliff face 900 meters above Paro Valley. Champagne celebration at the summit tea house.',
         highlights: ['Private early access to Tiger’s Nest', 'Private prayer ceremony inside cave', 'Farewell Gala Dinner'],
-        accommodation: 'COMO Uma Paro / Paro Pine Lodge',
+        accommodation: 'Amankora Paro / COMO Uma Paro',
         meals: 'Breakfast, Lunch & Dinner'
       },
       {
@@ -140,7 +140,7 @@ export const initialPackages: TourPackage[] = [
       'Exclusive monastery night chanting session'
     ],
     included: [
-      'Luxury Heritage Accommodations (Zhiwa Ling / Pemako / COMO)',
+      'Luxury Heritage Accommodations (Zhiwa Ling / Aman Amankora / Pemako / COMO)',
       'All Festival VIP entry clearances & private guides',
       'Custom Bhutanese national dress tailored for you',
       'SDF Fees ($100/night) & full board dining',
@@ -160,7 +160,7 @@ export const initialPackages: TourPackage[] = [
         location: 'Paro',
         description: 'Settle into Zhiwa Ling Heritage, built entirely with handcrafted Bhutanese timber and stone. Afternoon fitting for traditional Gho & Kira garments.',
         highlights: ['Zhiwa Ling check-in', 'Custom garment fitting', 'Spiritual welcome dinner'],
-        accommodation: 'Zhiwa Ling Heritage Hotel',
+        accommodation: 'Zhiwa Ling Heritage / Amankora Paro',
         meals: 'Dinner'
       },
       {
@@ -169,7 +169,7 @@ export const initialPackages: TourPackage[] = [
         location: 'Paro',
         description: 'Wear your tailored attire and enter the Paro Dzong courtyards. Observe sacred Cham dances performed by monks representing deities and demons.',
         highlights: ['VIP pavilion seating', 'Photography allowance', 'Lunch with senior monk scholar'],
-        accommodation: 'Zhiwa Ling Heritage Hotel',
+        accommodation: 'Zhiwa Ling Heritage / Amankora Paro',
         meals: 'Breakfast, Lunch & Dinner'
       },
       {
@@ -178,7 +178,7 @@ export const initialPackages: TourPackage[] = [
         location: 'Paro',
         description: 'Wake at 3:30 AM to witness the ceremonial unfurling of the giant 300-year-old silk Throngdrel scroll before sunrise. Receive blessings for health and longevity.',
         highlights: ['Pre-dawn Throngdrel blessing', 'Sacred butter lamp offering', 'Afternoon relaxation spa'],
-        accommodation: 'Zhiwa Ling Heritage Hotel',
+        accommodation: 'Zhiwa Ling Heritage / Amankora Paro',
         meals: 'Breakfast, Lunch & Dinner'
       }
     ]
@@ -225,7 +225,7 @@ export const initialPackages: TourPackage[] = [
         location: 'Paro',
         description: 'Meet your wilderness expedition leader. Check into COMO Uma Paro. Equipment check and acclimatization hike to Zuri Dzong.',
         highlights: ['Gear briefing', 'Acclimatization walk', 'COMO Shambhala wellness spa'],
-        accommodation: 'COMO Uma Paro',
+        accommodation: 'COMO Uma Paro / Amankora Paro',
         meals: 'Dinner'
       }
     ]
@@ -305,11 +305,12 @@ export const initialHotels: Hotel[] = [
     region: 'Thimphu',
     starRating: 5,
     pricePerNightUSD: 1950,
-    heroImage: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80',
+    heroImage: '/api/uploads/images/sixsenses-thimphu-hero.jpg',
     images: [
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80'
+      '/api/uploads/images/sixsenses-thimphu-hero.jpg',
+      '/api/uploads/images/sixsenses-thimphu-bedroom.jpg',
+      '/api/uploads/images/sixsenses-thimphu-courtyard.jpg',
+      '/api/uploads/images/sixsenses-thimphu-livingroom.jpg'
     ],
     tagline: 'Perched high on the valley wall with panoramic views of the Buddha Dordenma.',
     description: 'Designed as a majestic sky palace with grand reflection ponds overlooking the capital valley. Features world-class Six Senses Integrative Wellness spa, heated indoor pool, and organic gardens.',
@@ -325,11 +326,11 @@ export const initialHotels: Hotel[] = [
     region: 'Paro',
     starRating: 5,
     pricePerNightUSD: 1600,
-    heroImage: 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=1200&q=80',
+    heroImage: '/api/uploads/images/como-uma-paro-hero.webp',
     images: [
-      'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80'
+      '/api/uploads/images/como-uma-paro-hero.webp',
+      '/api/uploads/images/como-uma-paro-2.jpg',
+      '/api/uploads/images/como-uma-paro-3.jpg'
     ],
     tagline: 'Understated luxury combining local artisan craftsmanship with COMO Shambhala wellness.',
     description: 'An exclusive 29-room luxury resort perched on a pine-clad hill. Home to Bukhari Restaurant, serving organic cuisine crafted from local Himalayan produce.',
@@ -375,6 +376,63 @@ export const initialHotels: Hotel[] = [
     description: 'Set on 10 acres of landscaped gardens, Zhiwa Ling combines ancient master art with solar heating, swedish fireplaces, and authentic warm hospitalities.',
     amenities: ['In-house Buddhist Temple', 'Swedish Fireplaces', 'Menchu Spa', 'Tea House Gardens'],
     featured: true
+  },
+  {
+    id: 'hotel-6',
+    slug: 'amankora-paro',
+    name: 'Amankora Paro',
+    brand: 'Aman',
+    location: 'Paro Valley',
+    region: 'Paro',
+    starRating: 5,
+    pricePerNightUSD: 2100,
+    heroImage: '/api/uploads/images/amankora-paro-exterior.webp',
+    images: [
+      '/api/uploads/images/amankora-paro-exterior.webp',
+      '/api/uploads/images/amankora-paro-15.webp',
+      '/api/uploads/images/amankora-paro-tigersnest.webp'
+    ],
+    tagline: 'A serene pine-forest retreat in the valley beneath Tiger\'s Nest.',
+    description: 'Amankora Paro sits in a secluded blue pine grove on the edge of the Paro valley, offering the world\'s most elegant base for exploring Taktsang Monastery. Stone-and-wood suites open onto the forest, while the lodge\'s hot stone baths and meditation pavilion embody Aman\'s signature calm.',
+    amenities: ['Private Hot Stone Bath', 'Meditation Pavilion', 'Forest Dining Hall', 'Guided Tiger\'s Nest Treks', 'Archery Range'],
+    featured: true
+  },
+  {
+    id: 'hotel-7',
+    slug: 'amankora-punakha',
+    name: 'Amankora Punakha',
+    brand: 'Aman',
+    location: 'Mo Chhu River Valley',
+    region: 'Punakha',
+    starRating: 5,
+    pricePerNightUSD: 1750,
+    heroImage: '/api/uploads/images/amankora-punakha-11.webp',
+    images: [
+      '/api/uploads/images/amankora-punakha-11.webp',
+      '/api/uploads/images/amankora-punakha-arrival.webp'
+    ],
+    tagline: 'Riverside serenity amid terraced paddy fields near Punakha Dzong.',
+    description: 'Set on a bend of the Mo Chhu river beneath towering terraced rice paddies, Amankora Punakha offers spacious suites with dramatic valley views. Days begin with sunrise walks to the winter capital\'s great dzong and end with farm-to-table dinners from the lodge\'s own gardens.',
+    amenities: ['Riverside Dining', 'Outdoor Pool', 'Farm-to-Table Cuisine', 'Punakha Dzong Excursions', 'Bicycle Hire'],
+    featured: false
+  },
+  {
+    id: 'hotel-8',
+    slug: 'amankora-thimphu',
+    name: 'Amankora Thimphu',
+    brand: 'Aman',
+    location: 'Motithang, Thimphu',
+    region: 'Thimphu',
+    starRating: 5,
+    pricePerNightUSD: 1650,
+    heroImage: '/api/uploads/images/amankora-thimphu-9.webp',
+    images: [
+      '/api/uploads/images/amankora-thimphu-9.webp'
+    ],
+    tagline: 'A whitewashed dzong-style lodge above the capital\'s sacred stupa.',
+    description: 'Perched in the wooded Motithang hills, Amankora Thimphu is an intimate whitewashed lodge inspired by the monasteries that crown Bhutan\'s valleys. Six suites open onto the national Memorial Chorten, while the dining room serves contemporary Bhutanese cuisine by the fire.',
+    amenities: ['Hilltop Garden Suites', 'Holistic Wellness Treatments', 'Memorial Chorten Views', 'Traditional Dining Hall', 'Monastery Visits'],
+    featured: false
   }
 ];
 
