@@ -1,5 +1,4 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useApp } from '../../../core/providers/AppProvider';
 import { AutoImageSlider } from '../../shared/components/media/AutoImageSlider';
@@ -12,7 +11,6 @@ export const HomeView: React.FC = () => {
     navigate, hotels, brochures, homepageConfig, gallery,
     setActiveHotel, setActiveBrochure
   } = useApp();
-  const navigateRouter = useNavigate();
   const [heroHovered, setHeroHovered] = useState(false);
 
   // Scroll Parallax for Hero Section
@@ -34,8 +32,6 @@ export const HomeView: React.FC = () => {
 
   const handleSelectHotel = (hotel: Hotel) => {
     setActiveHotel(hotel);
-    const hotelSlug = hotel.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    navigateRouter(`/hotels/${hotelSlug}`);
   };
 
   const mainBrochure = brochures.find(b => b.featured) || brochures[0];

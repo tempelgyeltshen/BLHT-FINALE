@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate as useReactNavigate } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useHotels } from '../hooks/useHotels';
 import { useApp } from '../../../core/providers/AppProvider';
 import { AutoImageSlider } from '../../shared/components/media/AutoImageSlider';
@@ -11,7 +11,6 @@ import type { Hotel } from '../types/hotel.types';
 
 export const HotelDetailPage: React.FC = () => {
   const { slug, id, hotelId } = useParams<{ slug?: string; id?: string; hotelId?: string }>();
-  const navigateRouter = useReactNavigate();
   const { fetchHotelBySlug, fetchHotelById, hotels, loading } = useHotels();
   const { 
     setActiveHotel, packages, setActivePackage,
@@ -20,32 +19,44 @@ export const HotelDetailPage: React.FC = () => {
 
   // Fetch specific hotel details based on URL slug or id param
   const urlSlug = slug || id || hotelId;
-  const [currentHotel, setCurrentHotel] = useState<Hotel | null>(null);
+  const [apiHotel, setApiHotel] = useState<Hotel | null>(null);
 
+  // Resolve the lodge from the already-loaded list by slug or id — works even
+  // when the backend API is unreachable.
+  const localHotel = useMemo<Hotel | null>(() => {
+    if (!urlSlug) return null;
+    return hotels.find(h => h.slug === urlSlug || h.id === urlSlug) ?? null;
+  }, [hotels, urlSlug]);
+
+  const currentHotel = localHotel ?? apiHotel;
+
+  // Deep links (direct URL with a slug/id that isn't in the local list): fall
+  // back to the backend API. Errors are non-fatal — the local list already
+  // covers every lodge shown on the site.
   useEffect(() => {
+    setApiHotel(null);
+    if (!urlSlug || localHotel) return;
+
+    let cancelled = false;
     const fetchHotel = async () => {
-      if (urlSlug) {
-        let hotel: Hotel | null = null;
-        
-        // Try by slug first
-        if (urlSlug && !urlSlug.match(/^[0-9a-f]{24}$/)) {
-          hotel = await fetchHotelBySlug(urlSlug);
-        }
-        
-        // If not found by slug, try by ID
-        if (!hotel) {
-          hotel = await fetchHotelById(urlSlug);
-        }
-        
-        if (hotel) {
-          setCurrentHotel(hotel);
-          setActiveHotel(hotel);
-        }
+      let hotel: Hotel | null = null;
+
+      // Try by slug first
+      if (!urlSlug.match(/^[0-9a-f]{24}$/)) {
+        hotel = await fetchHotelBySlug(urlSlug);
       }
+
+      // If not found by slug, try by ID
+      if (!hotel) {
+        hotel = await fetchHotelById(urlSlug);
+      }
+
+      if (!cancelled && hotel) setApiHotel(hotel);
     };
 
     fetchHotel();
-  }, [urlSlug, fetchHotelBySlug, fetchHotelById, setActiveHotel]);
+    return () => { cancelled = true; };
+  }, [urlSlug, localHotel, fetchHotelBySlug, fetchHotelById]);
 
   // Scroll to top when hotel changes
   useEffect(() => {
@@ -55,7 +66,6 @@ export const HotelDetailPage: React.FC = () => {
   }, [currentHotel?.id]);
 
   const handleGoBack = () => {
-    navigateRouter(-1);
     navigate('hotels');
   };
 
@@ -318,9 +328,6 @@ export const HotelDetailPage: React.FC = () => {
                 key={h.id}
                 onClick={() => {
                   setActiveHotel(h);
-                  const hotelSlug = h.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                  navigateRouter(`/hotels/${hotelSlug}`);
-                  navigate('hotel-detail');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="bg-white border border-[#e2d1be] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group flex flex-col"
@@ -386,8 +393,6 @@ export const HotelDetailPage: React.FC = () => {
                 key={pkg.id}
                 onClick={() => {
                   setActivePackage(pkg);
-                  const packageSlug = pkg.slug || pkg.id;
-                  navigateRouter(`/packages/${packageSlug}`);
                 }}
                 className="bg-white border border-[#e2d1be] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group flex flex-col"
               >

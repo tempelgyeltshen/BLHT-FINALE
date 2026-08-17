@@ -1,6 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { useNavigate as useReactNavigate } from 'react-router-dom';
 import { useHotels } from '../hooks/useHotels';
 import { Star } from 'lucide-react';
 import { luxuryHoverProps } from '../../../../utils/motion';
@@ -12,7 +11,6 @@ import { useApp } from '../../../core/providers/AppProvider';
 export const HotelsView: React.FC = () => {
   const { hotels, loading } = useHotels();
   const { setActiveHotel } = useApp();
-  const navigateRouter = useReactNavigate();
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const [heroHovered, setHeroHovered] = useState(false);
 
@@ -39,8 +37,6 @@ export const HotelsView: React.FC = () => {
 
   const handleHotelClick = (hotel: any) => {
     setActiveHotel(hotel);
-    const hotelSlug = hotel.slug || hotel.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    navigateRouter(`/hotels/${hotelSlug}`);
   };
 
   if (loading) {

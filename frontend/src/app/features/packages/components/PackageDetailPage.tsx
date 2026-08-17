@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useParams, useNavigate as useReactNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
   ArrowLeft, Star, MapPin, Clock, Users, CalendarDays, CheckCircle2,
@@ -20,7 +20,6 @@ const isItineraryDay = (d: unknown): d is NonNullable<TourPackage['itinerary']>[
 
 export const PackageDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const navigateRouter = useReactNavigate();
   const { packages, setActivePackage, navigate } = useApp();
   const { getPackage, loading: apiLoading } = usePackages();
 
@@ -62,7 +61,6 @@ export const PackageDetailPage: React.FC = () => {
   }, [activePackage?.id]);
 
   const handleGoBack = () => {
-    navigateRouter(-1);
     navigate('luxury');
   };
 

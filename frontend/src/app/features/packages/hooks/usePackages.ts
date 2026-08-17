@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { packageService } from '../services/packageService';
 import type { Package, PackageFormData } from '../types/package.types';
 
@@ -7,7 +7,7 @@ export function usePackages() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchPackages = async () => {
+  const fetchPackages = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -19,9 +19,9 @@ export function usePackages() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const fetchFeaturedPackages = async () => {
+  const fetchFeaturedPackages = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -33,9 +33,9 @@ export function usePackages() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const fetchPackagesByCategory = async (category: string) => {
+  const fetchPackagesByCategory = useCallback(async (category: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -47,9 +47,9 @@ export function usePackages() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const createPackage = async (data: PackageFormData) => {
+  const createPackage = useCallback(async (data: PackageFormData) => {
     setLoading(true);
     setError(null);
     try {
@@ -63,9 +63,9 @@ export function usePackages() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const updatePackage = async (id: string, data: Partial<PackageFormData>) => {
+  const updatePackage = useCallback(async (id: string, data: Partial<PackageFormData>) => {
     setLoading(true);
     setError(null);
     try {
@@ -79,9 +79,9 @@ export function usePackages() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const deletePackage = async (id: string) => {
+  const deletePackage = useCallback(async (id: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -94,9 +94,9 @@ export function usePackages() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const getPackage = async (id: string) => {
+  const getPackage = useCallback(async (id: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -109,11 +109,11 @@ export function usePackages() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchPackages();
-  }, []);
+  }, [fetchPackages]);
 
   return {
     packages,

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { hotelService } from '../services/hotelService';
 import type { Hotel, HotelFormData } from '../types/hotel.types';
 
@@ -7,7 +7,7 @@ export function useHotels() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchHotels = async () => {
+  const fetchHotels = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -19,9 +19,9 @@ export function useHotels() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const fetchHotelById = async (id: string) => {
+  const fetchHotelById = useCallback(async (id: string) => {
     try {
       setLoading(true);
       setError(null);
@@ -34,9 +34,9 @@ export function useHotels() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const fetchHotelBySlug = async (slug: string) => {
+  const fetchHotelBySlug = useCallback(async (slug: string) => {
     try {
       setLoading(true);
       setError(null);
@@ -49,9 +49,9 @@ export function useHotels() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const fetchHotelsByRegion = async (region: string) => {
+  const fetchHotelsByRegion = useCallback(async (region: string) => {
     try {
       setLoading(true);
       setError(null);
@@ -64,9 +64,9 @@ export function useHotels() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const fetchFeaturedHotels = async () => {
+  const fetchFeaturedHotels = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -79,9 +79,9 @@ export function useHotels() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const createHotel = async (data: HotelFormData) => {
+  const createHotel = useCallback(async (data: HotelFormData) => {
     try {
       setError(null);
       const newHotel = await hotelService.create(data);
@@ -92,9 +92,9 @@ export function useHotels() {
       console.error('Error creating hotel:', err);
       throw err;
     }
-  };
+  }, []);
 
-  const updateHotel = async (id: string, data: Partial<HotelFormData>) => {
+  const updateHotel = useCallback(async (id: string, data: Partial<HotelFormData>) => {
     try {
       setError(null);
       const updatedHotel = await hotelService.update(id, data);
@@ -105,9 +105,9 @@ export function useHotels() {
       console.error('Error updating hotel:', err);
       throw err;
     }
-  };
+  }, []);
 
-  const deleteHotel = async (id: string) => {
+  const deleteHotel = useCallback(async (id: string) => {
     try {
       setError(null);
       await hotelService.delete(id);
@@ -117,11 +117,11 @@ export function useHotels() {
       console.error('Error deleting hotel:', err);
       throw err;
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchHotels();
-  }, []);
+  }, [fetchHotels]);
 
   return {
     hotels,
