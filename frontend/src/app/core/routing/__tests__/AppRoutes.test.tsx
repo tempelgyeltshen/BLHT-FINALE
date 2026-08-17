@@ -285,6 +285,31 @@ describe('AppRoutes', () => {
     }
   });
 
+  it('deep link to the brochure viewer renders the seed brochure and back returns to the library', async () => {
+    // The viewer preflights the PDF URL with a HEAD request; resolve it so the
+    // document is not flagged as failed.
+    const originalFetch = globalThis.fetch;
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true }));
+
+    renderAppRoutesWithProbe('/brochures/viewer');
+
+    try {
+      // Deep link: no brochure was explicitly selected, so the viewer falls
+      // back to the first document in the library.
+      expect(
+        await screen.findByTitle('Thangka Painting & Sacred Art Collection 2026')
+      ).toBeInTheDocument();
+      expect(screen.getByTestId('location-probe').textContent).toBe('/brochures/viewer');
+
+      // The floating back control returns to the brochure library.
+      fireEvent.click(screen.getByTitle('Back to brochure library'));
+      expect(await screen.findByText(/Brochure Library & PDF Downloads/i)).toBeInTheDocument();
+      expect(screen.getByTestId('location-probe').textContent).toBe('/brochures');
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+  });
+
   it('navigates from the lodges list to the detail page using the real slug', async () => {
     mockHotelList.mockResolvedValue([paroPineSanctuary]);
 
