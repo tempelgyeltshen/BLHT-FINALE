@@ -108,6 +108,28 @@ describe('AppRoutes', () => {
     ).toBeInTheDocument();
   });
 
+  it('renders the full-screen PDF viewer at /brochures/viewer without site chrome', async () => {
+    // The viewer preflights the PDF URL with a HEAD request; resolve it so the
+    // document is not flagged as failed.
+    const originalFetch = globalThis.fetch;
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true }));
+
+    renderAppRoutes('/brochures/viewer');
+
+    try {
+      // The shipped seed brochure is shown when none is explicitly selected.
+      expect(
+        await screen.findByTitle('Thangka Painting & Sacred Art Collection 2026')
+      ).toBeInTheDocument();
+
+      // Standalone page: the MainLayout (Navbar + Footer) must NOT render here —
+      // the page shows nothing but the PDF.
+      expect(screen.queryByText('BHUTAN LAND OF HAPPINESS')).not.toBeInTheDocument();
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+  });
+
   it('redirects unauthenticated users from a protected admin route to the login page', async () => {
     renderAppRoutes('/admin/dashboard');
 

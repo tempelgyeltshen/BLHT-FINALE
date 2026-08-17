@@ -16,7 +16,7 @@ import { FestivalsView } from '../../features/festivals/components/FestivalsView
 import { HotelsView, HotelDetailPage } from '../../features/hotels/components';
 import { PackageDetailPage } from '../../features/packages/components/PackageDetailPage';
 import { BrochuresView } from '../../features/brochures/components/BrochuresView';
-import { PdfViewerModal } from '../../features/brochures/components/PdfViewerModal';
+import { PdfFullScreenView } from '../../features/brochures/components/PdfFullScreenView';
 import { GalleryView } from '../../features/gallery/components/GalleryView';
 import { VideosView } from '../../features/videos/components/VideosView';
 import { ContactView } from '../../features/inquiries/components/ContactView';
@@ -32,6 +32,10 @@ import { SearchView } from '../../features/search/components/SearchView';
 export function PublicRoutes() {
   return (
     <>
+      {/* Full-screen brochure PDF reader. Rendered OUTSIDE MainLayout so the
+          page shows nothing but the document — no navbar, footer, or chrome. */}
+      <Route path="/brochures/viewer" element={<PdfFullScreenView />} />
+
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomeView />} />
         <Route path="/about" element={<AboutView />} />
@@ -44,7 +48,6 @@ export function PublicRoutes() {
         <Route path="/packages/:id" element={<PackageDetailPage />} />
         <Route path="/packages" element={<Navigate to="/luxury" replace />} />
         <Route path="/brochures" element={<BrochuresView />} />
-        <Route path="/brochures/viewer" element={<PdfViewerModal />} />
         <Route path="/videos" element={<VideosView />} />
         <Route path="/gallery" element={<GalleryView />} />
         <Route path="/showcase" element={<ContentShowcaseView />} />

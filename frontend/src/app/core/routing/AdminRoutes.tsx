@@ -10,7 +10,7 @@ import { AdminHomepageView } from '../../features/admin/components/homepage/Admi
 import { AdminVideosView } from '../../features/admin/components/videos/AdminVideosView';
 import { AdminGalleryView } from '../../features/admin/components/gallery/AdminGalleryView';
 import { AdminFestivalsView } from '../../features/admin/components/festivals/AdminFestivalsView';
-import { PdfViewerModal } from '../../features/brochures/components/PdfViewerModal';
+import { PdfFullScreenView } from '../../features/brochures/components/PdfFullScreenView';
 
 /**
  * Admin portal routes.
@@ -75,7 +75,9 @@ export function AdminRoutes() {
         path="/admin/brochure-viewer"
         element={(
           <AdminRoute>
-            <PdfViewerModal />
+            {/* Same standalone PDF-only page as the public site; the Back
+                control returns to the admin brochure library. */}
+            <PdfFullScreenView />
           </AdminRoute>
         )}
       />

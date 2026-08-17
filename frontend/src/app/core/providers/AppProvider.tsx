@@ -87,6 +87,20 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_KEY = 'blht_bhutan_portal_v1';
 
+/**
+ * Safe localStorage reader: corrupt/legacy JSON falls back to the shipped
+ * seed data instead of crashing the whole app on mount.
+ */
+const loadFromStorage = <T,>(key: string, fallback: T): T => {
+  const saved = localStorage.getItem(key);
+  if (!saved) return fallback;
+  try {
+    return JSON.parse(saved) as T;
+  } catch {
+    return fallback;
+  }
+};
+
 // Map a ViewRoute to a real URL path (React Router).
 const routeToPath = (route: ViewRoute): string => {
   switch (route) {
@@ -235,15 +249,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [selectedParam, setSelectedParam] = useState<string | null>(null);
 
   // Initialize from LocalStorage or Fallbacks
-  const [packages, setPackages] = useState<TourPackage[]>(() => {
-    const saved = localStorage.getItem(`${LOCAL_STORAGE_KEY}_packages`);
-    return saved ? JSON.parse(saved) : initialPackages;
-  });
+  const [packages, setPackages] = useState<TourPackage[]>(() =>
+    loadFromStorage(`${LOCAL_STORAGE_KEY}_packages`, initialPackages)
+  );
 
-  const [hotels, setHotels] = useState<Hotel[]>(() => {
-    const saved = localStorage.getItem(`${LOCAL_STORAGE_KEY}_hotels`);
-    return saved ? JSON.parse(saved) : initialHotels;
-  });
+  const [hotels, setHotels] = useState<Hotel[]>(() =>
+    loadFromStorage(`${LOCAL_STORAGE_KEY}_hotels`, initialHotels)
+  );
 
   const [festivals, setFestivals] = useState<Festival[]>(() => {
     const saved = localStorage.getItem(`${LOCAL_STORAGE_KEY}_festivals`);
@@ -264,26 +276,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     loadBrochuresFromStorage(`${LOCAL_STORAGE_KEY}_brochures`)
   );
 
-  const [gallery, setGallery] = useState<GalleryItem[]>(() => {
-    const saved = localStorage.getItem(`${LOCAL_STORAGE_KEY}_gallery`);
-    return saved ? JSON.parse(saved) : initialGallery;
-  });
+  const [gallery, setGallery] = useState<GalleryItem[]>(() =>
+    loadFromStorage(`${LOCAL_STORAGE_KEY}_gallery`, initialGallery)
+  );
 
-  const [videos, setVideos] = useState<VideoItem[]>(() => {
-    const saved = localStorage.getItem(`${LOCAL_STORAGE_KEY}_videos`);
-    return saved ? JSON.parse(saved) : initialVideos;
-  });
+  const [videos, setVideos] = useState<VideoItem[]>(() =>
+    loadFromStorage(`${LOCAL_STORAGE_KEY}_videos`, initialVideos)
+  );
 
-  const [inquiries, setInquiries] = useState<ContactInquiry[]>(() => {
-    const saved = localStorage.getItem(`${LOCAL_STORAGE_KEY}_inquiries`);
-    return saved ? JSON.parse(saved) : initialInquiries;
-  });
+  const [inquiries, setInquiries] = useState<ContactInquiry[]>(() =>
+    loadFromStorage(`${LOCAL_STORAGE_KEY}_inquiries`, initialInquiries)
+  );
 
 
-  const [homepageConfig, setHomepageConfig] = useState<HomepageConfig>(() => {
-    const saved = localStorage.getItem(`${LOCAL_STORAGE_KEY}_homepageConfig`);
-    return saved ? JSON.parse(saved) : initialHomepageConfig;
-  });
+  const [homepageConfig, setHomepageConfig] = useState<HomepageConfig>(() =>
+    loadFromStorage(`${LOCAL_STORAGE_KEY}_homepageConfig`, initialHomepageConfig)
+  );
 
   // Fetch CMS data from API on mount, falling back to localStorage/initialData
   useEffect(() => {

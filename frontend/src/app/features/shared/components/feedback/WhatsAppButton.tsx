@@ -1,8 +1,17 @@
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
 import { WHATSAPP_URL } from '../../../../config/constants';
+import { useApp } from '../../../../core/providers/AppProvider';
 
 export const WhatsAppButton: React.FC = () => {
+  const { currentRoute } = useApp();
+
+  // Keep the full-screen PDF reader completely clean — no floating chat bubble
+  // covering the document.
+  if (currentRoute === 'brochure-viewer' || currentRoute === 'admin-brochure-viewer') {
+    return null;
+  }
+
   return (
     <a
       href={WHATSAPP_URL}
