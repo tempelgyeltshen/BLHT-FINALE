@@ -5,6 +5,7 @@ import { AppRoutes } from '../AppRoutes';
 import { AuthProvider } from '../../providers/AuthProvider';
 import { AppProvider } from '../../providers/AppProvider';
 import type { Hotel } from '../../../features/hotels/types/hotel.types';
+import type { TourPackage } from '../../../../types';
 
 // ---------------------------------------------------------------------------
 // Mock the API client + hotel service so the providers never hit the network.
@@ -170,6 +171,79 @@ const sixSensesThimphu: Hotel = {
   featured: true,
 };
 
+// Realistic package fixtures matching the seeded journey data.
+const kingdomInTheClouds: TourPackage = {
+  id: 'pkg-1',
+  slug: 'kingdom-in-the-clouds-luxury',
+  title: 'Kingdom in the Clouds: Ultra-Luxury Journey',
+  subtitle: '7 Days / 6 Nights across Paro, Thimphu, and Punakha in 5-Star Luxury Lodges',
+  category: 'luxury',
+  durationDays: 7,
+  priceUSD: 8950,
+  rating: 4.98,
+  reviewsCount: 42,
+  featured: true,
+  heroImage: 'https://example.com/kingdom.jpg',
+  galleryImages: ['https://example.com/kingdom.jpg'],
+  description: 'Immerse yourself in the world’s most serene Kingdom with private helicopter transfers and exclusive stays.',
+  highlights: ['Private VIP arrival clearance at Paro International Airport'],
+  included: ['5-Star Ultra-Luxury Accommodations'],
+  excluded: ['International flights'],
+  destinations: ['Paro', 'Thimphu', 'Punakha'],
+  hotelCategory: '5-Star Luxury',
+  itinerary: [
+    {
+      day: 1,
+      title: 'Arrival in Paro & Drive to Thimphu Valley',
+      location: 'Thimphu',
+      description: 'Land in Paro where your personal host greets you with silk Khadhar scarves.',
+      highlights: ['Private arrival reception'],
+      accommodation: 'Six Senses Thimphu',
+      meals: 'Dinner included',
+    },
+  ],
+};
+
+const sacredTshechu: TourPackage = {
+  id: 'pkg-2',
+  slug: 'sacred-festivals-cultural-odyssey',
+  title: 'Sacred Tshechu Festivals & Spiritual Odyssey',
+  subtitle: '10 Days / 9 Nights during Paro or Thimphu Sacred Mask Dance Celebrations',
+  category: 'festival',
+  durationDays: 10,
+  priceUSD: 7400,
+  rating: 4.95,
+  reviewsCount: 28,
+  featured: true,
+  heroImage: 'https://example.com/tshechu.jpg',
+  galleryImages: ['https://example.com/tshechu.jpg'],
+  description: 'Experience Bhutan’s grandest spiritual festivals with reserved VIP pavilion seating.',
+  highlights: ['VIP Reserved Seating at Paro or Thimphu Tshechu'],
+  included: ['Luxury Heritage Accommodations'],
+  excluded: ['International flights'],
+  destinations: ['Paro', 'Thimphu', 'Punakha', 'Phobjikha'],
+  hotelCategory: 'Heritage Suite',
+  itinerary: [
+    {
+      day: 1,
+      title: 'Arrival in Paro & Gho/Kira Tailoring Session',
+      location: 'Paro',
+      description: 'Settle into Zhiwa Ling Heritage, built entirely with handcrafted Bhutanese timber.',
+      highlights: ['Custom garment fitting'],
+      accommodation: 'Zhiwa Ling Heritage',
+      meals: 'Dinner',
+    },
+  ],
+};
+
+// The AppProvider hydrates its collections from localStorage, so seeding the
+// packages key before render gives each test a controlled journeys list — the
+// same effect the hotel tests get from stubbing hotelService.list().
+const PACKAGES_STORAGE_KEY = 'blht_bhutan_portal_v1_packages';
+function seedPackages(list: TourPackage[]) {
+  localStorage.setItem(PACKAGES_STORAGE_KEY, JSON.stringify(list));
+}
+
 describe('AppRoutes', () => {
   it('renders the public homepage at / without React Router errors', async () => {
     renderAppRoutes('/');
@@ -249,6 +323,46 @@ describe('AppRoutes', () => {
       await screen.findByRole('heading', { name: paroPineSanctuary.name })
     ).toBeInTheDocument();
     expect(screen.getByTestId('location-probe').textContent).toBe('/hotels/paro-pine-sanctuary');
+  });
+
+  it('navigates from the luxury journeys list to the package detail page using the real id', async () => {
+    seedPackages([kingdomInTheClouds]);
+
+    renderAppRoutesWithProbe('/luxury');
+
+    // Click the journey card's CTA in the luxury collection.
+    fireEvent.click(await screen.findByRole('button', { name: /more details/i }));
+
+    // One navigation to the package's real id (setActivePackage uses id first),
+    // and the detail page renders it.
+    expect(await screen.findByRole('heading', { name: kingdomInTheClouds.title })).toBeInTheDocument();
+    expect(screen.getByTestId('location-probe').textContent).toBe('/packages/pkg-1');
+  });
+
+  it('navigates from a package detail page to a related package using its real id', async () => {
+    seedPackages([kingdomInTheClouds, sacredTshechu]);
+
+    renderAppRoutesWithProbe('/packages/pkg-1');
+
+    // The related-journeys section lists the other package.
+    const relatedCard = await screen.findByText(sacredTshechu.title);
+    fireEvent.click(relatedCard);
+
+    expect(
+      await screen.findByRole('heading', { name: sacredTshechu.title })
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('location-probe').textContent).toBe('/packages/pkg-2');
+  });
+
+  it('deep link to a package renders the detail page from the loaded list', async () => {
+    seedPackages([kingdomInTheClouds]);
+
+    renderAppRoutesWithProbe('/packages/pkg-1');
+
+    expect(
+      await screen.findByRole('heading', { name: kingdomInTheClouds.title })
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('location-probe').textContent).toBe('/packages/pkg-1');
   });
 
   it('redirects unauthenticated users from a protected admin route to the login page', async () => {
