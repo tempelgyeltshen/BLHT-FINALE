@@ -13,6 +13,7 @@ import { analyticsService } from '../../../lib/services/analytics.service';
 import { useAuth } from '../../features/auth/hooks/useAuth';
 import { hotelService } from '../../features/hotels/services/hotelService';
 import { loadBrochuresFromStorage } from './brochureStorage';
+import { LOCAL_STORAGE_KEY } from '../../config/constants';
 
 interface AppContextType {
   // Navigation
@@ -84,8 +85,6 @@ interface AppContextType {
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
-
-const LOCAL_STORAGE_KEY = 'blht_bhutan_portal_v1';
 
 /**
  * Safe localStorage reader: corrupt/legacy JSON falls back to the shipped

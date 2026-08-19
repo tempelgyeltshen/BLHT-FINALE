@@ -34,9 +34,6 @@ export const attachCsrfHeader = (headers: Headers, method: string, csrfToken: st
 export const extractCsrfToken = (response: Response): string | null =>
   response.headers.get('x-csrf-token');
 
-/** True when the response indicates the session is invalid (401). */
-export const isUnauthorized = (response: Response): boolean => response.status === 401;
-
 /**
  * Handle a 401: clear the session and, when on an admin page (not the login
  * page), bounce to the admin login. Returns true when a redirect happened.

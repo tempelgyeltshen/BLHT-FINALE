@@ -13,9 +13,3 @@ const rawBaseUrl = (import.meta.env.VITE_API_URL as string | undefined) || '';
 const isLoopback = /^(https?:\/\/)?(localhost|127\.0\.0\.1|\[::1\])(:\d+)?([/?#]|$)/i.test(rawBaseUrl);
 
 export const API_BASE_URL = isLoopback ? '' : rawBaseUrl;
-
-export const API_CONFIG = {
-  baseUrl: API_BASE_URL,
-  timeoutMs: 30000,
-  withCredentials: true,
-} as const;
